@@ -1,0 +1,3 @@
+repository "My project/MyProject@2474364698501@cloud"
+  path "/"
+    smartbranch "/main/JFZ"
