@@ -1,0 +1,9 @@
+
+* text=auto
+
+
+*.cs text
+*.shader text
+*.txt text
+*.json text
+*.md text
