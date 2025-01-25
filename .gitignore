@@ -33,6 +33,7 @@ Desktop.ini
 .vs/
 .vscode/
 .idea/
+.plastic/
 
 # UPM package lock file
 Packages/packages-lock.json
