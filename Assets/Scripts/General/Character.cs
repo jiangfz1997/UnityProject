@@ -13,7 +13,9 @@ public class Character:MonoBehaviour
     private float invincibleCounter;
 
     public UnityEvent<Transform> OnTakeDamage;
+    public UnityEvent<Transform> OnDie;
 
+    
 
     private void Update()
     {
@@ -29,9 +31,9 @@ public class Character:MonoBehaviour
         }
     }
 
-    public void TakeDamage(Collider2D collision)
+    public void TakeDamage(Transform attacker)
     {   
-        float damage = collision.GetComponent<Attack>().damage;
+        float damage = attacker.GetComponent<Attack>().damage;
         if (isInvincible) {
             return;
         }
@@ -40,12 +42,12 @@ public class Character:MonoBehaviour
         currentHP = Mathf.Max(currentHP - damage, 0); // 确保 currentHP 不会低于 0
         if (currentHP <= 0)
         {   
-            Die();
+            OnDie?.Invoke(transform);
         }
         else
         {
             TriggerInvincible();
-            OnTakeDamage?.Invoke(collision.transform);
+            OnTakeDamage?.Invoke(attacker.transform);
         }
     }
     private void Start()
@@ -67,7 +69,7 @@ public class Character:MonoBehaviour
     {
         Debug.Log(gameObject.name + "Die");
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     

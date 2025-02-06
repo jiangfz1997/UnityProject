@@ -5,7 +5,6 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEditor.PackageManager;
 using System;
-using static UnityEditor.PlayerSettings;
 
 public class GitCommit : EditorWindow
 {
@@ -60,7 +59,9 @@ public class GitCommit : EditorWindow
             CreateNoWindow = true
         };
 
-        psi.EnvironmentVariables["PATH"] = SetGitPath();
+        // 设置环境变量（暂时硬编码）
+        //TODO: 从系统环境变量中获取, 或者从配置文件中读取
+        psi.EnvironmentVariables["PATH"] = @"C:\Program Files\Git\cmd;" + Environment.GetEnvironmentVariable("PATH");
 
         Process process = Process.Start(psi);
         string output = process.StandardOutput.ReadToEnd();
@@ -108,13 +109,6 @@ public class GitCommit : EditorWindow
         process.WaitForExit();
         UnityEngine.Debug.Log($"Switched to branch: {branchName}");
     }
-    private static string SetGitPath()
-    {
-        // 设置环境变量（暂时硬编码）
-        //TODO: 从系统环境变量中获取, 或者从配置文件中读取
-        return @"C:\Program Files\Git\cmd;" + Environment.GetEnvironmentVariable("PATH");
-
-    }
 
     static void RunGitCommand(string message)
     {
@@ -130,8 +124,7 @@ public class GitCommit : EditorWindow
             UseShellExecute = false,
             CreateNoWindow = true
         };
-        
-        psi.EnvironmentVariables["PATH"] = SetGitPath();
+
         Process process = Process.Start(psi);
         string output = process.StandardOutput.ReadToEnd();
         string error = process.StandardError.ReadToEnd();
