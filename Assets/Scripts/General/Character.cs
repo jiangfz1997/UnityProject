@@ -14,8 +14,8 @@ public class Character:MonoBehaviour
 
     public UnityEvent<Transform> OnTakeDamage;
     public UnityEvent<Transform> OnDie;
+    public UnityEvent<Character> OnHealthChange;
 
-    
 
     private void Update()
     {
@@ -49,10 +49,13 @@ public class Character:MonoBehaviour
             TriggerInvincible();
             OnTakeDamage?.Invoke(attacker.transform);
         }
+
+        OnHealthChange?.Invoke(this);
     }
     private void Start()
     {
         currentHP = maxHP;
+        OnHealthChange?.Invoke(this);
     }
 
     private void TriggerInvincible() 

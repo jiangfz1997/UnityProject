@@ -409,7 +409,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Battlemage Jump Neutral_0: -1445467696964900345
+      Battlemage Jump Neutral_1: 7763908462634115917
+      Battlemage Jump Neutral_10: -1575366090659424386
+      Battlemage Jump Neutral_11: 6041501261436383492
+      Battlemage Jump Neutral_2: 98659913521594126
+      Battlemage Jump Neutral_3: -4477679822386473082
+      Battlemage Jump Neutral_4: -5945079152346575702
+      Battlemage Jump Neutral_5: 7440383076290373435
+      Battlemage Jump Neutral_6: 3584203213071331799
+      Battlemage Jump Neutral_7: 4977431474813798553
+      Battlemage Jump Neutral_8: -1752856673785635853
+      Battlemage Jump Neutral_9: -3417525786104710386
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
