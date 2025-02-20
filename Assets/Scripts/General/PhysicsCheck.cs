@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PhysicsCheck : MonoBehaviour
 {
-    private CapsuleCollider2D coll;
+    protected CapsuleCollider2D coll;
     public Vector2 bottomOffset; // The offset of the raycast from the center of the object
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,8 +15,9 @@ public class PhysicsCheck : MonoBehaviour
     public bool touchLeftWall;
     public bool touchRightWall;
     public bool manual;
+    
 
-    private void Awake()
+    protected virtual void Awake()
     {
         coll = GetComponent<CapsuleCollider2D>();
         groundLayer = LayerMask.GetMask("Ground");
@@ -28,7 +29,7 @@ public class PhysicsCheck : MonoBehaviour
             Debug.Log($"Right offset is: {rightOffset}, Left offset is: {leftOffset}");
         }
     }
-    private void Update()
+    protected virtual void Update()
     {
         Check();
     }
@@ -46,7 +47,7 @@ public class PhysicsCheck : MonoBehaviour
 
     }
 
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         if (bottomOffset == null || leftOffset == null || rightOffset == null)
         {

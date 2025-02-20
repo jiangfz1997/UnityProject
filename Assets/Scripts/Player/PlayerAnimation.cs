@@ -31,8 +31,8 @@ public class PlayerAnimation : MonoBehaviour
 
     public void PlayHurt()
     {   
-        Debug.Log("Play Hurt, start animation");
-        anim.SetTrigger("Hurt");
+        //Debug.Log("Play Hurt, start animation");
+        anim.SetTrigger("hurt");
 
     }
 

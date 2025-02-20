@@ -170,6 +170,9 @@ public class PlayerController : MonoBehaviour
     {
         coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
     }
-
+    public void DestoryCollider()
+    {
+        coll.enabled = false;
+    }
 
 }
