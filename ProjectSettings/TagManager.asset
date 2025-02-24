@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Enemy
+  - Bounds
+  - Ground
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Player
+  - Enemy
+  - ClimbingLadder
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: background1
+    uniqueID: 1117066215
+    locked: 0
+  - name: water
+    uniqueID: 3247937129
+    locked: 0
+  - name: platform
+    uniqueID: 3877452801
+    locked: 0
+  - name: ontheground
+    uniqueID: 2298780429
+    locked: 0
+  - name: character
+    uniqueID: 3045738059
+    locked: 0
+  - name: front
+    uniqueID: 1900949985
+    locked: 0
+  m_RenderingLayers:
+  - Default

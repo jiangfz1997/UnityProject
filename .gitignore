@@ -1,0 +1,48 @@
+# Unity-generated folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# OS-specific files
+.DS_Store
+._*
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+
+
+
+# Visual Studio/JetBrains Rider files
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.unityproj
+*.booproj
+*.pidb
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+.vs/
+.vscode/
+.idea/
+.plastic/
+
+# UPM package lock file
+Packages/packages-lock.json
+
+# Auto-generated files
+*.apk
+*.aab
+*.unitypackage
+*.log
+
+# Misc
+*.lock
