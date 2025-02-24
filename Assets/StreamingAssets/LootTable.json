@@ -1,0 +1,16 @@
+{
+    "lootTables": [
+        {
+            "chestType": "Common",
+            "lootItems": [
+                { "prefabName": "HealthPotion", "dropChance": 1.0 }
+            ]
+        },
+        {
+            "chestType": "Rare",
+            "lootItems": [
+                { "prefabName": "HealthPotion", "dropChance": 1.0 }
+            ]
+        }
+    ]
+}

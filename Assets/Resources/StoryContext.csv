@@ -1,0 +1,27 @@
+﻿Text,BackgroundPic
+"Ah, finally home. After a whole day of work, I am exhausted…",room
+"The boss at the newspaper is always pushing me to write trending news, but how am I supposed to find so many hot topics?",room
+"Sigh, I wish I could—then I wouldn’t have to live in this rundown little room that feels like it’s from the last century.",room
+Huh? My window! Why is my window shattered? What happened?,room
+Wait… there’s something on the table… Is this… a letter?,room
+*You decide to open it.,room
+"(Dear Miss Christin,)",letter
+(Casa Versa Manor has been fully restored and will soon resume its operations in a few days.),letter
+"(We sincerely invite you to join us tonight, after sunset, to celebrate together within the walls of this grand estate. Surely, it will be an unforgettable night.)",letter
+(We eagerly await your presence.),letter
+(Your humble XXX),letter
+Casa Versa Manor? Wasn’t this once the exclusive venue for a famous theater troupe?,castle
+"Oh right, the Crimson Troupe.",castle
+But… wasn’t it said to be cursed? That bizarre stage accident… it even caused a fire. And the moon that night was blood-red…,castle
+They’re actually renovating this castle? I haven’t heard a single mention of it in the newspaper or any reports... ,castle
+"And this letter—it’s unsettling. But the fragrance, the texture—there’s no denying it’s of the finest quality.",castle
+Whoever sent this must be someone noble.,castle
+"Wait… Since they invited me, I might as well seize this opportunity. If I can gather material or even land an exclusive interview, I might just score a trending news story!",castle
+*You decide to attend the ominous gathering.,castle
+[Inside the Castle],enter
+"I finally made it in… But I thought this was supposed to be a lively gathering? There doesn’t seem to be many people here… Though, it smells wonderful…",enter
+"*Drowsiness overtakes you, and you drift into a deep sleep.",enter
+"*When you awaken, the entire scene before you has changed.",enter
+"*It’s as if the long-dead theater troupe has come back to life—people are bustling about, preparing for something.",enter
+"*The unfolding events resemble a surreal, absurd play. Their eyes are vacant, their actions eerily unnatural.",enter
+*You have no choice but to uncover the truth behind this story.,enter

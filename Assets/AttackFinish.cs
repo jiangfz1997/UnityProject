@@ -17,7 +17,7 @@ public class AttackFinish : StateMachineBehaviour
     //OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.GetComponent<PlayerController>().isGroundAttack = false;
+        animator.GetComponent<Player>().isGroundAttack = false;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

@@ -1,178 +1,79 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public PlayerInputController inputControl;
-    private SpriteRenderer spriteRenderer;
-    private Material hurtMaterial;
-    public Vector2 inputDirection;
-    public float speed;
-    public float jumpForce;
-    [Header("Damage Attributes")]
-    private Rigidbody2D rb;
-    private PhysicsCheck physicsCheck;
-    private PlayerAnimation playerAnimation;
-    private CapsuleCollider2D coll;
+    private Player player;
+    private Vector2 moveInput;
+    private float climbInput; // **存储垂直输入**
 
-    public float hurtForce;
-    public bool isHurt;
-    public bool isDead;
-    public bool isGroundAttack;
-    [Header("PhysicMeterial")]
-    public PhysicsMaterial2D normal;
-    public PhysicsMaterial2D wall;
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        physicsCheck = GetComponent<PhysicsCheck>();
+        player = GetComponent<Player>();
         inputControl = new PlayerInputController();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        hurtMaterial = spriteRenderer.material;
-        playerAnimation = GetComponent<PlayerAnimation>();
-        coll = GetComponent<CapsuleCollider2D>();
-        GetComponent<SpriteRenderer>().material.SetFloat("_FlashControl", 1);
 
-        // Jump
-        inputControl.Player.Jump.started += Jump; 
-
+        // bind input events
+        inputControl.Player.Jump.started += Jump;
         inputControl.Player.Attack.started += Attack;
-
+        inputControl.Player.Interact.started += OnInteract;
+        inputControl.Player.Move.performed += OnMove;
+        inputControl.Player.Move.canceled += OnMove;
     }
-
-
 
     private void OnEnable()
     {
         inputControl.Enable();
+        Player.OnClimbStateChanged += HandleClimbStateChanged;
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() 
+    { 
         inputControl.Disable();
-    }
+        Player.OnClimbStateChanged -= HandleClimbStateChanged;
 
+    }
+    private void HandleClimbStateChanged(bool isClimbing)
+    {
+        if (isClimbing)
+        {
+            gameObject.layer = LayerMask.NameToLayer("ClimbingLadder"); // **进入爬梯模式**
+        }
+        else
+        {
+            gameObject.layer = LayerMask.NameToLayer("Player"); // **恢复正常状态**
+        }
+    }
     private void Update()
     {
-        if (inputControl != null) {
-            inputDirection = inputControl.Player.Move.ReadValue<Vector2>();
-            CheckState();
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (isHurt || isGroundAttack)
+        if (inputControl != null)
         {
-            return;
+            //Vector2 moveInput = inputControl.Player.Move.ReadValue<Vector2>();
+
+            player.Move(moveInput);
+            if (player.CanClimb())
+            {
+                player.Climb(climbInput); // **持续执行爬梯**
+            }
         }
-        Move();
     }
 
-    public void Move() {
-        
-        rb.linearVelocity = new Vector2(inputDirection.x * speed * Time.deltaTime, rb.linearVelocity.y);
+    private void Jump(InputAction.CallbackContext context) => player.Jump();
+    private void Attack(InputAction.CallbackContext context) => player.Attack();
+    private void OnInteract(InputAction.CallbackContext context) => player.Interact();
 
-        //flip the character
-        int faceDirection = (int)transform.localScale.x;
-        if (inputDirection.x > 0)
-            faceDirection = 1;
-        if (inputDirection.x < 0)
-            faceDirection = -1;
-        transform.localScale = new Vector3(faceDirection, 1, 1);
-        
-    }
-
-    private void Jump(InputAction.CallbackContext context)
+    private void OnMove(InputAction.CallbackContext context)
     {
-        //Debug.Log("JUMP");
-        if (physicsCheck.isGround) { 
-            rb.AddForce(transform.up*jumpForce, ForceMode2D.Impulse);
-        }
-        
+        Vector2 input = context.ReadValue<Vector2>();
+        moveInput = new Vector2(input.x, 0); // **只记录水平移动**
+        climbInput = input.y; // **存储垂直移动**
     }
 
-    private void Attack(InputAction.CallbackContext context)
+
+    public void DisableInput()
     {
-        Debug.Log("Attack");
-        playerAnimation.PlayAttack();
-        if (physicsCheck.isGround) 
-        {
-            isGroundAttack = true;
-        }
-
-    }
-
-    #region UnityEvents
-    public void GetHurt(Transform attacker)
-    {
-        Debug.Log("Get Hurt");
-        isHurt = true;
-        rb.linearVelocity = Vector2.zero; 
-
-        Vector2 playerPosition = transform.position;
-        Vector2 attackerPosition = attacker.position;
-
-
-        Vector2 forceDirection = (playerPosition - attackerPosition).normalized;
-
-
-        if (forceDirection == Vector2.zero)
-        {
-            forceDirection = new Vector2(0.1f, 0.1f).normalized;
-        }
-
-        Vector2 force = forceDirection * hurtForce;
-
-
-        rb.AddForce(force, ForceMode2D.Impulse);
-        StartCoroutine(HurtEffect(spriteRenderer, spriteRenderer.material));
-    }
-
-    public void PlayerDead()
-    {
-        isDead = true;
         inputControl.Player.Disable();
-        
-    }
-    #endregion
-    IEnumerator HurtEffect(SpriteRenderer sr, Material mat)
-    {
-        float totalDuration = 2f; 
-        float redDuration = 0.5f; 
-        float elapsed = 0f;
-
-        mat.SetFloat("_HurtIntensity", 1); 
-
-        while (elapsed < totalDuration)
-        {
-            elapsed += Time.deltaTime;
-
-            
-            float redT = Mathf.Clamp01(elapsed / redDuration);
-            mat.SetFloat("_HurtIntensity", Mathf.Lerp(1, 0, redT));
-
-           
-            float flashT = Mathf.PingPong(elapsed * 2f, 1);
-            mat.SetFloat("_FlashControl", flashT);
-
-            yield return null;
-        }
-
-        mat.SetFloat("_HurtIntensity", 0);
-        mat.SetFloat("_FlashControl", 1);
-    }
-
-    private void CheckState()
-    {
-        coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
-    }
-    public void DestoryCollider()
-    {
-        coll.enabled = false;
     }
 
 }

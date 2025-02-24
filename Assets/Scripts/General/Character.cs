@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Character:MonoBehaviour
+public class Character : MonoBehaviour
 {
     [Header("Basic Attribute")]
     public float maxHP;
     public float currentHP;
+
     [Header("Invincible")]
     public bool isInvincible;
     public float invincibleTime;
@@ -15,32 +16,32 @@ public class Character:MonoBehaviour
     public UnityEvent<Transform> OnDie;
     public UnityEvent<Character> OnHealthChange;
 
+    protected virtual void Start()
+    {
+        currentHP = maxHP;
+        OnHealthChange?.Invoke(this);
+    }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (isInvincible)
         {
             invincibleCounter -= Time.deltaTime;
             if (invincibleCounter < 0)
-            { 
+            {
                 isInvincible = false;
-
             }
-
         }
     }
 
-    public void TakeDamage(Transform attacker)
-    {   
+    public virtual void TakeDamage(Transform attacker)
+    {
         float damage = attacker.GetComponent<Attack>().damage;
-        if (isInvincible) {
-            return;
-        }
+        if (isInvincible) return;
 
-        Debug.Log(gameObject.name+"Take Damage: " + damage);
-        currentHP = Mathf.Max(currentHP - damage, 0); // 确保 currentHP 不会低于 0
+        currentHP = Mathf.Max(currentHP - damage, 0);
         if (currentHP <= 0)
-        {   
+        {
             OnDie?.Invoke(transform);
         }
         else
@@ -51,13 +52,8 @@ public class Character:MonoBehaviour
 
         OnHealthChange?.Invoke(this);
     }
-    private void Start()
-    {
-        currentHP = maxHP;
-        OnHealthChange?.Invoke(this);
-    }
 
-    private void TriggerInvincible() 
+    protected void TriggerInvincible()
     {
         if (!isInvincible)
         {
@@ -67,13 +63,8 @@ public class Character:MonoBehaviour
         }
     }
 
-    public void Die()
+    public virtual void Die()
     {
-        Debug.Log(gameObject.name + "Die");
-
-        //Destroy(gameObject);
+        Debug.Log(gameObject.name + " Die");
     }
-
-    
-
 }
