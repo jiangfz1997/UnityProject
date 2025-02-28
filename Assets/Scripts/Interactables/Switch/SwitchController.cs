@@ -6,11 +6,14 @@ public class SwitchController : MonoBehaviour, IInteractable
     public GameObject gate;
     //private bool isPlayerNearby = false;
     //private bool isGateOpen = false;
-    private bool isActivated = false;
+    [SerializeField] private bool isActivated = false;
     private SpriteRenderer spriteRenderer;
+
+    [SerializeField] private Sprite avatarImage;
+
     public void Interact()
     {
-        if (isActivated) 
+        if (isActivated)
         {
             return;
         }
@@ -18,6 +21,8 @@ public class SwitchController : MonoBehaviour, IInteractable
 
         spriteRenderer.flipX = isActivated;
         eKeyPrompt.SetActive(false);
+
+        DialogueTrigger();
 
         // **´¥·¢ Gate ÊÂ¼þ**
         if (gate != null)
@@ -39,7 +44,19 @@ public class SwitchController : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    void DialogueTrigger()
+    {
+        DialogueManager.Instance.StartDialogue(new DialogueManager.DialogueLine[] {
+            new DialogueManager.DialogueLine
+            {
+                speakerName = "You",
+                dialogueContent = "Sounds like a heavy door has opened somewhere.",
+                avatarSprite = avatarImage
+            }
+        });
     }
 
     void OnTriggerEnter2D(Collider2D other)

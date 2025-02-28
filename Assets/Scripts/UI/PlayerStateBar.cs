@@ -1,4 +1,3 @@
-using System.Drawing.Text;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerStateBar : MonoBehaviour

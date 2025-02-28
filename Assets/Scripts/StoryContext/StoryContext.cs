@@ -9,7 +9,8 @@ using System.Text.RegularExpressions;
 
 public class CSVReader : MonoBehaviour
 {
-    public string filePath = "Assets/Resources/StoryContext.csv";  // CSV 文件路径
+    //public string filePath = "Assets/Resources/StoryContext.csv";  // CSV 文件路径
+    public string fileName = "StoryContext";
     public RawImage backgroundImage; // 背景图片 UI
     public TextMeshProUGUI dialogText; // 显示对话文本 UI
 
@@ -23,7 +24,7 @@ public class CSVReader : MonoBehaviour
         mouse = Mouse.current;
 
         // 读取 CSV 文件并解析数据
-        ReadCSV(filePath);
+        ReadCSV(fileName);
 
         // 如果背景数据为空，则输出错误信息
         if (backgroundList == null || backgroundList.Count == 0)
@@ -47,23 +48,31 @@ public class CSVReader : MonoBehaviour
     }
 
     // 读取 CSV 文件，并将背景图片路径和文本保存到列表
-    void ReadCSV(string path)
+    void ReadCSV(string resourceName)
     {
+
+        TextAsset csvFile = Resources.Load<TextAsset>(resourceName);
+        if (csvFile == null)
+        {
+            Debug.LogError($"CSV 文件未找到！请确保 {resourceName}.csv 放在 Assets/Resources 目录下");
+            return;
+        }
         backgroundList = new List<string>();
         textList = new List<string>();
 
-        if (!File.Exists(path))
-        {
-            Debug.LogError("CSV file not found!");
-            return;
-        }
+        //if (!File.Exists(path))
+        //{
+        //    Debug.LogError("CSV file not found!");
+        //    return;
+        //}
 
-        string[] lines = File.ReadAllLines(path);
-        Debug.Log("CSV file loaded successfully: " + path);
+        string[] lines = csvFile.text.Split('\n');
+        Regex regex = new Regex(@"^""(.*?)"",(.*?)$|^([^""]+),(.*?)$", RegexOptions.Singleline);
+
 
         // 正则表达式解析每行
         // 处理带有引号和不带引号的文本，换行符也能正确处理
-        Regex regex = new Regex(@"^""(.*?)"",(.*?)$|^([^""]+),(.*?)$", RegexOptions.Singleline);
+        //Regex regex = new Regex(@"^""(.*?)"",(.*?)$|^([^""]+),(.*?)$", RegexOptions.Singleline);
 
         for (int i = 1; i < lines.Length; i++)
         {

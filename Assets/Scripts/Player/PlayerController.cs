@@ -36,14 +36,16 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleClimbStateChanged(bool isClimbing)
     {
-        if (isClimbing)
-        {
-            gameObject.layer = LayerMask.NameToLayer("ClimbingLadder"); // **进入爬梯模式**
-        }
-        else
-        {
-            gameObject.layer = LayerMask.NameToLayer("Player"); // **恢复正常状态**
-        }
+        //if (isClimbing)
+        //{
+        //    gameObject.layer = LayerMask.NameToLayer("ClimbingLadder"); 
+        //}
+        //else
+        //{
+        //    gameObject.layer = LayerMask.NameToLayer("Player"); 
+        //}
+        Debug.Log("ClimbStateChanged");
+        // TODO: changing layer can cause some issues, player can be stucked into the wall , need to find a better way to handle this
     }
     private void Update()
     {
