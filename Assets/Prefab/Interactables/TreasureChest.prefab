@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 2698518142101545940}
   m_Layer: 0
   m_Name: TreasureChest
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 1222731618215737555}
   m_Layer: 0
   m_Name: ChestSprite
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

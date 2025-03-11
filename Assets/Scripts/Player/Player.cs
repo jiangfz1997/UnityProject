@@ -16,6 +16,15 @@ public class Player : Character
     public float speed;
     public float climbSpeed;
     public float jumpForce;
+    public Vector2 debugVelocity;
+
+    [Header("Dash")]
+    public float dashSpeed;
+    public float dashDuration;
+    public float dashCooldown;
+    public bool isDashing = false;     
+    public bool canDash = true;        
+
 
     [Header("Damage Attributes")]
     public bool isHurt;
@@ -26,13 +35,24 @@ public class Player : Character
     public PhysicsMaterial2D normal;
     public PhysicsMaterial2D wall;
 
+    
     private IInteractable nearbyInteractable;
     public bool canClimb = false;
     public bool _isClimbing = false;
     private Vector3 ladderPosition;
     private float originalGravityScale;
 
+    public bool enableInvincibility = true;
+    public bool enableKnockback = true;
+    public float knockbackForce = 10f;
+
     public static event Action<bool> OnClimbStateChanged;
+    private PlayerController playerController;
+      
+    public Material defaultMaterial;
+    public Material dashMaterial;
+    public ParticleSystem dashEffect;
+    public ParticleSystem dashSpeedLine;
 
     public bool isClimbing
     {
@@ -46,7 +66,10 @@ public class Player : Character
             }
         }
     }
-
+    protected virtual void FixedUpdate()
+    {
+        debugVelocity = rb.linearVelocity;
+    }
     protected override void Start()
     {
         base.Start();
@@ -56,8 +79,25 @@ public class Player : Character
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerAnimation = GetComponent<PlayerAnimation>();
         coll = GetComponent<CapsuleCollider2D>();
+        playerController = GetComponent<PlayerController>();
         originalGravityScale = rb.gravityScale;
         GetComponent<SpriteRenderer>().material.SetFloat("_FlashControl", 1);
+        DamageEffectHandler effectHandler = GetComponent<DamageEffectHandler>();
+        if (effectHandler == null)
+        {
+            effectHandler = gameObject.AddComponent<DamageEffectHandler>();
+        }
+        effectHandler.Initialize(GetComponent<SpriteRenderer>());
+
+        damageHandler = new DamageHandler(this, effectHandler);
+        // Subscribe take damage event
+        OnTakeDamage += (_, _, _, _ )=>playerAnimation.PlayHurt();
+        OnTakeDamage += GetHurt;
+
+        defaultMaterial = spriteRenderer.material;
+
+
+
     }
     protected override void Update()
     {
@@ -72,7 +112,7 @@ public class Player : Character
     }
     public void Move(Vector2 inputDirection)
     {
-        if (isHurt || isGroundAttack) return;
+        if (isHurt || isGroundAttack || isDashing) return;
         if (isClimbing)
         {
             if (physicsCheck.isGround) 
@@ -106,7 +146,40 @@ public class Player : Character
     {
         if (physicsCheck.isGround)
         {
-            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            rb.AddForce(transform.up* jumpForce, ForceMode2D.Impulse);
+
+        }
+    }
+
+    public IEnumerator DashCoroutine()
+    {
+        Debug.Log("DashCoroutine!!!");
+        isDashing = true;
+        canDash = false;
+        TriggerInvincible(dashDuration);
+        playerController.DisableInput();
+        spriteRenderer.material = dashMaterial;
+        
+        rb.linearVelocity = Vector2.zero;  
+        StartDashEffect();
+        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed,0);
+        
+
+        yield return new WaitForSeconds(dashDuration);
+        playerController.EnableInput();
+        EndDashEffect();
+        isDashing = false;
+        rb.linearVelocity = Vector2.zero; 
+        spriteRenderer.material = defaultMaterial;
+
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
+    public void Dash()
+    {
+        if (canDash)
+        {
+            StartCoroutine(DashCoroutine());
         }
     }
 
@@ -207,38 +280,36 @@ public class Player : Character
         OnHealthChange?.Invoke(this);
     }
 
-    public void GetHurt(Transform attacker)
+    public void GetHurt(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
         Debug.Log("Player Get Hurt");
         isHurt = true;
-        rb.linearVelocity = Vector2.zero;
+        //rb.linearVelocity = Vector2.zero;
 
-        Vector2 forceDirection = ((Vector2)transform.position - (Vector2)attacker.position).normalized;
-        if (forceDirection == Vector2.zero)
-        {
-            forceDirection = new Vector2(0.1f, 0.1f).normalized;
-        }
+        //Vector2 forceDirection = ((Vector2)transform.position - (Vector2)attacker.position).normalized;
+        //if (forceDirection == Vector2.zero)
+        //{
+        //    forceDirection = new Vector2(0.1f, 0.1f).normalized;
+        //}
 
-        Vector2 force = forceDirection * 10f;
-        rb.AddForce(force, ForceMode2D.Impulse);
-        StartCoroutine(HurtEffect(spriteRenderer, spriteRenderer.material));
+        //Vector2 force = forceDirection * 10f;
+        //rb.AddForce(force, ForceMode2D.Impulse);
+        damageHandler.HandleDamage(attacker, damage, knockbackForce, damageType);
+
+        //StartCoroutine(HurtEffect(spriteRenderer, spriteRenderer.material));
     }
+
 
     public override void Die()
     {
-        if (isDead) return; // 防止重复执行
+        if (isDead) return; 
         isDead = true;
 
         Debug.Log("Player is dead!");
 
-        // 停止移动
+        
         rb.linearVelocity = Vector2.zero;
 
-        // 禁用碰撞
-        GetComponent<Collider2D>().enabled = false;
-
-
-        // 禁用输入（调用 `PlayerController` 禁用输入）
         PlayerController playerController = GetComponent<PlayerController>();
         if (playerController != null)
         {
@@ -264,32 +335,7 @@ public class Player : Character
             nearbyInteractable = null;
         }
     }
-    IEnumerator HurtEffect(SpriteRenderer sr, Material mat)
-    {
-        float totalDuration = 2f;
-        float redDuration = 0.5f;
-        float elapsed = 0f;
 
-        mat.SetFloat("_HurtIntensity", 1);
-
-        while (elapsed < totalDuration)
-        {
-            elapsed += Time.deltaTime;
-
-
-            float redT = Mathf.Clamp01(elapsed / redDuration);
-            mat.SetFloat("_HurtIntensity", Mathf.Lerp(1, 0, redT));
-
-
-            float flashT = Mathf.PingPong(elapsed * 2f, 1);
-            mat.SetFloat("_FlashControl", flashT);
-
-            yield return null;
-        }
-
-        mat.SetFloat("_HurtIntensity", 0);
-        mat.SetFloat("_FlashControl", 1);
-    }
     private void CheckState()
     {
         coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
@@ -297,5 +343,46 @@ public class Player : Character
     public void DestoryCollider()
     {
         coll.enabled = false;
+    }
+    public SpriteRenderer GetSpriteRenderer()
+    {
+        return spriteRenderer;
+    }
+
+    public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
+    {
+        if (isInvincible) return;
+
+        currentHP = Mathf.Max(currentHP - damage, 0);
+        if (currentHP <= 0)
+        {
+            OnDie?.Invoke(transform);
+        }
+        else
+        {
+            //TriggerInvincible();
+            InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
+        }
+
+        OnHealthChange?.Invoke(this);
+    }
+
+    void StartDashEffect()
+    {
+        // 激活粒子特效
+        dashEffect.gameObject.SetActive(true);
+        // 控制残影方向为当前人物方向
+        dashEffect.GetComponent<ParticleSystemRenderer>().flip = new Vector3(transform.localScale.x < 0 ? 0 : 1, 0, 0);
+        //dashEffect.transform.localScale = new Vector3(transform.localScale.x < 0 ? -1 : 1, 1, 1);
+        //dashEffect.transform.rotation = Quaternion.Euler(0, transform.localScale.x < 0 ? 180 : 0, 0);
+        //dashSpeedLine.gameObject.SetActive(true);
+    }
+
+    void EndDashEffect()
+    {
+        // 停止粒子特效
+        dashEffect.gameObject.SetActive(false);
+        //dashSpeedLine.gameObject.SetActive(false);
+
     }
 }

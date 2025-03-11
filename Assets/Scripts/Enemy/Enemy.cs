@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.Processors;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Rigidbody2D rb;
@@ -19,10 +19,12 @@ public class Enemy : MonoBehaviour
 
     [Header("Attack")]
     public float hurtForce;
-    public float chaseRange;
-    public float stopChaseRange;
+    public float invincibleTime;
+    //public float chaseRange;
+    //public float stopChaseRange;
     public bool isChasing;
     public bool isAttacking;
+    public float damageReduction;
     public bool isHurt;
     public bool isDead;
     public LayerMask attackLayer;
@@ -49,11 +51,22 @@ public class Enemy : MonoBehaviour
         
 
     }
-
-    protected virtual void Start()
+    protected override void Start()
     {
-        
+        base.Start();
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        physicsCheck = GetComponent<EnemyPhysicsCheck>();
+        coll = GetComponent<CapsuleCollider2D>();
+
+        currentSpeed = normalSpeed;
+        waitTimeCounter = waitTime;
+
+        // ¼àÌý `OnTakeDamage` ÊÂ¼þ
+        OnTakeDamage += HandleOnTakeDamage;
     }
+
+
 
     protected virtual void Awake()
     {
@@ -67,14 +80,17 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         faceDir = new Vector3(-transform.localScale.x, 0, 0);
         float modelWidth = coll.bounds.extents.x * 2; 
         centerDetectOffset = new Vector2(faceDir.x * (modelWidth/2 + checkDistance / 2), centerDetectOffset.y);
         currentState.LogicUpdate();
         TimeCounter();
     }
+
+
 
     private void FixedUpdate()
     {
@@ -123,36 +139,92 @@ public class Enemy : MonoBehaviour
             lostTimeCounter = lostTime;
         }
     }
-
-    public void OnTakeDamage(Transform attackTrans)
+    public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
-        attacker = attackTrans;
+        // Only take damage from player attack (not include collision with player)
+        if (attacker.gameObject.CompareTag("PlayerAttack"))
+        {
+            Debug.Log("Take Damage");
+        }
+        if (attacker == null || !attacker.gameObject.CompareTag("PlayerAttack"))
+        {
+            return;
+        }
 
-        if(attackTrans.position.x - transform.position.x>0)
+
+        if (isInvincible) return;
+
+        float finalDamage = damage * (1 - damageReduction);
+        currentHP = Mathf.Max(currentHP - finalDamage, 0);
+
+        if (currentHP <= 0)
+        {
+            OnDie?.Invoke(transform);
+        }
+        else
+        {
+            TriggerInvincible(invincibleTime);
+            InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
+        }
+
+        OnHealthChange?.Invoke(this);
+    }
+
+    //public new void OnTakeDamage(Transform attackTrans)
+    //{
+    //    attacker = attackTrans;
+
+    //    if(attackTrans.position.x - transform.position.x>0)
+    //        transform.localScale = new Vector3(-1, 1, 1);
+    //    if (attackTrans.position.x - transform.position.x < 0)
+    //        transform.localScale = new Vector3(1, 1, 1);
+    //    Vector2 repelDir = new Vector2(transform.position.x - attackTrans.position.x, 0).normalized;
+    //    StartCoroutine(OnHurt(repelDir));
+    //    // Get repelled
+    //    isHurt = true;
+    //    anim.SetTrigger("hurt");
+    //}
+
+    //public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
+    //{
+    //    if (isInvincible) return;
+
+    //    currentHP = Mathf.Max(currentHP - damage, 0);
+    //    if (currentHP <= 0)
+    //    {
+    //        OnDie?.Invoke(transform);
+    //    }
+    //    else
+    //    {
+    //        //TriggerInvincible();
+    //        InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
+    //    }
+
+    //    OnHealthChange?.Invoke(this);
+    //}
+    private IEnumerator OnHurt(Vector2 repelDir, float knockbackForce)
+    {
+        rb.AddForce(repelDir * (knockbackForce - damageReduction), ForceMode2D.Impulse);
+        isHurt = true;
+        yield return new WaitForSeconds(0.5f);
+        isHurt = false;
+    }
+    private void HandleOnTakeDamage(Transform attackTrans, float damage, float knockbackForce, DamageType damageType)
+    {
+
+
+        if (attackTrans.position.x - transform.position.x > 0)
             transform.localScale = new Vector3(-1, 1, 1);
         if (attackTrans.position.x - transform.position.x < 0)
             transform.localScale = new Vector3(1, 1, 1);
         Vector2 repelDir = new Vector2(transform.position.x - attackTrans.position.x, 0).normalized;
-        StartCoroutine(OnHurt(repelDir));
+        StartCoroutine(OnHurt(repelDir, knockbackForce));
         // Get repelled
         isHurt = true;
         anim.SetTrigger("hurt");
+
     }
 
-    private IEnumerator OnHurt(Vector2 repelDir)
-    {
-
-        rb.AddForce(repelDir * hurtForce, ForceMode2D.Impulse);
-
-        yield return new WaitForSeconds(0.5f);
-        isHurt = false;
-    }
-
-    public void OnDie()
-    {
-        anim.SetBool("dead", true);
-        isDead = true;
-    }
     public void OnDestroy()
     {
         Destroy(this.gameObject);
@@ -190,5 +262,20 @@ public class Enemy : MonoBehaviour
   
         Gizmos.DrawLine(start, end);
     }
+
+    //public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
+    //{
+    //    float finaldamage = damage * (1-damageReduction);
+    //    currentHP = Mathf.Max(currentHP - finaldamage, 0);
+
+    //    if (currentHP <= 0)
+    //    {
+    //        Die();
+    //    }
+    //    else
+    //    {
+    //        anim.SetTrigger("hurt");
+    //    }
+    //}
 }
 

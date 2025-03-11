@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInputController inputControl;
     private Player player;
     private Vector2 moveInput;
-    private float climbInput; // **存储垂直输入**
+    private float climbInput;
 
     private void Awake()
     {
@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
         inputControl.Player.Interact.started += OnInteract;
         inputControl.Player.Move.performed += OnMove;
         inputControl.Player.Move.canceled += OnMove;
+        inputControl.Player.Dash.started += Dash;
     }
 
     private void OnEnable()
@@ -65,17 +66,23 @@ public class PlayerController : MonoBehaviour
     private void Attack(InputAction.CallbackContext context) => player.Attack();
     private void OnInteract(InputAction.CallbackContext context) => player.Interact();
 
+    private void Dash(InputAction.CallbackContext context) => player.Dash();
     private void OnMove(InputAction.CallbackContext context)
     {
         Vector2 input = context.ReadValue<Vector2>();
-        moveInput = new Vector2(input.x, 0); // **只记录水平移动**
-        climbInput = input.y; // **存储垂直移动**
+        moveInput = new Vector2(input.x, 0); 
+        climbInput = input.y; 
     }
 
 
     public void DisableInput()
     {
         inputControl.Player.Disable();
+    }
+
+    public void EnableInput()
+    {
+        inputControl.Player.Enable();
     }
 
 }

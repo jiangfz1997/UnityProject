@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Boar : Enemy
 {
@@ -64,5 +64,11 @@ public class Boar : Enemy
             Debug.LogError("Invalid State"+newState);
         }
     }
-
+    public override void Die()
+    {
+        if (isDead) return;
+        anim.SetTrigger("dead");
+        isDead = true;
+        Debug.Log("Boar die");
+    }
 }
