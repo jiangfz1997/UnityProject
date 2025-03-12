@@ -11494,7 +11494,7 @@ MonoBehaviour:
   enableKnockback: 1
   knockbackForce: 10
   defaultMaterial: {fileID: 0}
-  dashMaterial: {fileID: 2100000, guid: 797b5d0f512394747a6d4c06a5d27ca5, type: 2}
+  dashMaterial: {fileID: 0}
   dashEffect: {fileID: 456482396}
   dashSpeedLine: {fileID: 978619948}
 --- !u!61 &1091641380

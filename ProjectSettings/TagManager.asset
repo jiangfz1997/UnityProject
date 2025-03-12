@@ -9,6 +9,8 @@ TagManager:
   - Ground
   - Interactable
   - PlayerAttack
+  - LeftLimit
+  - RightLimit
   layers:
   - Default
   - TransparentFX

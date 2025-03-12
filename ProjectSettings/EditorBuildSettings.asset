@@ -20,9 +20,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Persistent.unity
     guid: 91e2c5b8799e61f4da9c4f634bc5e4a9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_1.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 0
+    path: Assets/Scenes/Level_2.unity
+    guid: 39f20647c7bf1bb4d954636b56c87319
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: f285abc01ef193d49b0609de26de4c80, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

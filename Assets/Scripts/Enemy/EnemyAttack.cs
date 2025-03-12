@@ -5,13 +5,13 @@ public class BoarAttack : Attack
     public float knockbackForce = 10f;
     //public DamageType damageType = DamageType.Physical;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
 
         var character = collision.GetComponent<Character>();
         if (character != null)
         {
-            //character.SetDamageHandler(new ConfigurableDamage(true, true, knockbackForce)); // ÊÜÉËºóÎÞµÐ & »÷ÍË
+            //character.SetDamageHandler(new ConfigurableDamage(true, true, knockbackForce)); // ï¿½ï¿½ï¿½Ëºï¿½ï¿½Þµï¿½ & ï¿½ï¿½ï¿½ï¿½
             character.TakeDamage(transform, damage, knockbackForce, damageType);
         }
     }

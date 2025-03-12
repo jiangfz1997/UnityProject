@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb1f6b38f60da741888cf43a26a3488, type: 3}
   m_Name: tmp_level
   m_EditorClassIdentifier: 
+  sceneType: 1
   sceneReference:
-    m_AssetGUID: 07abf9c07c88af8479dd5b69c01fe81d
+    m_AssetGUID: 39f20647c7bf1bb4d954636b56c87319
     m_SubObjectName: 
     m_SubObjectGUID: 
     m_SubObjectType: 
-    m_EditorAssetChanged: 0
+    m_EditorAssetChanged: 1

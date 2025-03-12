@@ -8,7 +8,7 @@ using UnityEngine;
 //I really hope you find my tutorials helpful and knowledgeable
 //Appreciate your support.
 
-public class Enemy_behaviour : MonoBehaviour
+public class Enemy_behaviour : Character
 {
     #region Public Variables
     public Transform rayCast;
@@ -19,6 +19,10 @@ public class Enemy_behaviour : MonoBehaviour
     public float timer; //Timer for cooldown between attacks
     public Transform leftLimit;
     public Transform rightLimit;
+
+    public int maxHealth = 100;
+    public float damageReduction;
+    public float invincibleTime;
     #endregion
 
     #region Private Variables
@@ -30,6 +34,10 @@ public class Enemy_behaviour : MonoBehaviour
     private bool inRange; //Check if Player is in range
     private bool cooling; //Check if Enemy is cooling after attack
     private float intTimer;
+
+    private int currentHealth;
+    private float patrolCooldown = 3f; // 丢失目标后恢复巡逻的时间
+    private float lostTargetTimer = 0f;
     #endregion
 
     void Awake()
@@ -37,6 +45,7 @@ public class Enemy_behaviour : MonoBehaviour
         SelectTarget();
         intTimer = timer; //Store the inital value of timer
         anim = GetComponent<Animator>();
+        currentHealth = maxHealth;
     }
 
     void Update()
@@ -61,6 +70,19 @@ public class Enemy_behaviour : MonoBehaviour
         if (hit.collider != null)
         {
             EnemyLogic();
+            //
+            lostTargetTimer = 0f; // 重置丢失目标计时器
+        }
+        else if (hit.collider == null && inRange)
+        {
+            lostTargetTimer += Time.deltaTime; // 开始计时
+            if (lostTargetTimer >= patrolCooldown)
+            {
+                Debug.Log("玩家丢失，恢复巡逻");
+                inRange = false; // 让敌人退出战斗模式
+                StopAttack();
+                SelectTarget(); // 重新选择巡逻目标
+            }
         }
         else if (hit.collider == null)
         {
@@ -80,6 +102,18 @@ public class Enemy_behaviour : MonoBehaviour
             target = trig.transform;
             inRange = true;
             Flip();
+        }
+    }
+
+    //
+    void OnTriggerExit2D(Collider2D trig)
+    {
+        if (trig.gameObject.tag == "Player")
+        {
+            Debug.Log("玩家离开探测范围，恢复巡逻");
+            inRange = false; // 敌人停止追踪玩家
+            StopAttack();
+            SelectTarget(); // 重新选择巡逻目标
         }
     }
 
@@ -109,9 +143,25 @@ public class Enemy_behaviour : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("attack"))
         {
-            Vector2 targetPosition = new Vector2(target.position.x, transform.position.y);
+            //Vector2 targetPosition = new Vector2(target.position.x, transform.position.y);
 
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            //transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            if (!inRange) // 如果玩家不在范围内，回到巡逻模式
+            {
+                Vector2 patrolTarget = new Vector2(target.position.x, transform.position.y);
+                transform.position = Vector2.MoveTowards(transform.position, patrolTarget, moveSpeed * Time.deltaTime);
+
+                // 如果已经靠近巡逻目标点，切换方向
+                if (Vector2.Distance(transform.position, target.position) < 0.2f)
+                {
+                    SelectTarget();
+                }
+            }
+            else // 玩家仍然在范围内，继续追踪
+            {
+                Vector2 targetPosition = new Vector2(target.position.x, transform.position.y);
+                transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            }
         }
     }
 
@@ -161,7 +211,10 @@ public class Enemy_behaviour : MonoBehaviour
 
     private bool InsideOfLimits()
     {
-        return transform.position.x > leftLimit.position.x && transform.position.x < rightLimit.position.x;
+        //return transform.position.x > leftLimit.position.x && transform.position.x < rightLimit.position.x;
+        Vector3 leftWorldPos = leftLimit.position;
+        Vector3 rightWorldPos = rightLimit.position;
+        return transform.position.x > leftWorldPos.x && transform.position.x < rightWorldPos.x;
     }
 
     private void SelectTarget()
@@ -202,4 +255,81 @@ public class Enemy_behaviour : MonoBehaviour
 
         transform.eulerAngles = rotation;
     }
+
+    //void TakeDamage(int damage)
+    //{
+    //    currentHealth -= damage; // 受到伤害
+    //    anim.SetTrigger("hurt"); // 播放受伤动画
+
+    //    if (currentHealth <= 0)
+    //    {
+    //        Die();
+    //    }
+    //}
+     public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
+    {
+        // Only take damage from player attack (not include collision with player)
+        if (attacker.gameObject.CompareTag("PlayerAttack"))
+        {
+            Debug.Log("Take Damage");
+        }
+        if (attacker == null || !attacker.gameObject.CompareTag("PlayerAttack"))
+        {
+            return;
+        }
+
+
+        if (isInvincible) return;
+
+        float finalDamage = damage * (1 - damageReduction);
+        currentHP = Mathf.Max(currentHP - finalDamage, 0);
+
+        if (currentHP <= 0)
+        {
+            OnDie?.Invoke(transform);
+        }
+        else
+        {
+            TriggerInvincible(invincibleTime);
+            InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
+        }
+
+        OnHealthChange?.Invoke(this);
+    }
+    void Die()
+    {
+        Debug.Log("Enemy Died!");
+
+        anim.SetTrigger("dead"); // 播放死亡动画
+        GetComponent<Collider2D>().enabled = false; // 关闭碰撞
+        this.enabled = false; // 禁用脚本
+
+        Destroy(gameObject, 2f); // 2秒后销毁
+    }
+
+    void Start()
+    {
+        leftLimit = FindClosestLimit("LeftLimit");
+        rightLimit = FindClosestLimit("RightLimit");
+    }
+
+    // 自动寻找最近的 leftLimit 或 rightLimit
+    Transform FindClosestLimit(string tag)
+    {
+        GameObject[] limits = GameObject.FindGameObjectsWithTag(tag); // 获取所有带这个 Tag 的对象
+        Transform closest = null;
+        float minDistance = Mathf.Infinity; // 初始设为无限大
+
+        foreach (GameObject limit in limits)
+        {
+            float distance = Vector2.Distance(transform.position, limit.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closest = limit.transform;
+            }
+        }
+        return closest; // 返回最近的那个点
+    }
+
 }
