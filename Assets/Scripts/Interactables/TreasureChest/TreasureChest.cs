@@ -7,7 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class TreasureChest : MonoBehaviour, IInteractable
 {
-    public GameObject eKeyPrompt;
+    //public GameObject eKeyPrompt;
     public TreasureChestType chestType; // 这个宝箱的类型
     private LootTableLoader lootTableLoader;
 
@@ -22,10 +22,10 @@ public class TreasureChest : MonoBehaviour, IInteractable
         lootTableLoader = LootTableLoader.Instance; // 🚀 直接从单例获取
 
         lootTableLoader.LoadLootTable(); // 🚀 运行时加载 JSON 配置
-        if (eKeyPrompt)
-        {
-            eKeyPrompt.SetActive(false);
-        }
+        //if (eKeyPrompt)
+        //{
+        //    eKeyPrompt.SetActive(false);
+        //}
     }
 
     void Update()
@@ -33,27 +33,30 @@ public class TreasureChest : MonoBehaviour, IInteractable
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player") && !isOpened)
-        {
-            eKeyPrompt.SetActive(true);
-        }
-    }
+    //void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    //if (other.CompareTag("Player") && !isOpened)
+    //    //{
+    //    //    eKeyPrompt.SetActive(true);
+    //    //}
+    //}
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            eKeyPrompt.SetActive(false);
-        }
-    }
+    //void OnTriggerExit2D(Collider2D other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        eKeyPrompt.SetActive(false);
+    //    }
+    //}
 
     void OpenChest()
     {
         isOpened = true;
+        gameObject.tag = "Untagged";
+
         animatorController.PlayOpenAnimation();
-        eKeyPrompt.SetActive(false);
+        //eKeyPrompt.SetActive(false);
+
         SpawnLoot();
     }
     private void SpawnLoot()

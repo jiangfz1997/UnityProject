@@ -29,6 +29,7 @@ public class PlayerAnimation : MonoBehaviour
         anim.SetBool("isGround", physicsCheck.isGround);
         anim.SetBool("isDead", player.isDead);
         anim.SetBool("isGroundAttack", player.isGroundAttack);
+        anim.SetBool("isDashing", player.isDashing);
 
     }
 

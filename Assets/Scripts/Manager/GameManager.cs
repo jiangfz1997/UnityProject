@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    private GameObject player;
+    public GameObject player;
     private GameObject blackOverlay;
     public bool skipContextForDebug = true; // **调试模式时跳过 Context Scene**
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         if (skipContextForDebug)
         {
             Debug.Log("Skipping Context Scene in Debug Mode. Loading Level_1...");
-            blackOverlay.SetActive(false);
+            //blackOverlay.SetActive(false);
             SceneManager.LoadScene("Level_1", LoadSceneMode.Additive);
             return;
         }

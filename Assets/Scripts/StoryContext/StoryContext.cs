@@ -135,8 +135,8 @@ public class CSVReader : MonoBehaviour
         else
         {
             Debug.Log("End of background scenes!");
-            SceneManagerController.instance.LoadSceneAdditive("Level_1");
-            SceneManagerController.instance.UnloadScene("Context");
+            //SceneManagerController.instance.LoadSceneAdditive("Level_1");
+            //SceneManagerController.instance.UnloadScene("Context");
         }
     }
 
