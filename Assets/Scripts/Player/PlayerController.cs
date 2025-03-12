@@ -17,9 +17,12 @@ public class PlayerController : MonoBehaviour
         // bind input events
         inputControl.Player.Jump.started += Jump;
         inputControl.Player.Attack.started += Attack;
+        inputControl.Player.RangeAttack.started += RangeAttack;
+
         inputControl.Player.Interact.started += OnInteract;
         inputControl.Player.Move.performed += OnMove;
         inputControl.Player.Move.canceled += OnMove;
+
         inputControl.Player.Dash.started += Dash;
     }
 
@@ -57,7 +60,7 @@ public class PlayerController : MonoBehaviour
             player.Move(moveInput);
             if (player.CanClimb())
             {
-                player.Climb(climbInput); // **³ÖÐøÖ´ÐÐÅÀÌÝ**
+                player.Climb(climbInput);
             }
         }
     }
@@ -66,6 +69,7 @@ public class PlayerController : MonoBehaviour
     private void Attack(InputAction.CallbackContext context) => player.Attack();
     private void OnInteract(InputAction.CallbackContext context) => player.Interact();
 
+    private void RangeAttack(InputAction.CallbackContext context) => player.RangeAttack();
     private void Dash(InputAction.CallbackContext context) => player.Dash();
     private void OnMove(InputAction.CallbackContext context)
     {
