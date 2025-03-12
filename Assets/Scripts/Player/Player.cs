@@ -35,7 +35,10 @@ public class Player : Character
     public PhysicsMaterial2D normal;
     public PhysicsMaterial2D wall;
 
-    
+    [Header("RangedAttack")]
+    public ProjectileDatabase projectileDatabase;
+    public Transform firePoint;
+
     private IInteractable nearbyInteractable;
     public bool canClimb = false;
     public bool _isClimbing = false;
@@ -53,6 +56,7 @@ public class Player : Character
     public Material dashMaterial;
     public ParticleSystem dashEffect;
     public ParticleSystem dashSpeedLine;
+
 
     public bool isClimbing
     {
@@ -141,7 +145,22 @@ public class Player : Character
     }
 
 
+    public void RangeAttack()
+    {
+        playerAnimation.PlayerRangeAttack();
+    }
 
+    public void FireProjectile()
+    {
+        String attackType = "PhysicalProjectile";
+        ProjectileData projectileData = projectileDatabase.GetProjectile(attackType);
+        if (projectileData == null || firePoint == null) return;
+
+        GameObject projectileInstance = Instantiate(projectileData.prefab, firePoint.position, Quaternion.identity);
+        Vector2 shootDirection = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+        projectileInstance.GetComponent<Projectile>().Initialize(shootDirection, projectileData);
+
+    }
     public void Jump()
     {
         if (physicsCheck.isGround)
@@ -195,6 +214,8 @@ public class Player : Character
             ExitClimb();
         }
     }
+
+
     public void Climb(float verticalInput)
     {
         if (canClimb)

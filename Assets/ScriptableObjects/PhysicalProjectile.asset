@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99023280ff91a1f46b16be9808bb9d60, type: 3}
+  m_Name: PhysicalProjectile
+  m_EditorClassIdentifier: 
+  projectileName: PhysicalProjectile
+  prefab: {fileID: 4418627360412622664, guid: a97ee8d8090aa27409db289d0a2ed753, type: 3}
+  speed: 20
+  damage: 10
+  knockbackForce: 10
+  damageType: 0

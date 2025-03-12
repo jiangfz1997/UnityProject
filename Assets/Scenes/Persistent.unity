@@ -11157,6 +11157,7 @@ Transform:
   - {fileID: 363356250}
   - {fileID: 456482394}
   - {fileID: 978619946}
+  - {fileID: 1789310143}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1091641369
@@ -11336,6 +11337,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7b024977-1a5e-4b78-b180-c68bdc3ec273
+    m_ActionName: 'Player/RangeAttack[/Mouse/rightButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -11481,6 +11486,8 @@ MonoBehaviour:
   isGroundAttack: 0
   normal: {fileID: 6200000, guid: 348d3b592fc17cd4f9c42e9100e04eb8, type: 2}
   wall: {fileID: 6200000, guid: 6a65f8392755fd04195de3363cf142ff, type: 2}
+  projectileDatabase: {fileID: 11400000, guid: 58977c66a0e2a1a43ad3911ba20e9c71, type: 2}
+  firePoint: {fileID: 1789310143}
   canClimb: 0
   _isClimbing: 0
   enableInvincibility: 0
@@ -12244,6 +12251,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1740419701}
   m_CullTransparentMesh: 1
+--- !u!1 &1789310142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1789310143}
+  m_Layer: 7
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1789310143
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1789310142}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.36, y: 0.83, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1091641367}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1817672433
 GameObject:
   m_ObjectHideFlags: 0

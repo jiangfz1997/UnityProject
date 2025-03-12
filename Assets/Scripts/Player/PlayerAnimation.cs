@@ -52,5 +52,10 @@ public class PlayerAnimation : MonoBehaviour
         anim.SetBool("isClimbMoving", isMoving);
     }
 
+    public void PlayerRangeAttack()
+    {
+        anim.SetTrigger("RangeAttack");
+    }
+
 
 }
