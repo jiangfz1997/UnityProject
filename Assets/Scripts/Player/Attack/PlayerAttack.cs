@@ -7,6 +7,7 @@ public class PlayerAttack : Attack
 
     protected override void OnTriggerStay2D(Collider2D collision)
     {
+        Debug.Log("!!!!!!!PlayerAttack ´¥·¢ {collision.name}!!!!!!");
         var character = collision.GetComponent<Character>();
         if (character != null)
         {
@@ -14,6 +15,7 @@ public class PlayerAttack : Attack
             character.TakeDamage(transform, damage, knockbackForce, damageType);
         }
     }
+    
 
 
 }

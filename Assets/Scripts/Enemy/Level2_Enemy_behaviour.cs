@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Greetings from Sid!
-
-//Thank You for watching my tutorials
-//I really hope you find my tutorials helpful and knowledgeable
-//Appreciate your support.
 
 public class Enemy_behaviour : Character
 {
@@ -35,7 +30,7 @@ public class Enemy_behaviour : Character
     private bool cooling; //Check if Enemy is cooling after attack
     private float intTimer;
 
-    private int currentHealth;
+    //public int currentHealth;
     private float patrolCooldown = 3f; // 丢失目标后恢复巡逻的时间
     private float lostTargetTimer = 0f;
     #endregion
@@ -45,7 +40,8 @@ public class Enemy_behaviour : Character
         SelectTarget();
         intTimer = timer; //Store the inital value of timer
         anim = GetComponent<Animator>();
-        currentHealth = maxHealth;
+        //currentHealth = maxHealth;
+        currentHP = maxHP;
     }
 
     void Update()
@@ -97,6 +93,7 @@ public class Enemy_behaviour : Character
 
     void OnTriggerEnter2D(Collider2D trig)
     {
+        //Debug.Log("玩家进入探测范围！！！");
         if (trig.gameObject.tag == "Player")
         {
             target = trig.transform;
@@ -110,7 +107,7 @@ public class Enemy_behaviour : Character
     {
         if (trig.gameObject.tag == "Player")
         {
-            Debug.Log("玩家离开探测范围，恢复巡逻");
+            //Debug.Log("玩家离开探测范围，恢复巡逻");
             inRange = false; // 敌人停止追踪玩家
             StopAttack();
             SelectTarget(); // 重新选择巡逻目标
@@ -268,29 +265,38 @@ public class Enemy_behaviour : Character
     //}
      public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
+        Debug.Log("TakeDamage() - attacker: {attacker.name}, Tag: {attacker.tag}");
         // Only take damage from player attack (not include collision with player)
         if (attacker.gameObject.CompareTag("PlayerAttack"))
         {
-            Debug.Log("Take Damage");
+            Debug.Log("Take Damage 受到玩家攻击");
+            Debug.Log("受到攻击！当前 HP: {currentHP}");
+            anim.SetTrigger("hurt"); // 播放受伤动画
         }
         if (attacker == null || !attacker.gameObject.CompareTag("PlayerAttack"))
         {
+            Debug.LogError("TakeDamage() - attacker 为空！");
             return;
         }
 
 
-        if (isInvincible) return;
+        //if (isInvincible)
+        //{
+        //    Debug.Log("敌人无敌状态，攻击无效！");
+        //    return;
+        //}
 
         float finalDamage = damage * (1 - damageReduction);
         currentHP = Mathf.Max(currentHP - finalDamage, 0);
-
+        Debug.Log("!!!!!!当前血量currentHP="+currentHP);
         if (currentHP <= 0)
         {
             OnDie?.Invoke(transform);
+            Die();
         }
         else
         {
-            TriggerInvincible(invincibleTime);
+            //TriggerInvincible(invincibleTime);
             InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
         }
 
@@ -300,7 +306,7 @@ public class Enemy_behaviour : Character
     {
         Debug.Log("Enemy Died!");
 
-        anim.SetTrigger("dead"); // 播放死亡动画
+        anim.SetTrigger("death"); // 播放死亡动画
         GetComponent<Collider2D>().enabled = false; // 关闭碰撞
         this.enabled = false; // 禁用脚本
 
@@ -309,8 +315,11 @@ public class Enemy_behaviour : Character
 
     void Start()
     {
-        leftLimit = FindClosestLimit("LeftLimit");
-        rightLimit = FindClosestLimit("RightLimit");
+        if (leftLimit == null || rightLimit == null) // 只在 Inspector 没有赋值时才自动查找
+        {
+            leftLimit = FindClosestLimit("LeftLimit");
+            rightLimit = FindClosestLimit("RightLimit");
+        }
     }
 
     // 自动寻找最近的 leftLimit 或 rightLimit

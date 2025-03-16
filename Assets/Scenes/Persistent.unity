@@ -397,12 +397,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 143673556}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9b4c194e47eb4349a8121568563ef58, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d1345406b0b7aa43b9f7fe278eb499f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
   damageType: 0
-  knockbackForce: 1
+  knockbackForce: 5
 --- !u!1 &195768145
 GameObject:
   m_ObjectHideFlags: 0
@@ -5712,9 +5712,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b4c194e47eb4349a8121568563ef58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
-  damageType: 0
-  knockbackForce: 1
 --- !u!1 &484270627
 GameObject:
   m_ObjectHideFlags: 0
@@ -11555,9 +11552,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b4c194e47eb4349a8121568563ef58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
-  damageType: 0
-  knockbackForce: 5
 --- !u!1 &1103158528
 GameObject:
   m_ObjectHideFlags: 0
@@ -12801,9 +12795,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b4c194e47eb4349a8121568563ef58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
-  damageType: 0
-  knockbackForce: 2
 --- !u!1001 &4780656430337526623
 PrefabInstance:
   m_ObjectHideFlags: 0
