@@ -11,7 +11,7 @@ public abstract class Character : MonoBehaviour
 
     [Header("Invincible")]
     public bool isInvincible;
-    //public float invincibleTime;
+    public float invincibleTime;
     private float invincibleCounter;
 
     //public UnityEvent<Transform> OnTakeDamage;
@@ -23,7 +23,7 @@ public abstract class Character : MonoBehaviour
     [Header("Damage Cooldown")]
 
     protected DamageHandler damageHandler;
-
+    public BuffSystem buffSystem;
     protected virtual void Start()
     {
         currentHP = maxHP;
@@ -32,7 +32,10 @@ public abstract class Character : MonoBehaviour
     }
 
 
+    public virtual void SetCurrentSpeed(float speed) { }
 
+    public virtual float GetCurrentSpeed() { return 0; }
+    
     protected virtual void Update()
     {
         if (isInvincible)
@@ -65,18 +68,26 @@ public abstract class Character : MonoBehaviour
     //}
     public abstract void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType);
 
+    public abstract void ModifyHP(float amount);
     protected void InvokeTakeDamageEvent(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
         OnTakeDamage?.Invoke(attacker, damage, knockbackForce, damageType);
     }
 
-    internal void TriggerInvincible(float invincibleTime = 2f)
+    internal void TriggerInvincible(float invincibleTime = -1)
     {
         if (!isInvincible)
         {
             Debug.Log(gameObject.name + " is invincible");
             isInvincible = true;
-            invincibleCounter = invincibleTime;
+            if (invincibleTime == -1)
+            {
+                invincibleCounter = this.invincibleTime;
+            }
+            else
+            {
+                invincibleCounter = invincibleTime;
+            }
         }
     }
     

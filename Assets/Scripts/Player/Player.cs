@@ -12,6 +12,16 @@ public class Player : Character
     private PlayerAnimation playerAnimation;
     private CapsuleCollider2D coll;
 
+    // Buff manager
+    //public BuffSystem buffSystem;
+
+
+    [Header("Debug Info")]
+    [SerializeField] private float currentHealth;
+    [SerializeField] private float maxHealth;
+    [SerializeField] private int gold; 
+
+
     [Header("Movement")]
     public float speed;
     public float climbSpeed;
@@ -57,16 +67,27 @@ public class Player : Character
     public ParticleSystem dashEffect;
     public ParticleSystem dashSpeedLine;
 
+    private PlayerStats stats;
+
+
+    public void collectGold(int amount) 
+    {
+        stats.AddGold(amount);
+    }
+    public void spendGold(int amount)
+    {
+        stats.SpendGold(amount);
+    }
 
     public bool isClimbing
     {
         get => _isClimbing;
         set
         {
-            if (_isClimbing != value) // **只有在状态真正改变时才触发事件**
+            if (_isClimbing != value)
             {
                 _isClimbing = value;
-                OnClimbStateChanged?.Invoke(_isClimbing); // **触发事件**
+                OnClimbStateChanged?.Invoke(_isClimbing);
             }
         }
     }
@@ -77,7 +98,8 @@ public class Player : Character
     protected override void Start()
     {
         base.Start();
-
+        stats = GetComponent<PlayerStats>();
+        
         rb = GetComponent<Rigidbody2D>();
         physicsCheck = GetComponent<PhysicsCheck>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -94,15 +116,22 @@ public class Player : Character
         effectHandler.Initialize(GetComponent<SpriteRenderer>());
 
         damageHandler = new DamageHandler(this, effectHandler);
+        buffSystem = GetComponent<BuffSystem>();
+        buffSystem.Initialize(this, effectHandler);
+
         // Subscribe take damage event
         OnTakeDamage += (_, _, _, _ )=>playerAnimation.PlayHurt();
         OnTakeDamage += GetHurt;
 
         defaultMaterial = spriteRenderer.material;
 
+        
 
 
     }
+
+    public DamageType GetCurrentDamageType() => buffSystem.GetCurrentDamageType();
+    public float GetAttackMultiplier() => buffSystem.GetAttackMultiplier();
     protected override void Update()
     {
         base.Update();
@@ -113,6 +142,10 @@ public class Player : Character
         }
 
         CheckState();
+
+        currentHealth = stats.GetCurrentHealth();
+        maxHealth = stats.GetMaxHealth();
+        gold = stats.GetGold();
     }
     public void Move(Vector2 inputDirection)
     {
@@ -159,17 +192,26 @@ public class Player : Character
         GameObject projectileInstance = Instantiate(projectileData.prefab, firePoint.position, Quaternion.identity);
         Vector2 shootDirection = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
         projectileInstance.GetComponent<Projectile>().Initialize(shootDirection, projectileData);
-
     }
+
     public void Jump()
     {
         if (physicsCheck.isGround)
         {
             rb.AddForce(transform.up* jumpForce, ForceMode2D.Impulse);
-
         }
+        ApplyBuff(BuffType.FireEnchant, 10, 1);
+
     }
 
+    public int GetGold()
+    {
+        if (stats != null) 
+        {
+            return stats.GetGold();
+        }
+        return 0;
+    }
     public IEnumerator DashCoroutine()
     {
         Debug.Log("DashCoroutine!!!");
@@ -200,8 +242,18 @@ public class Player : Character
         {
             StartCoroutine(DashCoroutine());
         }
+        ApplyBuff(BuffType.IceEnchant, 10, 1);
     }
-
+    public override void ModifyHP(float amount)
+    {
+        if (stats != null)
+        {
+            if (amount < 0)
+                stats.ReduceHealth(-amount);
+            else
+                stats.Heal(amount);
+        }
+    }
     public void Attack()
     {
         playerAnimation.PlayAttack();
@@ -297,7 +349,8 @@ public class Player : Character
 
     public void Heal(float amount)
     {
-        currentHP = Mathf.Min(currentHP + amount, maxHP);
+        //currentHP = Mathf.Min(currentHP + amount, maxHP);
+        stats.Heal(amount);
         OnHealthChange?.Invoke(this);
     }
 
@@ -373,26 +426,27 @@ public class Player : Character
     public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
         if (isInvincible) return;
-
-        currentHP = Mathf.Max(currentHP - damage, 0);
-        if (currentHP <= 0)
+        InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
+        //stats.ReduceHealth((int)damage);
+        if (stats.GetCurrentHealth() <= 0)
         {
+            GoldGenerator.Instance.GenerateGolds(transform.position, stats.GetGold(), true);
+            stats.DieLoseGold();
             OnDie?.Invoke(transform);
         }
-        else
-        {
-            //TriggerInvincible();
-            InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
-        }
+        //else
+        //{
+        //    //TriggerInvincible();
+        //}
 
-        OnHealthChange?.Invoke(this);
+        //OnHealthChange?.Invoke(this);
     }
 
     void StartDashEffect()
     {
-        // 激活粒子特效
+
         dashEffect.gameObject.SetActive(true);
-        // 控制残影方向为当前人物方向
+
         dashEffect.GetComponent<ParticleSystemRenderer>().flip = new Vector3(transform.localScale.x < 0 ? 0 : 1, 0, 0);
         //dashEffect.transform.localScale = new Vector3(transform.localScale.x < 0 ? -1 : 1, 1, 1);
         //dashEffect.transform.rotation = Quaternion.Euler(0, transform.localScale.x < 0 ? 180 : 0, 0);
@@ -401,9 +455,22 @@ public class Player : Character
 
     void EndDashEffect()
     {
-        // 停止粒子特效
         dashEffect.gameObject.SetActive(false);
         //dashSpeedLine.gameObject.SetActive(false);
+    }
 
+    public void ApplyBuff(BuffType type, float duration, float value = 1.0f)
+    {
+        buffSystem.AddBuff(type, duration, value);
+    }
+
+    public void RemoveBuff(BuffType type)
+    {
+        buffSystem.RemoveBuff(type);
+    }
+
+    public void RemoveAllBuff()
+    {
+        buffSystem.RemoveAllBuff();
     }
 }

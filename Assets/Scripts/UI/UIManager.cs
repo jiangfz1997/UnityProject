@@ -4,22 +4,30 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public PlayerStateBar playerStateBar;
+    public GoldUI goldUI;
+
     [Header("Event")]
-    public CharacterEventSO healthEvent;
+    public PlayerData playerData;
     private void OnEnable()
     {
-        healthEvent.OnEventRaised += OnHealthEvent;
+        playerData.OnGoldChanged += OnGoldEvent;
+        playerData.OnHPChanged += OnHealthEvent;
     }
 
     private void OnDisable()
     {
-        healthEvent.OnEventRaised -= OnHealthEvent;
+        playerData.OnGoldChanged -= OnGoldEvent;
+        playerData.OnHPChanged -= OnHealthEvent;
+    }
+    
+    private void OnHealthEvent(float percentage)
+    {
+        playerStateBar.OnHealthChange(percentage);
     }
 
-    private void OnHealthEvent(Character character)
+    private void OnGoldEvent(int newGoldAmount)
     {
-        var percentage = character.currentHP / character.maxHP;
-        playerStateBar.OnHealthChange(percentage);
+        goldUI.UpdateGoldUI(newGoldAmount);
     }
 
 }

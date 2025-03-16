@@ -5,6 +5,7 @@ public class PhysicalProjectile : Projectile
 {
     protected override void OnHit(Character target)
     {
+        animator.SetTrigger("explode");
         target.TakeDamage(transform, damage, knockbackForce, damageType);
     }
 
@@ -15,8 +16,5 @@ public class PhysicalProjectile : Projectile
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

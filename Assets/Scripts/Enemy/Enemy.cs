@@ -1,4 +1,6 @@
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEditor.Build.Pipeline;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.Processors;
@@ -7,8 +9,8 @@ public class Enemy : Character
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Rigidbody2D rb;
-    [HideInInspector]public Animator anim;
-    [HideInInspector]public EnemyPhysicsCheck physicsCheck;
+    [HideInInspector] public Animator anim;
+    [HideInInspector] public EnemyPhysicsCheck physicsCheck;
     public Transform attacker;
     public CapsuleCollider2D coll;
     [Header("Movement")]
@@ -19,7 +21,7 @@ public class Enemy : Character
 
     [Header("Attack")]
     public float hurtForce;
-    public float invincibleTime;
+    //public float invincibleTime;
     //public float chaseRange;
     //public float stopChaseRange;
     public bool isChasing;
@@ -48,12 +50,13 @@ public class Enemy : Character
     protected virtual void OnEnable()
     {
 
-        
+
 
     }
     protected override void Start()
     {
         base.Start();
+        
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         physicsCheck = GetComponent<EnemyPhysicsCheck>();
@@ -62,11 +65,33 @@ public class Enemy : Character
         currentSpeed = normalSpeed;
         waitTimeCounter = waitTime;
 
-        // ¼àÌý `OnTakeDamage` ÊÂ¼þ
         OnTakeDamage += HandleOnTakeDamage;
+        DamageEffectHandler effectHandler = GetComponent<DamageEffectHandler>();
+        if (effectHandler == null)
+        {
+            effectHandler = gameObject.AddComponent<DamageEffectHandler>();
+        }
+        effectHandler.Initialize(GetComponent<SpriteRenderer>());
+
+        damageHandler = new DamageHandler(this, effectHandler);
+        buffSystem = GetComponent<BuffSystem>();
+        buffSystem.Initialize(this, effectHandler);
     }
 
+    public override void SetCurrentSpeed(float speed)
+    {
+        currentSpeed = speed;
 
+    }
+
+    public override float GetCurrentSpeed(){ return currentSpeed;}
+    
+        
+
+   
+
+    public DamageType GetCurrentDamageType() => buffSystem.GetCurrentDamageType();
+    public float GetAttackMultiplier() => buffSystem.GetAttackMultiplier();
 
     protected virtual void Awake()
     {
@@ -153,9 +178,10 @@ public class Enemy : Character
 
 
         if (isInvincible) return;
+        damageHandler.HandleDamage(attacker, damage, knockbackForce, damageType);
 
-        float finalDamage = damage * (1 - damageReduction);
-        currentHP = Mathf.Max(currentHP - finalDamage, 0);
+        //float finalDamage = damage * (1 - damageReduction);
+        //currentHP = Mathf.Max(currentHP - finalDamage, 0);
 
         if (currentHP <= 0)
         {
@@ -209,15 +235,15 @@ public class Enemy : Character
         yield return new WaitForSeconds(0.5f);
         isHurt = false;
     }
-    private void HandleOnTakeDamage(Transform attackTrans, float damage, float knockbackForce, DamageType damageType)
+    private void HandleOnTakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
+        Transform attackerTrans = attacker.transform;
 
-
-        if (attackTrans.position.x - transform.position.x > 0)
+        if (attackerTrans.position.x - transform.position.x > 0)
             transform.localScale = new Vector3(-1, 1, 1);
-        if (attackTrans.position.x - transform.position.x < 0)
+        if (attackerTrans.position.x - transform.position.x < 0)
             transform.localScale = new Vector3(1, 1, 1);
-        Vector2 repelDir = new Vector2(transform.position.x - attackTrans.position.x, 0).normalized;
+        Vector2 repelDir = new Vector2(transform.position.x - attackerTrans.position.x, 0).normalized;
         StartCoroutine(OnHurt(repelDir, knockbackForce));
         // Get repelled
         isHurt = true;
@@ -262,7 +288,10 @@ public class Enemy : Character
   
         Gizmos.DrawLine(start, end);
     }
-
+    public override void ModifyHP(float amount)
+    {
+        currentHP = Mathf.Clamp(currentHP + amount, 0, maxHP);
+    }
     //public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     //{
     //    float finaldamage = damage * (1-damageReduction);
@@ -277,5 +306,7 @@ public class Enemy : Character
     //        anim.SetTrigger("hurt");
     //    }
     //}
+
+
 }
 

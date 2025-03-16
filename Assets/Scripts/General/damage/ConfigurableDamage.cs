@@ -1,50 +1,97 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DamageHandler : IDamageHandler
 {
-    private Player player;
+    private Character target;
     private Rigidbody2D rb;
     private Transform transform;
-    private Dictionary<DamageType, System.Action<Transform, float>> damageEffects;
+    private Dictionary<DamageType, System.Action<Transform, float, float>> damageEffects;
     private SpriteRenderer spriteRenderer;
     private Material material;
     private DamageEffectHandler effectHandler;
-    public DamageHandler(Player player, DamageEffectHandler effectHandler)
-    {
-        this.player = player;
-        rb = player.GetComponent<Rigidbody2D>();
-        this.effectHandler = effectHandler;
-        transform = player.transform;
 
-        damageEffects = new Dictionary<DamageType, System.Action<Transform, float>>
+    private Dictionary<DamageType, float> damageMultipliers = new Dictionary<DamageType, float>
+    {
+        { DamageType.Physical, 1.0f },
+        { DamageType.Fire, 1.5f },  
+        { DamageType.Ice, 1.2f },  
+        { DamageType.Poison, 1.1f }
+    };
+
+    public DamageHandler(Character target, DamageEffectHandler effectHandler)
+    {
+        this.target = target;
+        rb = target.GetComponent<Rigidbody2D>();
+        this.effectHandler = effectHandler;
+        transform = target.transform;
+
+        damageEffects = new Dictionary<DamageType, System.Action<Transform, float,float>>
         {
             { DamageType.Physical, ApplyPhysicalDamage },
-            { DamageType.Poison, (attacker, damage) => player.StartCoroutine(ApplyPoisonEffect(5f, 1f)) },
-            { DamageType.Lava, ApplyLavaDamage }
+            { DamageType.Lava, ApplyLavaDamage },
+            { DamageType.Fire, ApplyFireDamage},
+            { DamageType.Ice, ApplyIceDamage}
         };
     }
 
+    private void ApplyFireDamage(Transform transform, float damage, float knockbackForce)
+    {
+        //target.StartCoroutine(ApplyBurnEffect(3f, damage * 0.3f));
+        target.buffSystem.AddStatus(StatusEffect.Burning, 3f, 0.3f);
+    }
+
+
+    private void ApplyIceDamage(Transform transform, float damage, float knockbackForce)
+    {
+        //target.StartCoroutine(ApplyBurnEffect(3f, damage * 0.3f));
+        target.buffSystem.AddStatus(StatusEffect.Frozen, 3f, 0.3f);
+    }
     public void HandleDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
+        
+
         if (damageEffects.TryGetValue(damageType, out var effect))
         {
-            effect.Invoke(attacker, knockbackForce);
+            float finalDamage = CalculateFinalDamage(target, damage, damageType);
+            target.ModifyHP(-finalDamage);
+            HitStop.Instance.StopTime(0.1f, 0.05f);
+            BloodManager.Instance.SpawnBlood(transform.position);
+            effect.Invoke(attacker, finalDamage, knockbackForce);
         }
     }
-
-    private void ApplyPhysicalDamage(Transform attacker, float knockbackForce)
+    private IEnumerator ApplyBurnEffect(float duration, float damagePerSecond)
     {
-        effectHandler.TriggerEffect();
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            target.ModifyHP(-damagePerSecond);
+            yield return new WaitForSeconds(1f);
+            elapsed += 1f;
+        }
+    }
+    private float CalculateFinalDamage(Character target, float damage, DamageType damageType)
+    {
+        float multiplier = damageMultipliers.ContainsKey(damageType) ? damageMultipliers[damageType] : 1.0f;
+        float finalDamage = damage * multiplier;
+        return finalDamage;
+    }
+
+    private void ApplyPhysicalDamage(Transform attacker, float finalDamage,  float knockbackForce)
+    {
+        this.effectHandler.TriggerEffect();
         ApplyKnockback(attacker, knockbackForce);
-        player.TriggerInvincible(2f);
+        target.TriggerInvincible(target.invincibleTime);
 
     }
 
-    private void ApplyKnockback(Transform attacker, float knockbackForce)
+    private void ApplyKnockback(Transform attackerTransform, float knockbackForce)
     {
-        Vector2 forceDirection = ((Vector2)transform.position - (Vector2)attacker.position).normalized;
+        //Transform attackerTransform = attacker.transform;
+        Vector2 forceDirection = ((Vector2)transform.position - (Vector2)attackerTransform.position).normalized;
         if (forceDirection == Vector2.zero)
         {
             forceDirection = new Vector2(0.1f, 0.1f).normalized;
@@ -53,22 +100,24 @@ public class DamageHandler : IDamageHandler
         Vector2 force = forceDirection * knockbackForce;
         rb.AddForce(force, ForceMode2D.Impulse);
     }
-    private void ApplyLavaDamage(Transform attacker, float knockbackForce)
+    private void ApplyLavaDamage(Transform attacker, float finalDamage, float knockbackForce)
     {
-        player.TriggerInvincible(0.5f);
+        target.TriggerInvincible(0.5f);
     }
-    private IEnumerator ApplyPoisonEffect(float duration, float damagePerSecond)
-    {
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            player.currentHP = Mathf.Max(player.currentHP - damagePerSecond, 0);
-            if (player.currentHP <= 0) player.Die();
-            yield return new WaitForSeconds(1f);
-            elapsed += 1f;
-        }
-        Debug.Log("Poison effect applied");
-    }
+
+
+    //private IEnumerator ApplyPoisonEffect(float duration, float finalDamage, float damagePerSecond)
+    //{
+    //    float elapsed = 0f;
+    //    while (elapsed < duration)
+    //    {
+    //        target.currentHP = Mathf.Max(target.currentHP - damagePerSecond, 0);
+    //        if (target.currentHP <= 0) target.Die();
+    //        yield return new WaitForSeconds(1f);
+    //        elapsed += 1f;
+    //    }
+    //    Debug.Log("Poison effect applied");
+    //}
 
 
 }

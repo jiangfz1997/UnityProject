@@ -52,4 +52,50 @@ public class DamageEffectHandler : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
+    public void SetColorEffect(Color effectColor, float duration)
+    {
+        StartCoroutine(ColorEffectCoroutine(effectColor, duration));
+    }
+
+    private IEnumerator ColorEffectCoroutine(Color effectColor, float duration)
+    {
+        Color originalColor = spriteRenderer.color;
+        spriteRenderer.color = effectColor; // 变色
+
+        yield return new WaitForSeconds(duration);
+
+        spriteRenderer.color = originalColor; // 恢复原色
+    }
+    public void ApplyFreezeEffect(float duration)
+    {
+        StartCoroutine(FreezeEffectCoroutine(duration));
+    }
+    private IEnumerator FreezeEffectCoroutine(float duration)
+    {
+        // ✅ 1. **创建一个 `SpriteRenderer` 作为遮罩**
+        GameObject freezeOverlay = new GameObject("FreezeOverlay");
+        freezeOverlay.transform.SetParent(transform); // ✅ **跟随目标**
+        freezeOverlay.transform.localPosition = Vector3.zero;
+
+        SpriteRenderer overlayRenderer = freezeOverlay.AddComponent<SpriteRenderer>();
+        overlayRenderer.sprite = spriteRenderer.sprite; // ✅ **使用原角色的 Sprite**
+        overlayRenderer.color = new Color(0.3f, 0.5f, 1f, 0.8f); // ✅ **更明显的蓝色**
+
+        // ✅ 2. **确保 `Sorting Layer` & `Sorting Order`**
+        overlayRenderer.sortingLayerName = spriteRenderer.sortingLayerName; // ✅ **匹配角色的 Layer**
+        overlayRenderer.sortingOrder = spriteRenderer.sortingOrder + 5; // ✅ **确保在 `角色` 之上**
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            overlayRenderer.color = new Color(0.3f, 0.5f, 1f, Mathf.PingPong(elapsed * 3f, 0.6f) + 0.3f);
+            freezeOverlay.transform.position = transform.position; // ✅ **同步位置**
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(freezeOverlay);
+    }
+
+
 }

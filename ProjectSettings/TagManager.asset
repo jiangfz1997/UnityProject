@@ -11,6 +11,7 @@ TagManager:
   - PlayerAttack
   - LeftLimit
   - RightLimit
+  - GoldUI
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Player
   - Enemy
   - ClimbingLadder
-  - 
+  - IgnorePlayer
   - 
   - 
   - 

@@ -17,7 +17,7 @@ public class Enemy_behaviour : Character
 
     public int maxHealth = 100;
     public float damageReduction;
-    public float invincibleTime;
+    //public float invincibleTime;
     #endregion
 
     #region Private Variables
@@ -313,7 +313,7 @@ public class Enemy_behaviour : Character
         Destroy(gameObject, 2f); // 2秒后销毁
     }
 
-    void Start()
+    protected override void Start()
     {
         if (leftLimit == null || rightLimit == null) // 只在 Inspector 没有赋值时才自动查找
         {
@@ -341,4 +341,8 @@ public class Enemy_behaviour : Character
         return closest; // 返回最近的那个点
     }
 
+    public override void ModifyHP(float amount)
+    {
+        throw new System.NotImplementedException();
+    }
 }

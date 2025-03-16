@@ -3,7 +3,8 @@
 public class Boar : Enemy
 {
 
-
+    public int goldDrop = 10;
+    //public GoldGenerator goldGenerator;
     override public void Move()
     {
         base.Move();
@@ -16,10 +17,18 @@ public class Boar : Enemy
         patrolState = new BoarPatrolState();
         chaseState = new BoarChaseState();
         Debug.Log("Boar Patrol State");
+
+        // ✅ 确保 `GoldGenerator` 存在
+        //goldGenerator = gameObject.GetComponent<GoldGenerator>();
+        //if (goldGenerator == null)
+        //{
+        //    goldGenerator = gameObject.AddComponent<GoldGenerator>();
+        //}
     }
 
     protected override void Start()
     {
+        //goldGenerator = gameObject.AddComponent<GoldGenerator>();
         base.Start();
         SwitchState(EnemyState.Patrol);
     }
@@ -66,9 +75,23 @@ public class Boar : Enemy
     }
     public override void Die()
     {
+        //base.Die();
+        //GameObject gold = Instantiate(goldPrefab, transform.position, Quaternion.identity);
+        //gold.GetComponent<Gold>().Initialize();
         if (isDead) return;
         anim.SetTrigger("dead");
         isDead = true;
         Debug.Log("Boar die");
+        
+    }
+
+    public void GenerateLoot()
+    {
+        // ✅ 2. 调用 `GenerateGolds()`
+        GoldGenerator.Instance.GenerateGolds(transform.position, 50);
+
+        // ✅ 3. 1 秒后删除 `GoldGenerator`，防止占用资源
+        //Destroy(goldGenerator, 1f);
+
     }
 }

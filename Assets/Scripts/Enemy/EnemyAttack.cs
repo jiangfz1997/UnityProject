@@ -5,7 +5,7 @@ public class BoarAttack : Attack
     public float knockbackForce = 10f;
     //public DamageType damageType = DamageType.Physical;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    protected override void OnTriggerStay2D(Collider2D collision)
     {
 
         var character = collision.GetComponent<Character>();
