@@ -1,0 +1,666 @@
+fileFormatVersion: 2
+guid: afe6cbc73d5928f4aa15c7790cdde576
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4405815968423333718
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_0
+  - first:
+      213: -8255237797324399145
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_1
+  - first:
+      213: -3536346067957546177
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_2
+  - first:
+      213: 1911415111423000653
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_3
+  - first:
+      213: 2651258717607164570
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_4
+  - first:
+      213: -3360999722232778691
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_5
+  - first:
+      213: 1649205016442547611
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_6
+  - first:
+      213: -2668377481619903538
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_7
+  - first:
+      213: 3416249370412716754
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_8
+  - first:
+      213: -4927000564996433855
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_9
+  - first:
+      213: -7657672729530438058
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_10
+  - first:
+      213: 2782659056509893607
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_11
+  - first:
+      213: -3779613625830914401
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_12
+  - first:
+      213: 2668646650067173808
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_13
+  - first:
+      213: 7579587874161441782
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_14
+  - first:
+      213: -7495535990357646646
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_15
+  - first:
+      213: 1206416316924937019
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_16
+  - first:
+      213: 4246299724578171924
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_17
+  - first:
+      213: 4472377987196046082
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_18
+  - first:
+      213: 4120447506677006858
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_19
+  - first:
+      213: -3405723420543033203
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_20
+  - first:
+      213: -6579745433462593966
+    second: Battlemage Attack C1-Sheet-Sheet-sheet_21
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65fcd9fb74a942d30800000000000000
+      internalID: 4405815968423333718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_1
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ddd91226f08f6d80800000000000000
+      internalID: -8255237797324399145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f338a80dcff5ceec0800000000000000
+      internalID: -3536346067957546177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_3
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d408eaeaae5b68a10800000000000000
+      internalID: 1911415111423000653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_4
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9af1a6b1c92bc420800000000000000
+      internalID: 2651258717607164570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d30f02a5f845b51d0800000000000000
+      internalID: -3360999722232778691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_6
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9da9de793723e610800000000000000
+      internalID: 1649205016442547611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_7
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecbe46171d408fad0800000000000000
+      internalID: -2668377481619903538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_8
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d21a9bc3b4f86f20800000000000000
+      internalID: 3416249370412716754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_9
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1481d3b2717cf9bb0800000000000000
+      internalID: -4927000564996433855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_10
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 0
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65e642e793b7ab590800000000000000
+      internalID: -7657672729530438058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_11
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 0
+        width: 64
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ebbb423badfd9620800000000000000
+      internalID: 2782659056509893607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_12
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 0
+        width: 51
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f964f1cbe6d1c8bc0800000000000000
+      internalID: -3779613625830914401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_13
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 0
+        width: 61
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b14a483dffe80520800000000000000
+      internalID: 2668646650067173808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_14
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fb304f530b103960800000000000000
+      internalID: 7579587874161441782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_15
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac2a395dab18af790800000000000000
+      internalID: -7495535990357646646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_16
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b33cb859f3d0eb010800000000000000
+      internalID: 1206416316924937019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_17
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41c22550a13edea30800000000000000
+      internalID: 4246299724578171924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_18
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20bc81c6514111e30800000000000000
+      internalID: 4472377987196046082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_19
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a02802f1d25ce2930800000000000000
+      internalID: 4120447506677006858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battlemage Attack C1-Sheet-Sheet-sheet_20
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 0
+        width: 56
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d80ed43e7907cb0d0800000000000000
+      internalID: -3405723420543033203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: e3b840331880c8849bccb83be6acbf93
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Battlemage Attack C1-Sheet-Sheet-sheet_0: 4405815968423333718
+      Battlemage Attack C1-Sheet-Sheet-sheet_1: -8255237797324399145
+      Battlemage Attack C1-Sheet-Sheet-sheet_10: -7657672729530438058
+      Battlemage Attack C1-Sheet-Sheet-sheet_11: 2782659056509893607
+      Battlemage Attack C1-Sheet-Sheet-sheet_12: -3779613625830914401
+      Battlemage Attack C1-Sheet-Sheet-sheet_13: 2668646650067173808
+      Battlemage Attack C1-Sheet-Sheet-sheet_14: 7579587874161441782
+      Battlemage Attack C1-Sheet-Sheet-sheet_15: -7495535990357646646
+      Battlemage Attack C1-Sheet-Sheet-sheet_16: 1206416316924937019
+      Battlemage Attack C1-Sheet-Sheet-sheet_17: 4246299724578171924
+      Battlemage Attack C1-Sheet-Sheet-sheet_18: 4472377987196046082
+      Battlemage Attack C1-Sheet-Sheet-sheet_19: 4120447506677006858
+      Battlemage Attack C1-Sheet-Sheet-sheet_2: -3536346067957546177
+      Battlemage Attack C1-Sheet-Sheet-sheet_20: -3405723420543033203
+      Battlemage Attack C1-Sheet-Sheet-sheet_3: 1911415111423000653
+      Battlemage Attack C1-Sheet-Sheet-sheet_4: 2651258717607164570
+      Battlemage Attack C1-Sheet-Sheet-sheet_5: -3360999722232778691
+      Battlemage Attack C1-Sheet-Sheet-sheet_6: 1649205016442547611
+      Battlemage Attack C1-Sheet-Sheet-sheet_7: -2668377481619903538
+      Battlemage Attack C1-Sheet-Sheet-sheet_8: 3416249370412716754
+      Battlemage Attack C1-Sheet-Sheet-sheet_9: -4927000564996433855
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

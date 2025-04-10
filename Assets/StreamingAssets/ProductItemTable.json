@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "iconPath": "decoration6",
+      "description": "Health Potion(Large)\n-Restores 50% HP.\n",
+      "price": 100,
+      "type": "Potion"
+    },
+    {
+      "id": 2,
+      "iconPath": "decoration5",
+      "description": "Attack Potion(Large)\n-Attack Power 100% ↑.\n",
+      "price": 300,
+      "type": "Potion"
+    },
+    {
+      "id": 3,
+      "iconPath": "decoration3",
+      "description": "Dancer's Necklace\n-Movement Speed 5%↑\n-Attack Power 5% ↑",
+      "price": 300,
+      "type": "Necklace"
+    },
+    {
+      "id": 4,
+      "iconPath": "decoration1",
+      "description": "Brave Necklace\n-Enemies' movement speed 10%↓\n-Attack Speed 5% ↑",
+      "price": 500,
+      "type": "Necklace"
+    },
+    {
+      "id": 5,
+      "iconPath": "decoration4",
+      "description": "Defense Potion(Large)\n-Defense 70% ↑.\n",
+      "price": 250,
+      "type": "Potion"
+    },
+    {
+      "id": 6,
+      "iconPath": "decoration2",
+      "description": "Legendary Necklace\n- *An additional jump\n-Attack Speed 5% ↑",
+      "price": 450,
+      "type": "Necklace"
+    }
+  ]
+}

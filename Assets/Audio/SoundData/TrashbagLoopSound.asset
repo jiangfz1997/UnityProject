@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24b9333f91d428447ac29c7dca6ff99f, type: 3}
+  m_Name: TrashbagLoopSound
+  m_EditorClassIdentifier: 
+  walkClips: []
+  walkMinInterval: 0.5
+  walkMaxInterval: 1.2
+  groanClips:
+  - {fileID: 8300000, guid: a53a4c634c21ac9408152d8f3196090d, type: 3}
+  - {fileID: 8300000, guid: 3a15dc9a04ab38545a9a408aa5dc6da5, type: 3}
+  - {fileID: 8300000, guid: abcb09ee1f0f4694897510f1d808b66b, type: 3}
+  - {fileID: 8300000, guid: 7fb9dd02126b07f40b06304ea399f34d, type: 3}
+  - {fileID: 8300000, guid: a289dafd6320fe24caa285ba0d8ddc4f, type: 3}
+  - {fileID: 8300000, guid: d759a0cb3c108e445b6ad413d8d08698, type: 3}
+  - {fileID: 8300000, guid: 8718fe3fc0f61f8408ae9c610fed2a85, type: 3}
+  - {fileID: 8300000, guid: 9ee4daa20abab594a9793fd679de41d1, type: 3}
+  groanMinInterval: 2
+  groanMaxInterval: 5

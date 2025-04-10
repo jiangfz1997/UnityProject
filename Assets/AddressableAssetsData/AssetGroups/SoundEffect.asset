@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SoundEffect
+  m_EditorClassIdentifier: 
+  m_GroupName: SoundEffect
+  m_GUID: 57429ebb6216f564fbdb8a38c1b47b83
+  m_SerializeEntries:
+  - m_GUID: 3a15dc9a04ab38545a9a408aa5dc6da5
+    m_Address: groan2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 401d1d2da92ead9459596c1760832d1f
+    m_Address: monster-death-grunt-1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7af387f074b1faa41bcb3d154b00a77c
+    m_Address: hit-flesh-03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7fb9dd02126b07f40b06304ea399f34d
+    m_Address: groan4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8718fe3fc0f61f8408ae9c610fed2a85
+    m_Address: groan7
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ee4daa20abab594a9793fd679de41d1
+    m_Address: groan8
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a289dafd6320fe24caa285ba0d8ddc4f
+    m_Address: groan5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a53a4c634c21ac9408152d8f3196090d
+    m_Address: groan1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abcb09ee1f0f4694897510f1d808b66b
+    m_Address: groan3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b68574a9e6d60364ca034aca6768cf09
+    m_Address: hit-flesh-02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d759a0cb3c108e445b6ad413d8d08698
+    m_Address: groan6
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d3155a91ed1ad424a9f83d09decef0c2, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 12abce531e86daf4da530a1bea9a33d8, type: 2}
+    - {fileID: 11400000, guid: 0e4a0092c8a2c2b4d858a6ade71aa8ad, type: 2}
