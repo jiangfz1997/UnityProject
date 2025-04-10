@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class SwitchController : MonoBehaviour, IInteractable
 {
-    public GameObject eKeyPrompt;
-    public GameObject gate;
+    //public GameObject eKeyPrompt;
+    //public GameObject gate;
     //private bool isPlayerNearby = false;
     //private bool isGateOpen = false;
     [SerializeField] private bool isActivated = false;
     private SpriteRenderer spriteRenderer;
-
+    public GameObject[] objectsToActivate;
     [SerializeField] private Sprite avatarImage;
 
     public void Interact()
@@ -20,14 +20,25 @@ public class SwitchController : MonoBehaviour, IInteractable
         isActivated = !isActivated; // **切换状态**
 
         spriteRenderer.flipX = isActivated;
-        eKeyPrompt.SetActive(false);
+        //eKeyPrompt.SetActive(false);
 
         DialogueTrigger();
 
         // **触发 Gate 事件**
-        if (gate != null)
+        //if (gate != null)
+        //{
+        //    gate.GetComponent<GateController>().OpenDoor();
+        //}
+        foreach (GameObject obj in objectsToActivate)
         {
-            gate.GetComponent<GateController>().OpenDoor();
+            if (obj != null)
+            {
+                IActivatable activatable = obj.GetComponent<IActivatable>();
+                if (activatable != null)
+                {
+                    activatable.Activate(); // 触发不同物体的行为
+                }
+            }
         }
     }
 
@@ -35,10 +46,10 @@ public class SwitchController : MonoBehaviour, IInteractable
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (eKeyPrompt)
-        {
-            eKeyPrompt.SetActive(false);
-        }
+        //if (eKeyPrompt)
+        //{
+        //    eKeyPrompt.SetActive(false);
+        //}
     }
 
     // Update is called once per frame
@@ -61,17 +72,17 @@ public class SwitchController : MonoBehaviour, IInteractable
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && !isActivated)
-        {
-            eKeyPrompt.SetActive(true);
-        }
+        //if (other.CompareTag("Player") && !isActivated)
+        //{
+        //    eKeyPrompt.SetActive(true);
+        //}
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            eKeyPrompt.SetActive(false);
-        }
+        //if (other.CompareTag("Player"))
+        //{
+        //    eKeyPrompt.SetActive(false);
+        //}
     }
 }

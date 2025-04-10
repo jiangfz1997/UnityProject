@@ -21,7 +21,7 @@ public class ProductItem : MonoBehaviour
         itemDescription.text = product.description;
         priceText.text = "$" + product.price.ToString();
 
-        buyButton.onClick.RemoveAllListeners(); // 防止重复绑定
+        buyButton.onClick.RemoveAllListeners();
         buyButton.onClick.AddListener(OnBuyButtonClick);
     }
 
@@ -41,37 +41,102 @@ public class ProductItem : MonoBehaviour
         }
 
         Backpack backpack = FindObjectOfType<Backpack>();
-        if (backpack == null)
+        NecklacePack necklacePack = FindObjectOfType<NecklacePack>();
+
+        if (backpack == null && necklacePack == null)
         {
-            Debug.LogError("Backpack component not found!");
+            Debug.LogError("Neither Backpack nor NecklacePack component found!");
+            return;
+        }
+        if (!userMoney.EnoughGold(product.price)) 
+        {
+            Debug.Log("Not enough gold");
             return;
         }
 
-        if (userMoney.SpendGold(product.price)) // 如果金币足够
+
+        bool canStore = false;
+
+
+        if (product.type == ProductItem.ProductType.Potion)
         {
-            Debug.Log("购买成功: " + product.description);
-
-            // **移除按钮监听，防止销毁后仍然触发**
-            buyButton.onClick.RemoveAllListeners();
-
-            // **从商店管理器中移除商品**
-            gridManager.RemoveProduct(product);
-
-            // **将物品添加到背包**
-            backpack.AddToBackpack(product);
-
-            // **删除这个商品的 UI 对象**
-            Destroy(gameObject);
+            backpack.AddToBackpack(product, (success) =>
+            {
+                if (success)
+                {
+                    userMoney.SpendGold(product.price); // ✅ 只有添加成功才扣钱
+                    buyButton.onClick.RemoveAllListeners();
+                    gridManager.RemoveProduct(product);
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    Debug.Log("❌ 购买失败，未扣钱！");
+                }
+            });
         }
-        else
+        //else if (product.type == ProductItem.ProductType.Necklace)
+        //{
+        //    necklacePack.AddToNecklacePack(product, (success)
+
+
+        //        );
+        //    canStore = necklacePack.AddToNecklacePack(product);
+        //}
+        else if (product.type == ProductItem.ProductType.Necklace)
         {
-            Debug.Log("金币不足，无法购买 " + product.description);
+            necklacePack.AddToNecklacePack(product, (success) =>
+            {
+                if (!success)
+                {
+                    Debug.Log("购买失败: " + product.description + "，槽位已满或资源加载失败");
+                    return;
+                }
+
+                // ✅ 扣钱和清理逻辑放在成功回调里！
+                if (userMoney.SpendGold(product.price))
+                {
+                    Debug.Log("购买成功: " + product.description);
+                    buyButton.onClick.RemoveAllListeners();
+                    gridManager.RemoveProduct(product);
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    Debug.Log("金币不足，无法购买 " + product.description);
+                }
+            });
+
+            return; // 异步处理中，不执行下面逻辑
         }
+
+        //if (!canStore)
+        //{
+        //    Debug.Log("购买失败: " + product.description + "，背包或项链槽已满");
+        //    return;
+        //}
+
+
+        //if (userMoney.SpendGold(product.price))
+        //{
+        //    Debug.Log("购买成功: " + product.description);
+        //    buyButton.onClick.RemoveAllListeners();
+        //    gridManager.RemoveProduct(product);
+        //    Destroy(gameObject);
+        //}
+        //else
+        //{
+        //    Debug.Log("金币不足，无法购买 " + product.description);
+        //}
     }
+
+    
+
 
     [System.Serializable]
     public class ProductData
     {
+        public int id;
         public Sprite icon;
         public string description;
         public int price;

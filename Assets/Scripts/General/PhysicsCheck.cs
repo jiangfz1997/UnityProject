@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PhysicsCheck : MonoBehaviour
 {
@@ -15,7 +15,12 @@ public class PhysicsCheck : MonoBehaviour
     public bool touchLeftWall;
     public bool touchRightWall;
     public bool manual;
-    
+
+    private GameObject player;
+
+    private Transform movingPlatform = null;
+    private Vector3 lastPlatformPosition;
+
 
     protected virtual void Awake()
     {
@@ -28,6 +33,8 @@ public class PhysicsCheck : MonoBehaviour
             leftOffset = new Vector2(-rightOffset.x, rightOffset.y);
             Debug.Log($"Right offset is: {rightOffset}, Left offset is: {leftOffset}");
         }
+
+        player = GameObject.FindWithTag("Player");
     }
     protected virtual void Update()
     {
@@ -35,8 +42,8 @@ public class PhysicsCheck : MonoBehaviour
     }
 
     public virtual void Check()
-    { 
-        //¼ì²âµØÃæ
+    {
+        //æ£€æµ‹åœ°é¢
         isGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, checkRaduis, groundLayer);
         touchLeftWall = Physics2D.Raycast((Vector2)transform.position + leftOffset, Vector2.left, 0.5f, groundLayer);
         touchRightWall = Physics2D.Raycast((Vector2)transform.position + rightOffset, Vector2.right, 0.5f, groundLayer);
@@ -59,4 +66,37 @@ public class PhysicsCheck : MonoBehaviour
         Gizmos.DrawWireSphere((Vector2)transform.position + rightOffset, checkRaduis);
 
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("MovingPlatform") && isGround)
+        {
+            ContactPoint2D contact = collision.GetContact(0);
+            if (contact.normal.y > 0.5f)
+            {
+                movingPlatform = collision.transform;
+                lastPlatformPosition = movingPlatform.position;
+            }
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("MovingPlatform") && movingPlatform == collision.transform)
+        {
+            movingPlatform = null;
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (movingPlatform != null)
+        {
+            Vector3 delta = movingPlatform.position - lastPlatformPosition;
+            transform.position += delta;
+            lastPlatformPosition = movingPlatform.position;
+        }
+    }
+
+
 }

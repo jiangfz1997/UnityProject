@@ -26,7 +26,7 @@ public class PlayerData : ScriptableObject
     }
     public void ResetData()
     {
-        gold = 100;
+        gold = 10000;
         maxHP = 100;
         currentHP = maxHP;
         //experience = 0;

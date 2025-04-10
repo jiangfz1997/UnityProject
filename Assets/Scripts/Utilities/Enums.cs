@@ -1,6 +1,6 @@
 public enum EnemyState
 {
-    Patrol, Chase, Idle
+    Patrol, Chase, Idle, Attack
 }
 
 public enum TrapType
@@ -24,8 +24,7 @@ public enum BuffType
 {
     AttackUp,
     DefenseUp,
-    FireEnchant,
-    IceEnchant,
+    AttackSpeedUp
 
     
 }

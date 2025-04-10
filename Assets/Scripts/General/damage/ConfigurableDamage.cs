@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+[System.Serializable]
 public class DamageHandler : IDamageHandler
 {
     private Character target;
@@ -23,11 +24,14 @@ public class DamageHandler : IDamageHandler
     };
 
     public DamageHandler(Character target, DamageEffectHandler effectHandler)
-    {
+    {       
         this.target = target;
         rb = target.GetComponent<Rigidbody2D>();
         this.effectHandler = effectHandler;
         transform = target.transform;
+
+        Debug.Log("Damage Handler Initialized");
+        Debug.Log("Target: " + target);
 
         damageEffects = new Dictionary<DamageType, System.Action<Transform, float,float>>
         {
@@ -40,20 +44,24 @@ public class DamageHandler : IDamageHandler
 
     private void ApplyFireDamage(Transform transform, float damage, float knockbackForce)
     {
-        //target.StartCoroutine(ApplyBurnEffect(3f, damage * 0.3f));
-        target.buffSystem.AddStatus(StatusEffect.Burning, 3f, 0.3f);
+        var effect = StatusEffectFactory.CreateEffect(StatusEffect.Burning, target);
+        if (effect != null)
+        {
+            target.statusEffectSystem.AddEffect(effect);
+        }
     }
 
 
     private void ApplyIceDamage(Transform transform, float damage, float knockbackForce)
     {
-        //target.StartCoroutine(ApplyBurnEffect(3f, damage * 0.3f));
-        target.buffSystem.AddStatus(StatusEffect.Frozen, 3f, 0.3f);
+        var effect = StatusEffectFactory.CreateEffect(StatusEffect.Frozen, target);
+        if (effect != null)
+        {
+            target.statusEffectSystem.AddEffect(effect);
+        }
     }
     public void HandleDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
-        
-
         if (damageEffects.TryGetValue(damageType, out var effect))
         {
             float finalDamage = CalculateFinalDamage(target, damage, damageType);

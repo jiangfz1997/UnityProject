@@ -1,47 +1,74 @@
 ﻿using UnityEngine;
-using TMPro; // 引入TextMeshPro命名空间
+using TMPro;
 
 public class Money : MonoBehaviour
 {
-    public int goldAmount = 2000; // 默认金币数量为2000
-    public TextMeshProUGUI moneyText; // 用于显示金币数量的TextMeshProUGUI
+    //public int goldAmount = 2000; 
+    public TextMeshProUGUI moneyText; 
+    public Alert alert;
+    private Player player;
 
     void Start()
     {
-        UpdateMoneyText(); // 启动时更新显示
-    }
-
-    // 更新显示金币数量
-    void UpdateMoneyText()
-    {
-        moneyText.text = "Your Money: $" + goldAmount.ToString();
-    }
-
-    // 减少金币数量
-    public bool SpendGold(int amount)
-    {
-        if (goldAmount >= amount)
+        player = Object.FindFirstObjectByType<Player>();
+        
+        if (player != null)
         {
-            goldAmount -= amount;
-            UpdateMoneyText(); // 消耗金币后更新显示
-            return true; // 足够金币，成功减少
+         
+            UpdateMoneyText(player.GetGold());
         }
         else
         {
-            return false; // 金币不足
+            Debug.LogError("❌ Money: 找不到 Player 对象！");
         }
     }
 
-    // 增加金币数量
-    public void AddGold(int amount)
+    public void UpdateMoneyText(int amount)
     {
-        goldAmount += amount;
-        UpdateMoneyText(); // 增加金币后更新显示
+        moneyText.text = "Your Money: $" + amount.ToString();
+    }
+    
+    public bool EnoughGold(int amount)
+    {
+        if (player.GetGold() >= amount)
+        {
+            return true;
+        }
+        else
+        {
+            alert.ShowAlert("Not enough gold to complete the transaction!");
+            return false;
+        }
     }
 
-    // 获取当前金币数量
-    public int GetGold()
+    public bool SpendGold(int amount)
     {
-        return goldAmount;
+        if (player.GetGold() >= amount) 
+        {
+            player.SpendGold(amount);
+            UpdateMoneyText(player.GetGold());
+            return true;
+
+
+        }
+        else
+        {
+         
+            alert.ShowAlert("Not enough gold to complete the transaction!");
+            return false;
+        }
     }
+
+
+    public void AddGold(int amount)
+    {
+        player.CollectGold(amount);
+        UpdateMoneyText(player.GetGold()); 
+    }
+
+    
+    //public int GetGold()
+    //{
+    //    return goldAmount;
+    //}
 }

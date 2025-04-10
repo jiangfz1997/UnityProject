@@ -10,7 +10,14 @@ public class FadeCanvas : MonoBehaviour
 
     private void OnFadeEvent(Color target, float duration, bool fadeOut)
     {
-        fadeImage.DOBlendableColor(target, duration);
+        gameObject.SetActive(true); // 淡入时启用黑屏
+        fadeImage.DOBlendableColor(target, duration).OnComplete(() =>
+        {
+            if (!fadeOut)
+            {
+                gameObject.SetActive(false); // 淡出完成后禁用黑屏
+            }
+        });
     }
     private void OnEnable()
     {

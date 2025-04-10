@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileName: PhysicalProjectile
   prefab: {fileID: 4418627360412622664, guid: a97ee8d8090aa27409db289d0a2ed753, type: 3}
-  speed: 5
+  speed: 25
   damage: 10
   knockbackForce: 3
   damageType: 0

@@ -2,6 +2,12 @@ using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
+using NUnit.Framework;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using NUnit.Framework.Interfaces;
+using UnityEngine.EventSystems;
+using Unity.Cinemachine;
 
 
 public class Player : Character
@@ -11,10 +17,11 @@ public class Player : Character
     private PhysicsCheck physicsCheck;
     private PlayerAnimation playerAnimation;
     private CapsuleCollider2D coll;
+    public static Player Instance;
 
     // Buff manager
     //public BuffSystem buffSystem;
-
+    private ElementSystem elementSystem;
 
     [Header("Debug Info")]
     [SerializeField] private float currentHealth;
@@ -54,7 +61,7 @@ public class Player : Character
     public bool _isClimbing = false;
     private Vector3 ladderPosition;
     private float originalGravityScale;
-
+    private PlayerEquipment equipment;
     public bool enableInvincibility = true;
     public bool enableKnockback = true;
     public float knockbackForce = 10f;
@@ -64,20 +71,32 @@ public class Player : Character
       
     public Material defaultMaterial;
     public Material dashMaterial;
-    public ParticleSystem dashEffect;
+    public GameObject dashEffectRight;
+    public GameObject dashEffectLeft;
+    private ParticleSystem currentDashEffect;
+
     public ParticleSystem dashSpeedLine;
 
     private PlayerStats stats;
+    private bool isAddingItem = false;
+    public bool isAttacking = false;
+    public Action<Enemy> OnHitEnemy;
 
 
-    public void collectGold(int amount) 
+    public List<ItemData> inventory = new List<ItemData>(); // For extendable inventory system
+    
+    //public Item[] inventory = new Item[10]; // For fixed size inventory system
+
+    public void CollectGold(int amount) 
     {
         stats.AddGold(amount);
     }
-    public void spendGold(int amount)
+    public void SpendGold(int amount)
     {
         stats.SpendGold(amount);
     }
+
+    public List<ItemData> GetInventory() { return inventory; }
 
     public bool isClimbing
     {
@@ -90,6 +109,11 @@ public class Player : Character
                 OnClimbStateChanged?.Invoke(_isClimbing);
             }
         }
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
     protected virtual void FixedUpdate()
     {
@@ -118,19 +142,195 @@ public class Player : Character
         damageHandler = new DamageHandler(this, effectHandler);
         buffSystem = GetComponent<BuffSystem>();
         buffSystem.Initialize(this, effectHandler);
-
+        elementSystem = GetComponent<ElementSystem>();
         // Subscribe take damage event
         OnTakeDamage += (_, _, _, _ )=>playerAnimation.PlayHurt();
         OnTakeDamage += GetHurt;
 
         defaultMaterial = spriteRenderer.material;
-
-        
+        equipment = GetComponent<PlayerEquipment>();
 
 
     }
+    IEnumerator InitConfinerNextFrame()
+    {
 
-    public DamageType GetCurrentDamageType() => buffSystem.GetCurrentDamageType();
+
+        var playerCamera = GameObject.Find("PlayerCamera");
+        CinemachineCamera vcam = playerCamera.GetComponent<CinemachineCamera>();
+        vcam.enabled = false;
+        yield return null; // 🚨 延迟一帧等场景完全加载完毕
+
+        vcam.enabled = true;
+        if (!vcam)
+        {
+            Debug.LogWarning("❌ 找不到 PlayerCamera 或 CameraBound！");
+        }
+       
+       
+    }
+    public void SwitchElement() 
+    { 
+        elementSystem.SwitchElement();
+    }
+    public override void ChangeAttackSpeed(float speedMulti) { playerAnimation.ChangeAttackSpeed(speedMulti); }
+
+    public void EquipNecklace(NecklaceSO necklaceData)
+    {
+        equipment.EquipNecklace(necklaceData);
+    }
+
+    public void UnequipNecklace()
+    {
+        equipment.UnequipNecklace();
+    }
+
+    public bool HasNecklaceEquipped()
+    {
+        return equipment.HasNecklaceEquipped();
+    }
+
+    public Necklace GetEquippedNecklace()
+    {
+        return equipment.GetEquippedNecklace();
+    }
+
+    public List<ElementType> GetAvailableElements()
+    {
+        return elementSystem.AvailableElements;
+    }
+
+    public void SetAttackState() 
+    { 
+        rb.linearVelocity = new Vector2 (0, 0);
+        isAttacking = true; }
+    public void UnsetAttackState() { isAttacking = false; }
+    public void UseItem(int index)
+    {
+        if (index < 0 || index >= inventory.Count) return;
+
+        ItemData itemData = inventory[index];
+        if (itemData == null) return;
+
+        ItemFactory.Instance.CreateItemLogicOnlyById(itemData.id, (item) =>
+        {
+            if (item == null)
+            {
+                Debug.LogError("Cannot generate new instance");
+                return;
+            }
+
+            item.quantity = itemData.quantity;
+            item.OnPickup(this);
+
+            if (item.quantity <= 0)
+            {
+                inventory.RemoveAt(index);
+                ReorganizeInventory();
+            }
+
+            InventoryManager.instance.UpdateUI();
+        });
+    }
+
+    private void ReorganizeInventory()
+    {
+     
+
+        for (int i = 0; i < inventory.Count - 1; i++)
+        {
+            if (inventory[i] == null)
+            {
+               
+
+                inventory[i] = inventory[i + 1];
+                inventory[i + 1] = null;
+
+                
+            }
+        }
+
+      
+    }
+
+    public void StoreItem(Item item, Action<bool> onComplete)
+    {
+        bool alreadyOwned = inventory.Exists(i => i.id == item.id);
+        if (alreadyOwned)
+        {
+            Debug.Log($"You already have {item.itemName}，cannot have duplicated one");
+            return;
+        }
+
+        if (inventory.Count < 4 && !isAddingItem)
+        {
+            isAddingItem = true;
+
+            ItemFactory.Instance.CreateItemLogicOnlyById(item.id, (createdItem) =>
+            {
+                isAddingItem = false;
+                if (createdItem != null)
+                {
+                    Item newItem = createdItem.GetComponent<Item>();
+                    if (newItem != null)
+                    {
+                        inventory.Add(new ItemData { id = newItem.id, quantity = 1 });
+                        //stats.SyncInventoryItems(inventory);
+                        InventoryManager.instance.AddItem(newItem);
+                        onComplete?.Invoke(true);
+                        Debug.Log($"Add item: {newItem.itemName} to the bag");
+                        return;
+                    }
+                    else
+                    {
+                        Debug.LogError("Can not find new item failed");
+                        onComplete?.Invoke(false); // 失败
+                        return;
+                    }
+                }
+
+                else
+                {
+                    Debug.LogError("Create Inventory failed");
+                    onComplete?.Invoke(false);
+                    return;
+                }
+            });
+        }
+        else
+        {
+            Debug.Log("Bag is full, cannot add new item");
+        }
+    }
+    public void RemoveItem(int itemId, Action<bool> onComplete)
+    {
+        Debug.Log($"Trying to remove item: {itemId}");
+
+        ItemData itemToRemove = inventory.Find(i => i.id == itemId);
+        if (itemToRemove == null)
+        {
+            onComplete?.Invoke(false);
+            return;
+        }
+
+        bool removed = inventory.Remove(itemToRemove);
+        if (removed)
+        {
+            Debug.Log($"Item deleted ID: {itemId}");
+
+            InventoryManager.instance.UpdateUI();
+
+            onComplete?.Invoke(true);
+        }
+        else
+        {
+            Debug.LogError("Failed to delete item");
+            onComplete?.Invoke(false);
+        }
+    }
+
+
+    public DamageType GetCurrentDamageType() => elementSystem.GetCurrentDamageType();
     public float GetAttackMultiplier() => buffSystem.GetAttackMultiplier();
     protected override void Update()
     {
@@ -149,7 +349,7 @@ public class Player : Character
     }
     public void Move(Vector2 inputDirection)
     {
-        if (isHurt || isGroundAttack || isDashing) return;
+        if (isHurt || isGroundAttack || isDashing || isAttacking) return;
         if (isClimbing)
         {
             if (physicsCheck.isGround) 
@@ -200,7 +400,6 @@ public class Player : Character
         {
             rb.AddForce(transform.up* jumpForce, ForceMode2D.Impulse);
         }
-        ApplyBuff(BuffType.FireEnchant, 10, 1);
 
     }
 
@@ -219,7 +418,7 @@ public class Player : Character
         canDash = false;
         TriggerInvincible(dashDuration);
         playerController.DisableInput();
-        spriteRenderer.material = dashMaterial;
+        //spriteRenderer.material = dashMaterial;
         
         rb.linearVelocity = Vector2.zero;  
         StartDashEffect();
@@ -231,7 +430,7 @@ public class Player : Character
         EndDashEffect();
         isDashing = false;
         rb.linearVelocity = Vector2.zero; 
-        spriteRenderer.material = defaultMaterial;
+        //spriteRenderer.material = defaultMaterial;
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
@@ -242,7 +441,6 @@ public class Player : Character
         {
             StartCoroutine(DashCoroutine());
         }
-        ApplyBuff(BuffType.IceEnchant, 10, 1);
     }
     public override void ModifyHP(float amount)
     {
@@ -250,12 +448,21 @@ public class Player : Character
         {
             if (amount < 0)
                 stats.ReduceHealth(-amount);
-            else
+            else 
+            { 
                 stats.Heal(amount);
+            }
         }
     }
     public void Attack()
     {
+
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            // 点击在UI上，不攻击
+            return;
+        }
+        
         playerAnimation.PlayAttack();
         if (physicsCheck.isGround)
         {
@@ -266,6 +473,7 @@ public class Player : Character
             ExitClimb();
         }
     }
+  
 
 
     public void Climb(float verticalInput)
@@ -353,24 +561,17 @@ public class Player : Character
         stats.Heal(amount);
         OnHealthChange?.Invoke(this);
     }
+    public void RestoreFullHP() 
+    { 
+        stats.Heal(stats.GetMaxHealth());
+    }
 
     public void GetHurt(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
         Debug.Log("Player Get Hurt");
         isHurt = true;
-        //rb.linearVelocity = Vector2.zero;
-
-        //Vector2 forceDirection = ((Vector2)transform.position - (Vector2)attacker.position).normalized;
-        //if (forceDirection == Vector2.zero)
-        //{
-        //    forceDirection = new Vector2(0.1f, 0.1f).normalized;
-        //}
-
-        //Vector2 force = forceDirection * 10f;
-        //rb.AddForce(force, ForceMode2D.Impulse);
         damageHandler.HandleDamage(attacker, damage, knockbackForce, damageType);
 
-        //StartCoroutine(HurtEffect(spriteRenderer, spriteRenderer.material));
     }
 
 
@@ -388,6 +589,19 @@ public class Player : Character
         if (playerController != null)
         {
             playerController.DisableInput();
+        }
+        ShowDeathScreen();
+
+    }
+
+    private void ShowDeathScreen() 
+    {
+        var ui = FindAnyObjectByType<DeathScreenController>();
+        if ( ui != null)
+        {
+            ui.enabled = true;
+            Debug.Log("Show Death Screen");
+            ui.ShowDeathScreen();
         }
     }
 
@@ -425,7 +639,7 @@ public class Player : Character
 
     public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
-        if (isInvincible) return;
+        if (isInvincible || isDead) return;
         InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
         //stats.ReduceHealth((int)damage);
         if (stats.GetCurrentHealth() <= 0)
@@ -442,28 +656,59 @@ public class Player : Character
         //OnHealthChange?.Invoke(this);
     }
 
+    //void StartDashEffect()
+    //{
+
+    //    dashEffect.gameObject.SetActive(true);
+    //    dashEffect.transform.position = transform.position;
+    //    if (transform.localScale.x > 0)
+    //        dashEffect.transform.rotation = Quaternion.Euler(0f, 0f, 0f);   // 向右
+    //    else
+    //        dashEffect.transform.rotation = Quaternion.Euler(0f, 180f, 0f); // 向左
+
+
+    //}
     void StartDashEffect()
     {
+        GameObject effectGO = transform.localScale.x > 0 ? dashEffectRight : dashEffectLeft;
 
-        dashEffect.gameObject.SetActive(true);
+        effectGO.transform.position = transform.position;
 
-        dashEffect.GetComponent<ParticleSystemRenderer>().flip = new Vector3(transform.localScale.x < 0 ? 0 : 1, 0, 0);
-        //dashEffect.transform.localScale = new Vector3(transform.localScale.x < 0 ? -1 : 1, 1, 1);
-        //dashEffect.transform.rotation = Quaternion.Euler(0, transform.localScale.x < 0 ? 180 : 0, 0);
-        //dashSpeedLine.gameObject.SetActive(true);
+        currentDashEffect = effectGO.GetComponent<ParticleSystem>();
+
+        if (currentDashEffect != null)
+        {
+            currentDashEffect.Clear();
+            currentDashEffect.Play();
+        }
     }
 
     void EndDashEffect()
     {
-        dashEffect.gameObject.SetActive(false);
-        //dashSpeedLine.gameObject.SetActive(false);
+        if (currentDashEffect != null)
+        {
+            currentDashEffect.Stop();
+        }
+    }
+
+    public float GetPlayerSpeed() 
+    {
+        return speed;
+    }
+
+    public void SetPlayerSpeed(float speed)
+    {
+        this.speed = speed;
     }
 
     public void ApplyBuff(BuffType type, float duration, float value = 1.0f)
     {
         buffSystem.AddBuff(type, duration, value);
     }
-
+    public void AddElementPoint(ElementType type, int amount)
+    {
+        elementSystem.AddElementPoint(type, amount);
+    }
     public void RemoveBuff(BuffType type)
     {
         buffSystem.RemoveBuff(type);
@@ -473,4 +718,24 @@ public class Player : Character
     {
         buffSystem.RemoveAllBuff();
     }
+
+    public void ShowRestoreEffect()
+    {
+        var effect = transform.Find("Effect/RestoreHealth")?.gameObject;
+
+        if (effect != null)
+        {
+            effect.SetActive(false);
+            effect.SetActive(true);
+            StartCoroutine(HideEffectAfterDelay(effect, 1f));
+        }
+    }
+
+    private IEnumerator HideEffectAfterDelay(GameObject go, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        go.SetActive(false);
+    }
+
+
 }

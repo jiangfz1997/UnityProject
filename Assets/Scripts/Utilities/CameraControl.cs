@@ -48,21 +48,67 @@ public class CameraControl : MonoBehaviour
     //        lastCameraPosition = Camera.main.transform.position;
     //    }
     //}
+    IEnumerator InitConfinerNextFrame()
+    {
+        yield return null; // 🚨 延迟一帧等场景完全加载完毕
 
+
+        var playerCamera = GameObject.Find("PlayerCamera");
+        var confiner = playerCamera.GetComponent<CinemachineConfiner2D>();
+
+        var bound = GameObject.Find("CameraBound").GetComponent<Collider2D>();
+
+        if (confiner && bound)
+        {
+            confiner.BoundingShape2D = bound;
+            confiner.InvalidateBoundingShapeCache();
+            Debug.Log("✅ Confiner 延迟初始化成功！");
+        }
+        //CinemachineCamera vcam = playerCamera.GetComponent<CinemachineCamera>();
+        //vcam.enabled = false;
+        //vcam.enabled = true;
+        //if (!vcam)
+        //{
+        //    Debug.LogWarning("❌ 找不到 PlayerCamera 或 CameraBound！");
+        //}
+        //playerCamera.SetActive(false);
+        //playerCamera.SetActive(true);
+        CinemachineCamera vcam = playerCamera.GetComponent<CinemachineCamera>();
+        vcam.enabled = false;
+        yield return null; // 🚨 延迟一帧等场景完全加载完毕
+
+        vcam.enabled = true;
+        if (!vcam)
+        {
+            Debug.LogWarning("❌ 找不到 PlayerCamera 或 CameraBound！");
+        }
+    }
     private void GetNewCameraBounds()
     {
+        //var playerCamera = GameObject.Find("PlayerCamera");
+        //var confiner = playerCamera.GetComponent<CinemachineConfiner2D>();
+        //var bound = GameObject.Find("CameraBound").GetComponent<Collider2D>();
+        //var obj = GameObject.FindGameObjectWithTag("Bounds");
 
-        var obj = GameObject.FindGameObjectWithTag("Bounds");
-        if (obj == null)
-            return;
+        //confiner.BoundingShape2D = bound;
+        //// Remove the line causing the error
+        //// confiner.InvalidatePathCache();
 
-        confiner2D.BoundingShape2D = obj.GetComponent<Collider2D>();
-        Debug.Log(confiner2D.BoundingShape2D);
-        Debug.Log("[DEBUG] Confiner2D 更新前 Main Camera 位置: " + Camera.main.transform.position);
+        //// Replace it with the correct method call
+        //confiner.InvalidateBoundingShapeCache();
+        StartCoroutine(InitConfinerNextFrame());
 
-        confiner2D.InvalidateBoundingShapeCache();
+
+        //if (obj == null)
+        //    return;
+
+        //confiner2D.BoundingShape2D = obj.GetComponent<Collider2D>();
+        //Debug.Log(confiner2D.BoundingShape2D);
+        //Debug.Log("[DEBUG] Confiner2D 更新前 Main Camera 位置: " + Camera.main.transform.position);
+
+        //confiner2D.InvalidateBoundingShapeCache();
        
-        Debug.Log("[DEBUG] Confiner2D 更新后 Main Camera 位置: " + Camera.main.transform.position);
+        //Debug.Log("[DEBUG] Confiner2D 更新后 Main Camera 位置: " + Camera.main.transform.position);
 
     }
 

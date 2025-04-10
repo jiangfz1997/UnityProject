@@ -6,7 +6,7 @@ public class GoldGenerator : MonoBehaviour
 {
     public static GoldGenerator Instance { get; private set; }
     public GameObject goldPrefab;
-    public int goldPerCoin = 10; 
+    public int goldPerCoin = 100; 
     public float explosionForce = 3f;
     public float explosionRadius = 1f; 
     private void Awake()

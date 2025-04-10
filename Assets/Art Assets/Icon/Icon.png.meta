@@ -1203,10 +1203,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -2661,7 +2661,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_65
+      name: AttackUp_Icon
       rect:
         serializedVersion: 2
         x: 48
@@ -2683,7 +2683,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_66
+      name: DEFUP_ICON
       rect:
         serializedVersion: 2
         x: 72
@@ -2837,7 +2837,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_73
+      name: ATKUP_SUPER_ICON
       rect:
         serializedVersion: 2
         x: 240
@@ -2859,7 +2859,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_74
+      name: DEF_UP_SUPER_ICON
       rect:
         serializedVersion: 2
         x: 264
@@ -3321,7 +3321,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_95
+      name: FireElement
       rect:
         serializedVersion: 2
         x: 0
@@ -3343,7 +3343,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_96
+      name: IceElement
       rect:
         serializedVersion: 2
         x: 24
@@ -3365,7 +3365,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_97
+      name: ElectricElement
       rect:
         serializedVersion: 2
         x: 48
@@ -3387,7 +3387,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_98
+      name: WaterElement
       rect:
         serializedVersion: 2
         x: 72
@@ -3431,7 +3431,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_100
+      name: WindElement
       rect:
         serializedVersion: 2
         x: 120
@@ -5213,7 +5213,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_181
+      name: effect_5
       rect:
         serializedVersion: 2
         x: 216
@@ -5235,7 +5235,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_182
+      name: effect_1
       rect:
         serializedVersion: 2
         x: 240
@@ -5279,7 +5279,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_184
+      name: effect_4
       rect:
         serializedVersion: 2
         x: 288
@@ -5301,7 +5301,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_185
+      name: effect_3
       rect:
         serializedVersion: 2
         x: 312
@@ -5323,7 +5323,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_186
+      name: effect_2
       rect:
         serializedVersion: 2
         x: 336
@@ -6203,7 +6203,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_226
+      name: script_piece
       rect:
         serializedVersion: 2
         x: 144
@@ -6338,7 +6338,7 @@ TextureImporter:
       name: Icon_232
       rect:
         serializedVersion: 2
-        x: 288
+        x: 287
         y: 576
         width: 24
         height: 24
@@ -6515,7 +6515,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 552
+        y: 553
         width: 24
         height: 24
       alignment: 7
@@ -7347,7 +7347,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_278
+      name: mirror
       rect:
         serializedVersion: 2
         x: 240
@@ -9239,7 +9239,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_365
+      name: script_1
       rect:
         serializedVersion: 2
         x: 24
@@ -9261,7 +9261,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_366
+      name: script_2
       rect:
         serializedVersion: 2
         x: 48
@@ -9283,7 +9283,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_367
+      name: script_4
       rect:
         serializedVersion: 2
         x: 72
@@ -9327,7 +9327,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_369
+      name: script_3
       rect:
         serializedVersion: 2
         x: 120
@@ -9371,7 +9371,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_371
+      name: script_5
       rect:
         serializedVersion: 2
         x: 168
@@ -12882,13 +12882,19 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      ATKUP_SUPER_ICON: -1123548769549671985
+      AttackUp_Icon: -5260698769419413256
+      DEFUP_ICON: 3050136473080035784
+      DEF_UP_SUPER_ICON: -8863645398394696263
       ElectricBottle: 919266305
+      ElectricElement: -4391441627550925508
       FireBottle: -309520221
+      FireElement: 3195512542559613542
       IceBottle: -630112864
+      IceElement: -7865644246613206690
       Icon_0: -2278566297644842510
       Icon_1: -2297356003100555120
       Icon_10: 5720878794063898385
-      Icon_100: 2671966879102773385
       Icon_101: -6083341307675577360
       Icon_102: -111543434854969893
       Icon_103: 6314485429719524811
@@ -12977,12 +12983,7 @@ TextureImporter:
       Icon_179: 1937519389909843399
       Icon_18: 8580014841839748847
       Icon_180: 4362513879779343319
-      Icon_181: -5915217117261114444
-      Icon_182: 2725967033985344226
       Icon_183: -5064673711360638693
-      Icon_184: 8987315614769221928
-      Icon_185: -5675041977155733181
-      Icon_186: 6705514822827883124
       Icon_187: -6913882731124378333
       Icon_188: -1835104396293211310
       Icon_189: 2855457912156313898
@@ -13027,7 +13028,6 @@ TextureImporter:
       Icon_223: -2132745995907853702
       Icon_224: -8443743703514253404
       Icon_225: 1330212567969754503
-      Icon_226: -6993041687360091040
       Icon_227: -380455817956377614
       Icon_228: -5067304199070128853
       Icon_229: 640761750728662972
@@ -13084,7 +13084,6 @@ TextureImporter:
       Icon_275: 7792533934549898160
       Icon_276: 2475320883076188191
       Icon_277: 4030249301235540161
-      Icon_278: 3518468523352243183
       Icon_279: 7261479510519720517
       Icon_28: 4831131995684592877
       Icon_280: -2339012106290549139
@@ -13180,14 +13179,9 @@ TextureImporter:
       Icon_362: 8735537623593629648
       Icon_363: -5000619529020918752
       Icon_364: 3024668680947287429
-      Icon_365: -348531434654908745
-      Icon_366: 6848193341384129552
-      Icon_367: 9163589102980765708
       Icon_368: 6692797429178670370
-      Icon_369: -6181893810449953095
       Icon_37: -7430114104524937579
       Icon_370: 4512014903195730968
-      Icon_371: -2224954913352590542
       Icon_372: -5884195512670661892
       Icon_373: -2929735076297814750
       Icon_374: -749661983654772994
@@ -13372,8 +13366,6 @@ TextureImporter:
       Icon_62: -3970022510128154586
       Icon_63: 3034664184420690629
       Icon_64: 3597246240548901919
-      Icon_65: -5260698769419413256
-      Icon_66: 3050136473080035784
       Icon_67: 7716087129399351993
       Icon_68: 971042039506878872
       Icon_69: 5809090244532431898
@@ -13381,8 +13373,6 @@ TextureImporter:
       Icon_70: -3295707690335712374
       Icon_71: 6564766301907841674
       Icon_72: 8583317477046715176
-      Icon_73: -1123548769549671985
-      Icon_74: -8863645398394696263
       Icon_75: 1416802168234287182
       Icon_76: -4775660883906787400
       Icon_77: -4838616214871856421
@@ -13405,12 +13395,22 @@ TextureImporter:
       Icon_92: -4918908657440495201
       Icon_93: 4494294688798118570
       Icon_94: 3096824741382263155
-      Icon_95: 3195512542559613542
-      Icon_96: -7865644246613206690
-      Icon_97: -4391441627550925508
-      Icon_98: 3615882617350834135
       Icon_99: -6949030431883133372
+      WaterElement: 3615882617350834135
+      WindElement: 2671966879102773385
+      effect_1: 2725967033985344226
+      effect_2: 6705514822827883124
+      effect_3: -5675041977155733181
+      effect_4: 8987315614769221928
+      effect_5: -5915217117261114444
       gold: 1258364090
+      mirror: 3518468523352243183
+      script_1: -348531434654908745
+      script_2: 6848193341384129552
+      script_3: -6181893810449953095
+      script_4: 9163589102980765708
+      script_5: -2224954913352590542
+      script_piece: -6993041687360091040
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

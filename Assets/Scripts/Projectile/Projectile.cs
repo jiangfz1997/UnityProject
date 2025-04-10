@@ -13,6 +13,9 @@ public abstract class Projectile : MonoBehaviour
     public Vector2 direction;
     public Animator animator;
     public bool isExploded = false;
+    public AudioClip flyingSFX;
+    public AudioClip explodeSFX;
+    private AudioSource audioSource;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,7 +31,14 @@ public abstract class Projectile : MonoBehaviour
         damageType = data.damageType;
         spriteRenderer.flipX = (direction.x < 0);
         rb.linearVelocity = direction * data.speed;
-        Destroy(gameObject, 2f); // �Զ�����
+        audioSource = GetComponent<AudioSource>();
+        if (flyingSFX != null)
+        {
+            audioSource.clip = flyingSFX;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+        Destroy(gameObject, 2f); 
     }
 
     protected virtual void Update()
@@ -45,6 +55,7 @@ public abstract class Projectile : MonoBehaviour
         {
             //rb.bodyType = RigidbodyType2D.Kinematic;
             isExploded = true;
+            playeExplodeSound();
             rb.linearVelocity = Vector2.zero;
             OnHit(character);
 
@@ -54,10 +65,38 @@ public abstract class Projectile : MonoBehaviour
         {
             //rb.bodyType = RigidbodyType2D.Kinematic;
             isExploded = true;
-
+            playeExplodeSound();
             rb.linearVelocity = Vector2.zero;
             animator.SetTrigger("explode");
             //Destroy(gameObject);
+        }
+        else if (collision.CompareTag("Boss1"))
+        {
+            //rb.bodyType = RigidbodyType2D.Kinematic;
+            isExploded = true;
+            playeExplodeSound();
+            rb.linearVelocity = Vector2.zero;
+            animator.SetTrigger("explode");
+
+            //OnHit(collision.GetComponent<Character>());
+            BossFSM boss = collision.GetComponent<BossFSM>();
+            if (boss != null)
+            {
+                float finalDamage = damage;
+                DamageType attackDamageType = damageType;
+                boss.TakeDamage(finalDamage, attackDamageType);
+            }
+            //Destroy(gameObject);
+        }
+        
+    }
+    private void playeExplodeSound()
+    {
+        if (audioSource != null && explodeSFX != null)
+        {
+            if (audioSource.isPlaying)
+                audioSource.Stop();
+            audioSource.PlayOneShot(explodeSFX);
         }
     }
 

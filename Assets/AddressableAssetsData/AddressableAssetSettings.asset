@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: e175411cb9d83f8468dbcf096ecd5210
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: 8b632702e993f192986b046ed689273e
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -53,15 +53,20 @@ MonoBehaviour:
     m_Id: 
   m_RemoteCatalogLoadPath:
     m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
+  - {fileID: 11400000, guid: 496225b879103e04bbc486ec72c94afc, type: 2}
   - {fileID: 11400000, guid: 44514e05744160641a0b81b942627c49, type: 2}
+  - {fileID: 11400000, guid: 57cf0cf1ba8c4a341a1e3078d62e464b, type: 2}
   - {fileID: 11400000, guid: d747fe8b61b428740a775ca278b90a66, type: 2}
+  - {fileID: 11400000, guid: 505f7f7c7daa9544eaf34fbf6c78fd7e, type: 2}
+  - {fileID: 11400000, guid: 090667fe739ab9a4691d82c8b0047503, type: 2}
   - {fileID: 11400000, guid: 4de1346c54f5b6a4b99c32b88c30768b, type: 2}
+  - {fileID: 11400000, guid: 0106d0c7f3ad28445baeeda43d892cc7, type: 2}
   - {fileID: 11400000, guid: c91d49888735c2140a3e74103c7ba1f6, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
@@ -73,7 +78,7 @@ MonoBehaviour:
       m_ProfileName: Default
       m_Values:
       - m_Id: 2c68eff867f50da4188371150c049062
-        m_Value: <undefined>
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: 37c020328353835408bd0f0cc4acf540
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: 6837f75231e1a234ab3255d22a35c5f3
@@ -81,7 +86,7 @@ MonoBehaviour:
       - m_Id: bfd91bd590c170f4d954a278dbaf6f33
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
       - m_Id: c50287e013dc0c342a1062e5f7aa5855
-        m_Value: 'ServerData/[BuildTarget]'
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
     m_ProfileEntryNames:
     - m_Id: 2c68eff867f50da4188371150c049062
       m_Name: Remote.LoadPath
@@ -102,6 +107,9 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Potion
+    - necklace
+    - element
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 590e545c9ce520241a45016b8d08dcef, type: 2}

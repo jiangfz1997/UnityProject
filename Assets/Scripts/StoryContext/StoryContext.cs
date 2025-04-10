@@ -6,6 +6,8 @@ using TMPro;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class CSVReader : MonoBehaviour
 {
@@ -113,7 +115,10 @@ public class CSVReader : MonoBehaviour
             {
                 Debug.LogWarning($"Skipping invalid line {i + 1}: {line}");
             }
+
         }
+
+        
     }
 
     // 切换到下一张背景和文本
@@ -135,8 +140,7 @@ public class CSVReader : MonoBehaviour
         else
         {
             Debug.Log("End of background scenes!");
-            //SceneManagerController.instance.LoadSceneAdditive("Level_1");
-            //SceneManagerController.instance.UnloadScene("Context");
+            ChangeScene();
         }
     }
 
@@ -173,5 +177,10 @@ public class CSVReader : MonoBehaviour
         {
             Debug.LogError("TextMeshPro UI component is not assigned!");
         }
+    }
+
+    void ChangeScene()
+    {
+        SceneManager.LoadScene("Persistent");
     }
 }

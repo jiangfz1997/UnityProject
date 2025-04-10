@@ -122,7 +122,7 @@ public class Elevator : MonoBehaviour
         {
             playerOnElevator = true;
             player = other.gameObject;
-            other.transform.SetParent(elevatorPlatform);
+            //other.transform.SetParent(elevatorPlatform);
             Debug.Log("player is in elevator");
             //if (isActive && playerOnElevator)
             //{

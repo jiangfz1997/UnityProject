@@ -101,13 +101,7 @@ public class Enemy_old : Character
         buffSystem.Initialize(this, effectHandler);
         originalSpeed = currentSpeed;
 
-        // 如果没有设置巡逻点，尝试自动寻找
-        //if (leftLimit == null || rightLimit == null)
-        //{
-        //    leftLimit = FindClosestLimit("LeftLimit");
-        //    rightLimit = FindClosestLimit("RightLimit");
-        //}
-        //SelectPatrolTarget();
+
     }
     protected override void Update()
     {

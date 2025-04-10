@@ -22,6 +22,7 @@ public class EnemyPhysicsCheck : PhysicsCheck
         Vector2 adjustedCliffCheckOffset = new Vector2(cliffCheckOffset.x * direction, cliffCheckOffset.y);
         Vector2 cliffCheckPosition = (Vector2)transform.position + adjustedCliffCheckOffset;
         isCliffAhead = !Physics2D.Raycast(cliffCheckPosition, Vector2.down, 0.5f, groundLayer);
+        
         Debug.DrawRay(cliffCheckPosition, Vector2.down * 0.5f, Color.green);
     }
 

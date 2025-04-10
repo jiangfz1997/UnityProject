@@ -15,11 +15,6 @@ MonoBehaviour:
   m_GroupName: Interactables
   m_GUID: e175411cb9d83f8468dbcf096ecd5210
   m_SerializeEntries:
-  - m_GUID: 4133fbd94cc8462428b76e17b921a4df
-    m_Address: HealthPotion
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 41edca8eb28e4c3438168eda9651c606
     m_Address: Switch
     m_ReadOnly: 0
@@ -30,18 +25,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8c9cfa26abfee488c85f1582747f6a02
-    m_Address: Assets/Scenes/Level_1.unity
+  - m_GUID: d8ede4d31de1bb54e8db4424f406925a
+    m_Address: PlayerData
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d8ede4d31de1bb54e8db4424f406925a
-    m_Address: Assets/ScriptableObjects/PlayerData.asset
+  - m_GUID: dc4ad8bfe0d9be64b8e4f34ada8e7bc5
+    m_Address: swish-whip-85481
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f290c44efb877e84e9b735d7bf798830
     m_Address: IronGate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8f6757cdc847ed4eb0671db5d40692c
+    m_Address: FOOTSTEP_Leather_Wood_Hollow_Jump_Up_RR6_mono
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

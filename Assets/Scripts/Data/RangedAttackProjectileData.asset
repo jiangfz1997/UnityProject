@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileName: Physical
   prefab: {fileID: 0}
-  speed: 50
+  speed: 100
   damage: 25
   knockbackForce: 5
   damageType: 0

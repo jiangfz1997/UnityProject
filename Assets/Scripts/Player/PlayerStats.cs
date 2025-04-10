@@ -1,40 +1,47 @@
+using NUnit.Framework;
 using System;
 using UnityEngine;
-
+using System.Collections.Generic;
 public class PlayerStats : MonoBehaviour
 {
     public PlayerData playerData;
     public GoldGenerator goldGenerator;
 
-    //public static event Action<int> OnGoldChanged;
 
-
+    public List<ItemData> inventoryItems = new List<ItemData>();
     private void Start()
     {
         playerData.ResetData();
         goldGenerator = gameObject.AddComponent<GoldGenerator>();
-        //OnGoldChanged?.Invoke(playerData.gold);
         playerData.NotifyUI();
         //LoadData();
     }
+    //public void SyncInventoryItems(List<ItemData> inventory)
+    //{
+    //    inventoryItems = inventory;
+    //}
+
+    public void Restart() {
+        playerData.ResetData();
+        playerData.NotifyUI();
+    }
+
     public void ReduceHealth(float damage)
     {
-        // TODO: HealthChange event should be triggered here? 
         playerData.SetHP(Math.Max(0, playerData.GetHP()-damage));
 
     }
 
     public void Heal(float amount)
     {
-        //playerData.currentHP = Mathf.Min(playerData.currentHP + amount, playerData.maxHP);
         playerData.SetHP(Mathf.Max(playerData.GetHP() + amount, playerData.GetMaxHP()));
+        Player.Instance.ShowRestoreEffect();
     }
     public void AddGold(int amount)
     {
         playerData.SetGold(playerData.GetGold() + amount);
         Debug.Log("Gain coin£º" + amount + "£¬current coin£º" + playerData.gold);
         SaveData();
-        //OnGoldChanged?.Invoke(playerData.gold);
     }
 
     public bool SpendGold(int amount)
@@ -48,7 +55,6 @@ public class PlayerStats : MonoBehaviour
         
         Debug.Log("Spend coin£º" + amount + "£¬current coin£º" + playerData.gold);
         SaveData();
-        //OnGoldChanged?.Invoke(playerData.gold);
         return true;
     }
 

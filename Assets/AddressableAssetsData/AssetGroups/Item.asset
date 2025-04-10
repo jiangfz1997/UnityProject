@@ -20,6 +20,24 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4133fbd94cc8462428b76e17b921a4df
+    m_Address: HealthPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b649831d1c83d5f45b3aa270005624c0
+    m_Address: IceElementPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6607e675b068444e85368b1db5f60a1
+    m_Address: FireElementPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d3155a91ed1ad424a9f83d09decef0c2, type: 2}
   m_SchemaSet:

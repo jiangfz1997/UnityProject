@@ -5,15 +5,16 @@ public class HealthPotion : Item
     public int healAmount = 50;
     // TODO: Different healAmount among different health potion?
 
-    protected override void OnPickup(Character character)
+    public override void OnPickup(Character character)
     {
-        base.OnPickup(character);
+
+        //base.OnPickup(character);
         if (character is Player player)
         {
             player.Heal(healAmount);
             Debug.Log($"HealthPotion picked up! Restored {healAmount} HP.");
-            Destroy(gameObject);
         }
+        quantity--;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

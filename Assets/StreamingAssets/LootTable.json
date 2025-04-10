@@ -7,9 +7,15 @@
             ]
         },
         {
-            "chestType": "Rare",
+            "chestType": "Fire",
             "lootItems": [
-                { "prefabName": "HealthPotion", "dropChance": 1.0 }
+                { "prefabName": "FireElementPotion", "dropChance": 1.0 }
+            ]
+        },
+        {
+            "chestType": "Ice",
+            "lootItems": [
+                { "prefabName": "IceElementPotion", "dropChance": 1.0 }
             ]
         }
     ]

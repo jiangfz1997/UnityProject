@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c00b38b93e442d43bed1db8576a4b27, type: 3}
   m_Name: MovingPlatformData
   m_EditorClassIdentifier: 
-  speed: 2
-  waypoints: []
+  speed: 4

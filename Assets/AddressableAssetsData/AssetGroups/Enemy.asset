@@ -14,12 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Enemy
   m_GUID: 43efaf1a91b6ed24496e80ffef077703
-  m_SerializeEntries:
-  - m_GUID: ed878e1887f2632488ee9c7bc877002a
-    m_Address: Boar
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d3155a91ed1ad424a9f83d09decef0c2, type: 2}
   m_SchemaSet:

@@ -6,6 +6,8 @@ using System.Collections;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using Unity.Cinemachine;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 public class SceneManagerController : MonoBehaviour
 {
     public Transform playerTrans;
@@ -20,6 +22,9 @@ public class SceneManagerController : MonoBehaviour
     public VoidEventSO afterSceneLoadedEvent;
     public FadeEventSO fadeScreenEvent;
     [SerializeField] private GameSceneSO currentLoadScene;
+
+    public delegate void CameraEventHandler(Vector3 position, float size, float duration);
+    public static event CameraEventHandler OnCameraEvent;
 
 
 
@@ -38,6 +43,16 @@ public class SceneManagerController : MonoBehaviour
     private void Start()
     {
         NewGame();
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            playerTrans = player.transform;
+            playerTrans.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Player not found in the scene.");
+        }
     }
     private void OnEnable()
     {
@@ -56,6 +71,12 @@ public class SceneManagerController : MonoBehaviour
 
     }
 
+    public void TriggerCameraEvent(Vector3 position, float size, float duration)
+    {
+        Debug.Log($"camera: pos={position}, size={size}, duration={duration}");
+        OnCameraEvent?.Invoke(position, size, duration);
+    }
+
 
     private void OnLoadRequestEvent(GameSceneSO sceneToLoad, Vector3 posToLoad, bool fadeScreen)
     {
@@ -67,6 +88,8 @@ public class SceneManagerController : MonoBehaviour
         this.sceneToLoad = sceneToLoad;
         this.posToGo = posToLoad;
         this.fadeScreen = fadeScreen;
+
+        Debug.Log("Position to load: " + posToLoad);
 
 
         Debug.Log("Scene to load: " + sceneToLoad.sceneReference.SubObjectName);
@@ -90,7 +113,16 @@ public class SceneManagerController : MonoBehaviour
 
 
         yield return currentLoadScene.sceneReference.UnLoadScene();
-        playerTrans.gameObject.SetActive(false);
+
+        // if(playerTrans != null)
+        // {
+        //     playerTrans.gameObject.SetActive(false);
+        // } else {
+        //     yield return new WaitForEndOfFrame(); // 等待一帧
+        //     playerTrans = GameObject.FindGameObjectsWithTag("Player")[0].transform;
+        //     Debug.LogError("Player transform is null.");
+        // }
+
         LoadNewScene();
     }
 
@@ -118,11 +150,10 @@ public class SceneManagerController : MonoBehaviour
         //}
 
         SceneManager.SetActiveScene(handle.Result.Scene);
-
-        
-
+       
         // 触发场景加载完成事件
         afterSceneLoadedEvent.RaiseEvent();
+        StartCoroutine(RefreshEventSystem());
 
         // 延迟启用 CinemachineBrain
         //StartCoroutine(EnableCinemachineBrainDelayed(brain));
@@ -140,7 +171,17 @@ public class SceneManagerController : MonoBehaviour
         }
     }
 
-
+    private IEnumerator RefreshEventSystem()
+    {
+        yield return new WaitForSeconds(0.1f); // 确保所有初始化完成
+        EventSystem eventSystem = FindFirstObjectByType<EventSystem>();
+        if (eventSystem != null)
+        {
+            eventSystem.gameObject.SetActive(false);
+            eventSystem.gameObject.SetActive(true);
+            Debug.Log("EventSystem refreshed after scene load.");
+        }
+    }
 
     //public void LoadScene(string sceneName)
     //{

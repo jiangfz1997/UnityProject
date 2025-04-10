@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class DamageEffectHandler : MonoBehaviour
 {
@@ -23,7 +25,7 @@ public class DamageEffectHandler : MonoBehaviour
 
     private IEnumerator HurtEffectCoroutine()
     {
-        float totalDuration = 2f;   
+        float totalDuration = 0.5f;   
         float flashDuration = 0.1f; 
         float redDuration = 0.5f;   
         float elapsed = 0f;
@@ -84,18 +86,19 @@ public class DamageEffectHandler : MonoBehaviour
         // ✅ 2. **确保 `Sorting Layer` & `Sorting Order`**
         overlayRenderer.sortingLayerName = spriteRenderer.sortingLayerName; // ✅ **匹配角色的 Layer**
         overlayRenderer.sortingOrder = spriteRenderer.sortingOrder + 5; // ✅ **确保在 `角色` 之上**
-
         float elapsed = 0f;
         while (elapsed < duration)
         {
             overlayRenderer.color = new Color(0.3f, 0.5f, 1f, Mathf.PingPong(elapsed * 3f, 0.6f) + 0.3f);
             freezeOverlay.transform.position = transform.position; // ✅ **同步位置**
+            overlayRenderer.flipX = !spriteRenderer.flipX; // ✅ **同步翻转**
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         Destroy(freezeOverlay);
     }
+
 
 
 }

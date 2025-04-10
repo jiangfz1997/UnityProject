@@ -12,6 +12,9 @@ TagManager:
   - LeftLimit
   - RightLimit
   - GoldUI
+  - Boss1
+  - LadderDetect
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX
@@ -24,8 +27,8 @@ TagManager:
   - Enemy
   - ClimbingLadder
   - IgnorePlayer
-  - 
-  - 
+  - Item
+  - EnemyBody
   - 
   - 
   - 

@@ -3,7 +3,6 @@ using UnityEngine;
 public class ElevatorSwitch : MonoBehaviour, IInteractable
 {
     public Elevator elevator;
-    private bool playerNearby = false;
     private bool isSwitchActivated = false;
 
     public void Interact()

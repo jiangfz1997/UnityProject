@@ -42,4 +42,13 @@ public class Sign : MonoBehaviour
         signSprite.GetComponent<SpriteRenderer>().enabled = canPress;
         signSprite.transform.localScale = playerTrans.localScale;
     }
+
+    public void CheckForInteractable(Collider2D interactable)
+    {
+        if (interactable.CompareTag("Interactable"))
+        {
+            canPress = true;
+            signSprite.GetComponent<SpriteRenderer>().enabled = true;
+        }
+    }
 }

@@ -1,7 +1,15 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
+public struct HealthChangeEventArgs
+{
+    public Character character;
+    public float delta; 
+    public Transform attacker;
+    public DamageType damageType;
+}
 public abstract class Character : MonoBehaviour
 {
     [Header("Basic Attribute")]
@@ -21,17 +29,28 @@ public abstract class Character : MonoBehaviour
     public UnityEvent<Character> OnHealthChange;
 
     [Header("Damage Cooldown")]
-
-    protected DamageHandler damageHandler;
+    public DamageHandler damageHandler;
     public BuffSystem buffSystem;
+    public StatusEffectSystem statusEffectSystem;
     protected virtual void Start()
     {
         currentHP = maxHP;
         OnHealthChange?.Invoke(this);
-       
+
+        statusEffectSystem = GetComponent<StatusEffectSystem>();
+
+        if (statusEffectSystem != null)
+        {
+            statusEffectSystem.Initialize(this); 
+        }
+        else
+        {
+            Debug.LogError("❌ 找不到 StatusEffectSystem！");
+        }
+
     }
 
-
+    public virtual void ChangeAttackSpeed(float speedMulti) { }
     public virtual void SetCurrentSpeed(float speed) { }
 
     public virtual float GetCurrentSpeed() { return 0; }

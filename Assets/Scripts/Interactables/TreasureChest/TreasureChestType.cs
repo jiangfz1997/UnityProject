@@ -2,5 +2,7 @@ public enum TreasureChestType
 {
     Common,   
     Rare,     
-    Epic 
+    Epic,
+    Fire,
+    Ice,
 }

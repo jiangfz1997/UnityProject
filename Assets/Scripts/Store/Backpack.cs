@@ -1,68 +1,172 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
+using System;
+using Unity.VisualScripting;
 
 public class Backpack : MonoBehaviour
 {
-    public int maxCapacity = 4; // 背包容量上限
-    public GameObject itemSlotPrefab; // 背包物品的UI预制体
-    public Transform backpackContainer; // 背包物品容器
-    public Money money; // 引用Money管理器
+    public int maxCapacity = 4; 
+    public GameObject itemSlotPrefab; 
+    public Transform backpackContainer; 
+    public Money money; 
+    public Alert alert;
+    private Player player;
 
-    private ProductItem.ProductData[] backpackItems; // 存储背包物品的数据
+    private ProductItem.ProductData[] backpackItems; 
 
     void Start()
     {
-        backpackItems = new ProductItem.ProductData[maxCapacity]; // 初始化背包物品数组
+        backpackItems = new ProductItem.ProductData[maxCapacity];
+        player = FindFirstObjectByType<Player>();
+
+        if (player != null)
+        {
+            UpdateBackpack(player.GetInventory());
+            money.UpdateMoneyText(player.GetGold());
+        }
+        else
+        {
+            Debug.LogError("❌ Backpack: 无法在 OnEnable 中找到 Player！");
+        }
     }
 
-    // 向背包添加物品
-    public bool AddToBackpack(ProductItem.ProductData product)
+    void OnEnable()
     {
-        // 查找空位
-        for (int i = 0; i < maxCapacity; i++)
+        if (player == null)
         {
-            if (backpackItems[i] == null)
-            {
-                backpackItems[i] = product;
-                CreateItemSlot(product, i); // 创建UI展示背包物品
-                return true; // 成功添加
-            }
+            player = FindFirstObjectByType<Player>();
         }
 
-        Debug.Log("背包已满，无法添加物品");
-        return false; // 背包已满
+        if (player != null)
+        {
+            UpdateBackpack(player.GetInventory());
+        }
+        else
+        {
+            Debug.LogError("❌ Backpack: 无法在 OnEnable 中找到 Player！");
+        }
     }
 
-    // 创建背包物品UI
+    public void AddToBackpack(ProductItem.ProductData product, Action<bool> onComplete)
+    {
+        if (product.type == ProductItem.ProductType.Potion)
+        {
+            for (int i = 0; i < maxCapacity; i++)
+            {
+                if (backpackItems[i] == null)
+                {
+                    ItemFactory.Instance.CreateItemLogicOnlyById(product.id, (obj) =>
+                    {
+                        if (obj != null)
+                        {
+                            //obj.transform.position = new Vector3(-50, -50, -50);
+
+                            player.StoreItem(obj.GetComponent<Item>(), (success) =>
+                            {
+                                if (success)
+                                {
+                                    backpackItems[i] = product;
+                                    UpdateBackpack(player.GetInventory());
+                                    onComplete?.Invoke(true); // ✅ 添加成功
+                                }
+                                else
+                                {
+                                    alert.ShowAlert("❌ 添加到角色背包失败！");
+                                    onComplete?.Invoke(false);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            alert.ShowAlert("❌ 创建物品失败！");
+                            onComplete?.Invoke(false);
+                        }
+                    });
+                    return; // ⚠️ 提前返回，避免重复执行
+                }
+            }
+
+            alert.ShowAlert("❌ 背包已满，无法添加！");
+            onComplete?.Invoke(false);
+            return;
+        }
+
+        onComplete?.Invoke(false);
+    }
     void CreateItemSlot(ProductItem.ProductData product, int index)
     {
         GameObject itemSlot = Instantiate(itemSlotPrefab, backpackContainer);
         ItemSlot itemSlotScript = itemSlot.GetComponent<ItemSlot>();
 
-        // 设置物品的图标和价格
         itemSlotScript.SetItemData(product.icon, product.price);
 
-        // 设置卖出按钮的事件
+     
         itemSlotScript.sellButton.onClick.AddListener(() => OnSellButtonClick(index));
     }
 
-    // 卖出物品
+    
     void OnSellButtonClick(int index)
     {
         if (backpackItems[index] != null)
         {
             ProductItem.ProductData productToSell = backpackItems[index];
-            backpackItems[index] = null; // 清空背包位置
+            backpackItems[index] = null; 
+            int sellPrice = Mathf.FloorToInt(productToSell.price * 0.3f);
+            player.RemoveItem(productToSell.id, success =>
+            {
+                if (success)
+                {
+                    money.AddGold(sellPrice);
 
-            // 卖出后增加金币
-            money.AddGold(productToSell.price);
-
-            // 更新UI：删除该物品的UI
-            Destroy(backpackContainer.GetChild(index).gameObject);
-
-            Debug.Log("卖出物品: " + productToSell.description + " 获得: " + productToSell.price + "金币");
+                    //Destroy(backpackContainer.GetChild(index).gameObject);
+                    UpdateBackpack(player.GetInventory());
+                    Debug.Log("卖出物品: " + productToSell.description + " 获得: " + productToSell.price + "金币");
+                }
+                else
+                {
+                    alert.ShowAlert("❌ 删除失败，无法卖出物品！");
+                }
+            });
+            
         }
     }
-}
 
+
+    public void UpdateBackpack(List<ItemData> getInventory)
+    {
+        // 🧹 清空旧的背包格子
+        if (backpackItems == null) return;
+        foreach (Transform child in backpackContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // 🧹 重置数据结构（可选，看你是不是维护这个）
+        for (int i = 0; i < backpackItems.Length; i++)
+        {
+            backpackItems[i] = null;
+        }
+
+        // 🧱 重新根据玩家的背包数据生成 UI 格子
+        for (int i = 0; i < getInventory.Count; i++)
+        {
+            ItemData itemData = getInventory[i];
+            if (itemData == null) continue;
+
+            var product = ProductItemFactory.Instance.GetProductById(itemData.id);
+            if (product != null)
+            {
+                CreateItemSlot(product, i);
+                backpackItems[i] = product;
+            }
+            else
+            {
+                Debug.LogWarning($"⚠️ 无法为物品 {itemData.id} 匹配商品");
+            }
+        }
+    }
+
+
+}

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    // -------------------- 已有字段保留 --------------------
     public Rigidbody2D rb;
     [HideInInspector] public Animator anim;
     [HideInInspector] public EnemyPhysicsCheck physicsCheck;
@@ -104,7 +103,6 @@ public class Enemy : Character
         buffSystem.Initialize(this, effectHandler);
         originalSpeed = currentSpeed;
 
-        // 如果没有设置巡逻点，尝试自动寻找
         if (leftLimit == null || rightLimit == null)
         {
             leftLimit = FindClosestLimit("LeftLimit");

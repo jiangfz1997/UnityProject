@@ -2,7 +2,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PlayerRespawn : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private PlayerStats stats;
+    [SerializeField] private Animator animator;
+
+    public void Start()
+    {
+        stats = GetComponent<PlayerStats>();
+    }
+
     public void OnDeathAnimationEnd()
     {
         Debug.Log("Dead Animation finished");
@@ -11,6 +18,9 @@ public class PlayerRespawn : MonoBehaviour
 
     void ReloadScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // LevelManager.Instance.RestartLevel();
+        // animator.SetBool("isDead", false);
+        // animator.SetTrigger("Respawn");
+        // stats.Restart();
     }
 }

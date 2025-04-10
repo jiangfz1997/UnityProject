@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BloodDecal : MonoBehaviour
 {
-    public float fadeDuration = 10f; // Ñª¼£ÏûÊ§Ê±¼ä
+    public float fadeDuration = 10f;
     private SpriteRenderer sr;
     private float elapsed = 0f;
 

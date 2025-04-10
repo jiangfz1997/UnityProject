@@ -628,7 +628,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: keys_15
+      name: keys_q
       rect:
         serializedVersion: 2
         x: 59
@@ -1792,7 +1792,6 @@ TextureImporter:
       keys_12: 4078618982511437595
       keys_13: 7166676602721958396
       keys_14: -4810808968778734976
-      keys_15: 6758443466093171346
       keys_16: 8994908837140111649
       keys_18: -5430791436811263982
       keys_19: 1152928869269226623
@@ -1852,6 +1851,7 @@ TextureImporter:
       keys_8: -1273271386796738003
       keys_9: -5545582117518422157
       keys_E: -6637422183947358306
+      keys_q: 6758443466093171346
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

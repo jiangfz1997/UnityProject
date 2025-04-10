@@ -8,6 +8,10 @@ public class PlayerController : MonoBehaviour
     private Player player;
     private Vector2 moveInput;
     private float climbInput;
+    private InputAction attackAction;
+    public delegate void AttackAction();
+    public event AttackAction OnAttackPressed;
+    public event AttackAction OnAttackReleased;
 
     private void Awake()
     {
@@ -24,16 +28,26 @@ public class PlayerController : MonoBehaviour
         inputControl.Player.Move.canceled += OnMove;
 
         inputControl.Player.Dash.started += Dash;
+        inputControl.Player.SwitchElement.started += SwitchElement;
+        inputControl.Player.UseItem.performed += ctx => OnUseItem(ctx);
+        attackAction = inputControl.Player.Attack;
+
+        //DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(transform.GetChild(0).gameObject);
     }
 
     private void OnEnable()
     {
+        attackAction.started += ctx => OnAttackPressed?.Invoke(); 
+        attackAction.canceled += ctx => OnAttackReleased?.Invoke();
         inputControl.Enable();
         Player.OnClimbStateChanged += HandleClimbStateChanged;
     }
 
     private void OnDisable() 
-    { 
+    {
+        attackAction.started -= ctx => OnAttackPressed?.Invoke();
+        attackAction.canceled -= ctx => OnAttackReleased?.Invoke();
         inputControl.Disable();
         Player.OnClimbStateChanged -= HandleClimbStateChanged;
 
@@ -71,13 +85,25 @@ public class PlayerController : MonoBehaviour
 
     private void RangeAttack(InputAction.CallbackContext context) => player.RangeAttack();
     private void Dash(InputAction.CallbackContext context) => player.Dash();
+
+    private void SwitchElement(InputAction.CallbackContext context) => player.SwitchElement();
+    //private void OnUseItem(InputAction.CallbackContext context) => player.UseItem();
     private void OnMove(InputAction.CallbackContext context)
     {
         Vector2 input = context.ReadValue<Vector2>();
         moveInput = new Vector2(input.x, 0); 
         climbInput = input.y; 
     }
+    private void OnUseItem(InputAction.CallbackContext context)
+    {
+        string key = context.control.name; 
 
+        if (int.TryParse(key, out int index))
+        {
+            index -= 1;
+            player.UseItem(index);
+        }
+    }
 
     public void DisableInput()
     {

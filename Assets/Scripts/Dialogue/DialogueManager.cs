@@ -7,21 +7,18 @@ using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {
-    [Header("UI组件")]
+    [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject dialogueBox;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private Image avatar;
 
-    [Header("对话设置")]
-    [SerializeField] private float typeWriterSpeed = 0.1f;
+    private float typeWriterSpeed = 0.03f;
 
     private Queue<DialogueLine> dialogueLines;
 
     private bool isDisplayingLine = false;
-    private bool isDialogueFinished = false;
 
-    // 对话行数据结构
     [System.Serializable]
     public class DialogueLine
     {
@@ -37,7 +34,7 @@ public class DialogueManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // 在场景切换时保留
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -56,7 +53,7 @@ public class DialogueManager : MonoBehaviour
         {
             if (isDisplayingLine)
             {
-                // // 如果正在显示对话行，立即显示完整行
+                // // 如果正在显示对话行，立即显示完整
                 // StopAllCoroutines();
                 // dialogueText.text = dialogueLines.Peek().dialogueContent;
                 // isDisplayingLine = false;
@@ -74,14 +71,23 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(DialogueLine[] lines)
     {
+
+        DialogueEventManager.Instance.TriggerDialogueStarted();
+
         dialogueLines.Clear();
+        if (playerController != null)
+        {
+            playerController.DisableInput();
+        }
         foreach (DialogueLine line in lines)
         {
             dialogueLines.Enqueue(line);
         }
 
         dialogueBox.SetActive(true);
-        isDialogueFinished = false;
+
+
+
         DisplayNextLine();
     }
 
@@ -115,13 +121,13 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
-        Debug.Log("End of conversation.");
+        DialogueEventManager.Instance.TriggerDialogueFinished();
         dialogueBox.SetActive(false);
-        isDialogueFinished = true;
+        if (playerController != null)
+        {
+            playerController.EnableInput();
+        }
+
     }
 
-    public bool IsDialogueFinished()
-    {
-        return isDialogueFinished;
-    }
 }

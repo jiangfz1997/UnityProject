@@ -4,11 +4,12 @@ using TMPro;
 
 public class Update : MonoBehaviour
 {
-    public int refreshCost = 100; // 初始刷新消耗金币
-    public Money userMoney; // 用户金币管理脚本的引用
+    public int refreshCost = 100; 
+    public Money userMoney; 
     public Button refreshButton;
     public TextMeshProUGUI refreshButtonText;
-    public ProductGridManager productGridManager; // 关联商店管理器
+    public ProductGridManager productGridManager; 
+    public Alert alert; 
 
     void Start()
     {
@@ -18,22 +19,23 @@ public class Update : MonoBehaviour
 
     void OnRefreshButtonClick()
     {
-        if (userMoney.SpendGold(refreshCost)) // 检查金币是否足够
+        if (userMoney.SpendGold(refreshCost)) 
         {
             Debug.Log("商店刷新成功!");
-            productGridManager.RefreshProducts(); // 调用刷新方法
+            productGridManager.RefreshProducts(); 
 
-            refreshCost *= 2; // 每次刷新后金币消耗翻倍
+            refreshCost *= 2; 
             UpdateRefreshButtonText();
         }
         else
         {
-            Debug.Log("金币不足，无法刷新商店!");
+            
+            alert.ShowAlert("Not enough gold to refresh the shop!");
         }
     }
 
     void UpdateRefreshButtonText()
     {
-        refreshButtonText.text = "NEW ($ " + refreshCost + ")";
+        refreshButtonText.text = "REFRESH ($ " + refreshCost + ")";
     }
 }

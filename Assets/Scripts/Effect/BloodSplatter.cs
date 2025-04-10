@@ -8,6 +8,7 @@ public class BloodSplatter : MonoBehaviour
     private void OnParticleCollision(GameObject other)
     {
         // **获取碰撞点**
+        if (!other.CompareTag("Ground")) return;
         List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
         int numCollisionEvents = Mathf.Min(GetComponent<ParticleSystem>().GetCollisionEvents(other, collisionEvents),3);
 
@@ -17,7 +18,9 @@ public class BloodSplatter : MonoBehaviour
             hitPoint.z = 0; // **保证在 2D 平面**
             hitPoint.y -= Random.Range(1f, 2f); // **随机偏移量**
             GameObject bloodDecal = Instantiate(bloodDecalPrefab, hitPoint, Quaternion.identity);
-            bloodDecal.transform.SetParent(other.transform); // **让血迹附着在 Tilemap**
+            //bloodDecal.transform.SetParent(other.transform); // **让血迹附着在 Tilemap**
+            bloodDecal.transform.SetParent(other.transform, true);
+            bloodDecal.transform.up = Vector3.up;
         }
     }
 }

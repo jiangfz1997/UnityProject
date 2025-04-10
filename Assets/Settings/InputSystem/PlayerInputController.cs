@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @PlayerInputController : IInputActionCollection2, IDisposable
+public partial class @PlayerInputController: IInputActionCollection2, IDisposable
 {
     public InputActionAsset asset { get; }
     public @PlayerInputController()
@@ -112,6 +112,24 @@ public partial class @PlayerInputController : IInputActionCollection2, IDisposab
                     ""name"": ""RangeAttack"",
                     ""type"": ""Button"",
                     ""id"": ""e0e8d990-0f3f-42b8-88cd-3daa9caecfe8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""165f28d4-ec74-4a20-977d-6c60e74b6861"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchElement"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f9e7382-7282-444d-ad48-58bbedc5da2c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -512,6 +530,61 @@ public partial class @PlayerInputController : IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""RangeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77650bf4-2efd-4f1f-90d9-5a7318a439c6"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7071de4-9325-4cdf-a95c-df9d2b40c335"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0708eb98-be54-4fe0-8955-265585ba5fda"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""660bd040-24ea-4cf3-8ab5-dd4a5a61e533"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a9522a2-1e06-4f6a-9224-2dcab6aa02fa"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchElement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1109,6 +1182,8 @@ public partial class @PlayerInputController : IInputActionCollection2, IDisposab
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_RangeAttack = m_Player.FindAction("RangeAttack", throwIfNotFound: true);
+        m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
+        m_Player_SwitchElement = m_Player.FindAction("SwitchElement", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1198,6 +1273,8 @@ public partial class @PlayerInputController : IInputActionCollection2, IDisposab
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_RangeAttack;
+    private readonly InputAction m_Player_UseItem;
+    private readonly InputAction m_Player_SwitchElement;
     public struct PlayerActions
     {
         private @PlayerInputController m_Wrapper;
@@ -1212,6 +1289,8 @@ public partial class @PlayerInputController : IInputActionCollection2, IDisposab
         public InputAction @Next => m_Wrapper.m_Player_Next;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @RangeAttack => m_Wrapper.m_Player_RangeAttack;
+        public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
+        public InputAction @SwitchElement => m_Wrapper.m_Player_SwitchElement;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1251,6 +1330,12 @@ public partial class @PlayerInputController : IInputActionCollection2, IDisposab
             @RangeAttack.started += instance.OnRangeAttack;
             @RangeAttack.performed += instance.OnRangeAttack;
             @RangeAttack.canceled += instance.OnRangeAttack;
+            @UseItem.started += instance.OnUseItem;
+            @UseItem.performed += instance.OnUseItem;
+            @UseItem.canceled += instance.OnUseItem;
+            @SwitchElement.started += instance.OnSwitchElement;
+            @SwitchElement.performed += instance.OnSwitchElement;
+            @SwitchElement.canceled += instance.OnSwitchElement;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1285,6 +1370,12 @@ public partial class @PlayerInputController : IInputActionCollection2, IDisposab
             @RangeAttack.started -= instance.OnRangeAttack;
             @RangeAttack.performed -= instance.OnRangeAttack;
             @RangeAttack.canceled -= instance.OnRangeAttack;
+            @UseItem.started -= instance.OnUseItem;
+            @UseItem.performed -= instance.OnUseItem;
+            @UseItem.canceled -= instance.OnUseItem;
+            @SwitchElement.started -= instance.OnSwitchElement;
+            @SwitchElement.performed -= instance.OnSwitchElement;
+            @SwitchElement.canceled -= instance.OnSwitchElement;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1477,6 +1568,8 @@ public partial class @PlayerInputController : IInputActionCollection2, IDisposab
         void OnNext(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnRangeAttack(InputAction.CallbackContext context);
+        void OnUseItem(InputAction.CallbackContext context);
+        void OnSwitchElement(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

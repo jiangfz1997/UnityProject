@@ -2,12 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameObject player;
     private GameObject blackOverlay;
-    public bool skipContextForDebug = true; // **调试模式时跳过 Context Scene**
+    // public bool skipContextForDebug = true; // **调试模式时跳过 Context Scene**
 
     private void Awake()
     {
@@ -25,19 +26,20 @@ public class GameManager : MonoBehaviour
     {
         blackOverlay = GameObject.Find("BlackOverlay");
 
-#if UNITY_EDITOR
-        if (skipContextForDebug)
-        {
-            Debug.Log("Skipping Context Scene in Debug Mode. Loading Level_1...");
-            //blackOverlay.SetActive(false);
-            SceneManager.LoadScene("Level_1", LoadSceneMode.Additive);
-            return;
-        }
-#endif
+// #if UNITY_EDITOR
+//         if (skipContextForDebug)
+//         {
+//             Debug.Log("Skipping Context Scene in Debug Mode. Loading Level_1...");
+//             //blackOverlay.SetActive(false);
+//             SceneManager.LoadScene("Level_1", LoadSceneMode.Additive);
+//             return;
+//         }
+// #endif
         // **加载 Context Scene，但 Persistent 仍然是 Active Scene**
-        SceneManager.LoadScene("Context", LoadSceneMode.Additive);
+        // SceneManager.LoadScene("Context", LoadSceneMode.Additive);
 
         // **监听 Scene 加载完成事件**
+        SceneManager.LoadScene("Level_1", LoadSceneMode.Additive);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -49,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        SceneConfig[] sceneConfigs = Object.FindObjectsByType<SceneConfig>(FindObjectsSortMode.None);
+        SceneConfig[] sceneConfigs = UnityEngine.Object.FindObjectsByType<SceneConfig>(FindObjectsSortMode.None);
 
         SceneConfig sceneConfig = null;
 
@@ -83,6 +85,7 @@ public class GameManager : MonoBehaviour
                 UnfreezePlayer();  // **进入 Level 关卡，恢复 Player 物理**
             }
         }
+
     }
 
     private void FreezePlayer()
@@ -113,21 +116,40 @@ public class GameManager : MonoBehaviour
         CanvasGroup canvasGroup = blackOverlay.GetComponent<CanvasGroup>();
         if (canvasGroup == null)
         {
-            canvasGroup = blackOverlay.AddComponent<CanvasGroup>();  // 如果没有 CanvasGroup，添加一个
+            canvasGroup = blackOverlay.AddComponent<CanvasGroup>(); 
         }
 
-        float duration = 1f; // Fade out duration
+        float duration = 1f; 
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            canvasGroup.alpha = 1 - (elapsedTime / duration);  // **调整透明度**
+            canvasGroup.alpha = 1 - (elapsedTime / duration);  
             yield return null;
         }
 
-        canvasGroup.alpha = 0;  // **完全透明**
-        blackOverlay.SetActive(false); // **确保完全透明后才禁用 UI**
+        canvasGroup.alpha = 0;  
+        blackOverlay.SetActive(false); 
     }
+
+    public void ReturnToMainMenu()
+    {
+        CleanDontDestroyOnLoad();
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private void CleanDontDestroyOnLoad()
+    {
+        Destroy(GameObject.Find("GameManager"));
+        Destroy(GameObject.Find("PlayerCamera"));
+        Destroy(GameObject.Find("EventSystem"));
+        Destroy(GameObject.Find("ScenesManager"));
+        Destroy(GameObject.Find("DelayedActionManager"));
+        Destroy(GameObject.Find("[DOTween]"));
+        Destroy(GameObject.Find("[Debug Updater]"));
+
+    }
+
 
 }

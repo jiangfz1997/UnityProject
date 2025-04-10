@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8349951162128797620
 Transform:
   m_ObjectHideFlags: 0
@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425f3431a38c36e47a2d69f7613467c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportPosition: {x: 22.51, y: 12.42, z: 0}
-  sceneToLoad: {fileID: 11400000, guid: 0dd8ab8071ec3a542bf88429d9d51237, type: 2}
+  teleportPosition: {x: 1, y: 0.27, z: 0}
+  sceneToLoad: {fileID: 11400000, guid: 7a12e026cad5e7f4785421c7aed56a35, type: 2}
   loadEventSO: {fileID: 11400000, guid: 05f29e99571760e47a9b5118b19450d8, type: 2}
 --- !u!61 &633409789138111962
 BoxCollider2D:

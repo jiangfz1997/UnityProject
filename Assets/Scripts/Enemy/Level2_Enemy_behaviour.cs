@@ -306,28 +306,27 @@ public class Enemy_behaviour : Character
     {
         Debug.Log("Enemy Died!");
 
-        anim.SetTrigger("death"); // 播放死亡动画
-        GetComponent<Collider2D>().enabled = false; // 关闭碰撞
-        this.enabled = false; // 禁用脚本
+        anim.SetTrigger("death"); 
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false; 
 
-        Destroy(gameObject, 2f); // 2秒后销毁
+        Destroy(gameObject, 2f);
     }
 
     protected override void Start()
     {
-        if (leftLimit == null || rightLimit == null) // 只在 Inspector 没有赋值时才自动查找
+        if (leftLimit == null || rightLimit == null)
         {
             leftLimit = FindClosestLimit("LeftLimit");
             rightLimit = FindClosestLimit("RightLimit");
         }
     }
 
-    // 自动寻找最近的 leftLimit 或 rightLimit
     Transform FindClosestLimit(string tag)
     {
-        GameObject[] limits = GameObject.FindGameObjectsWithTag(tag); // 获取所有带这个 Tag 的对象
+        GameObject[] limits = GameObject.FindGameObjectsWithTag(tag); 
         Transform closest = null;
-        float minDistance = Mathf.Infinity; // 初始设为无限大
+        float minDistance = Mathf.Infinity;
 
         foreach (GameObject limit in limits)
         {
@@ -338,7 +337,7 @@ public class Enemy_behaviour : Character
                 closest = limit.transform;
             }
         }
-        return closest; // 返回最近的那个点
+        return closest;
     }
 
     public override void ModifyHP(float amount)
