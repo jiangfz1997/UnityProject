@@ -2,7 +2,22 @@ using NUnit.Framework;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-public class PlayerStats : MonoBehaviour
+using System.Linq;
+using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+
+[System.Serializable]
+public class PlayerStatsSaveData
+{
+    public int gold;
+    public float currentHP;
+    public float maxHP;
+    public Vector3 position;
+    public string currentScene;
+    public int currentLevelIndex;
+}
+
+public class PlayerStats : MonoBehaviour, ISaveable
 {
     public PlayerData playerData;
     public GoldGenerator goldGenerator;
@@ -16,10 +31,7 @@ public class PlayerStats : MonoBehaviour
         playerData.NotifyUI();
         //LoadData();
     }
-    //public void SyncInventoryItems(List<ItemData> inventory)
-    //{
-    //    inventoryItems = inventory;
-    //}
+
 
     public void Restart() {
         playerData.ResetData();
@@ -95,5 +107,55 @@ public class PlayerStats : MonoBehaviour
         playerData.maxHP = PlayerPrefs.GetFloat("MaxHP", playerData.maxHP);
         //playerData.level = PlayerPrefs.GetInt("Level", playerData.level);
         //playerData.experience = PlayerPrefs.GetInt("XP", playerData.experience);
+    }
+
+    public string SaveKey() => "PlayerStats";
+
+    public object CaptureState()
+    {
+        string test = GetCurrentLevelSceneName();
+        return new PlayerStatsSaveData
+        {
+            gold = playerData.gold,
+            currentHP = playerData.currentHP,
+            maxHP = playerData.maxHP,
+            position = transform.position,
+            currentScene = GetCurrentLevelSceneName(),
+            currentLevelIndex = LevelManager.Instance.GetCurrentLevelIndex()
+
+
+        };
+    }
+    private string GetCurrentLevelSceneName()
+    {
+        for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
+        {
+            Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+            if (scene.name != "Persistent")
+            {
+                return scene.name;
+            }
+        }
+
+        return "Unknown";
+    }
+    public void RestoreState(object state)
+    {
+        var data = state as PlayerStatsSaveData;
+        if (data == null)
+        {
+            Debug.LogWarning("PlayerStats recovery failed");
+            return;
+        }
+
+        playerData.gold = data.gold;
+        playerData.currentHP = data.currentHP;
+        playerData.maxHP = data.maxHP;
+        playerData.NotifyUI();
+        Vector3 offset = new Vector3(-3f, 2f, 0f); 
+        transform.position = data.position + offset;
+        Debug.Log($"PlayerStats recovery success, position: {transform.position}");
+        LevelManager.Instance.SetCurrentLevelIndex(data.currentLevelIndex);
+
     }
 }

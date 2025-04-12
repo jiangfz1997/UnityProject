@@ -1,7 +1,11 @@
 using UnityEngine;
 
-
-public class PlayerEquipment : MonoBehaviour
+[System.Serializable]
+public class PlayerEquipmentSaveData
+{
+    public int equippedNecklaceId;
+}
+public class PlayerEquipment : MonoBehaviour, ISaveable
 {
 
     public NecklaceSO defaultNecklace;
@@ -18,11 +22,24 @@ public class PlayerEquipment : MonoBehaviour
 
     private void Start()
     {
+        //if (defaultNecklace != null)
+        //{
+        //    EquipNecklace(defaultNecklace);
+        //}
+        //necklaceUI.UpdateUI(equippedNecklaceSO);
+    }
+
+    public void Initialize(Player player)
+    {
+        this.player = player;
+        //isInitialized = true;
+
         if (defaultNecklace != null)
         {
             EquipNecklace(defaultNecklace);
         }
-        necklaceUI.UpdateUI(equippedNecklaceSO);
+
+        necklaceUI?.UpdateUI(equippedNecklaceSO);
     }
     public Necklace GetEquippedNecklace()
     {
@@ -33,7 +50,6 @@ public class PlayerEquipment : MonoBehaviour
     {
         if (equippedNecklace != null)
         {
-            //equippedNecklace.Deactivate(player);
             Debug.Log("Already have one necklace!!");
             return;
         }
@@ -61,6 +77,39 @@ public class PlayerEquipment : MonoBehaviour
     public bool HasNecklaceEquipped()
     {
         return equippedNecklace != null;
+    }
+
+    public string SaveKey() => "PlayerEquipment";
+
+    public object CaptureState()
+    {
+        return new PlayerEquipmentSaveData
+        {
+            equippedNecklaceId = equippedNecklaceSO != null ? equippedNecklaceSO.id : -1
+        };
+    }
+
+    public void RestoreState(object state)
+    {
+        var data = state as PlayerEquipmentSaveData;
+        if (data == null || data.equippedNecklaceId == -1)
+        {
+            UnequipNecklace();
+            return;
+        }
+        
+        NecklaceFactory.GetNecklaceSOById(data.equippedNecklaceId, (found) =>
+        {
+            if (found != null)
+            {
+                UnequipNecklace();
+                EquipNecklace(found);
+            }
+            else
+            {
+                Debug.LogWarning($"Cannot find necklace with ID: {data.equippedNecklaceId}");
+            }
+        });
     }
 }
 

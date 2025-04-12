@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 13
-  m_BakeOnSceneLoad: 0
+  m_BakeOnSceneLoad: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: c9a060bd13ccd9b469567e006528b762, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1951,7 +1951,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 51.47, y: -0.26519984, z: 0}
+  m_LocalPosition: {x: 51.47, y: -0.26519984, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3097,6 +3097,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1091641405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091641365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e93e65f8ea1a44fbe6e6058e362d27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: []
+--- !u!114 &1091641406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091641365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f93d9c12bd4c0c48961f7316726724b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldSave: 0
 --- !u!1 &1103158528
 GameObject:
   m_ObjectHideFlags: 0
@@ -3277,7 +3303,7 @@ Transform:
   m_GameObject: {fileID: 1183422712}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 51.47, y: -0.26519984, z: 0}
+  m_LocalPosition: {x: 51.47, y: -0.26519984, z: -20}
   m_LocalScale: {x: 1.41, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4307,6 +4333,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fef880326a4a9448955719491c9e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1398734003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398733991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee14df6fc40382946bc698657f1bb8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1459955881
 GameObject:
   m_ObjectHideFlags: 0
@@ -5168,7 +5206,7 @@ GameObject:
   - component: {fileID: 1785832286}
   - component: {fileID: 1785832285}
   m_Layer: 5
-  m_Name: RestartMenoButton
+  m_Name: RestartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5238,13 +5276,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1847173800}
+        m_TargetAssemblyTypeName: SceneManagerController, Assembly-CSharp
+        m_MethodName: RestartCurrentLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5933,6 +5971,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5258227650777321584, guid: 71a3bd0ed2215fa438c9f7bf81b1c3fb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1398733999}
+    - targetCorrespondingSourceObject: {fileID: 5258227650777321584, guid: 71a3bd0ed2215fa438c9f7bf81b1c3fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1398734003}
   m_SourcePrefab: {fileID: 100100000, guid: 71a3bd0ed2215fa438c9f7bf81b1c3fb, type: 3}
 --- !u!1001 &7841251242405952147
 PrefabInstance:
@@ -6006,6 +6047,10 @@ PrefabInstance:
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2343142262555119628, guid: 0b86e96c9629f28499091390da8f48ad, type: 3}
+      propertyPath: shouldSave
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5746401550714086068, guid: 0b86e96c9629f28499091390da8f48ad, type: 3}
       propertyPath: m_Name
       value: player
@@ -6020,7 +6065,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6801059082146228366, guid: 0b86e96c9629f28499091390da8f48ad, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 6801059082146228366, guid: 0b86e96c9629f28499091390da8f48ad, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6080,6 +6125,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5746401550714086068, guid: 0b86e96c9629f28499091390da8f48ad, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1091641388}
+    - targetCorrespondingSourceObject: {fileID: 5746401550714086068, guid: 0b86e96c9629f28499091390da8f48ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1091641405}
+    - targetCorrespondingSourceObject: {fileID: 5746401550714086068, guid: 0b86e96c9629f28499091390da8f48ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1091641406}
   m_SourcePrefab: {fileID: 100100000, guid: 0b86e96c9629f28499091390da8f48ad, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -40,7 +40,7 @@ public class NecklacePack : MonoBehaviour
                     }
                 });
 
-                return; // 注意：for 循环中一旦找到了空位就退出，等回调处理结果
+                return; 
             }
         }
         alert.ShowAlert("You've already have one necklace!");

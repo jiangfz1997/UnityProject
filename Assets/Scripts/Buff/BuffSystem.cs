@@ -25,7 +25,9 @@ public class BuffSaveData
 public class BuffSystem : MonoBehaviour, ISaveable
 {
 
-
+    [SerializeField]
+    private bool shouldSave = false;
+    public bool ShouldSave => shouldSave;
     private Dictionary<BuffType, float> activeBuffs = new Dictionary<BuffType, float>();
     //private Dictionary<BuffType, Buff> activeBuff = new Dictionary<BuffType, Buff>();
     private DamageType currentDamageType = DamageType.Physical;
@@ -35,10 +37,11 @@ public class BuffSystem : MonoBehaviour, ISaveable
     private float attackSpeedMultiplier = 1.0f;
     private Character target;
     private DamageEffectHandler effectHandler;
-    public void Initialize(Character character, DamageEffectHandler effectHandler)
+    public void Initialize(Character character, DamageEffectHandler effectHandler, bool shouldSave=false)
     {
         this.target = character;
         this.effectHandler = effectHandler;
+        this.shouldSave = shouldSave;
     }
     public void AddBuff(BuffType type, float duration, float value = 1.0f)
     {
@@ -150,7 +153,6 @@ public class BuffSystem : MonoBehaviour, ISaveable
         {
             BuffManager.instance.AddBuff(entry.type, entry.duration);
         }
-
         target.ChangeAttackSpeed(attackSpeedMultiplier);
     }
 }

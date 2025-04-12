@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
         inputControl.Player.UseItem.performed += ctx => OnUseItem(ctx);
         attackAction = inputControl.Player.Attack;
 
+        inputControl.Player.DebugSuiside.started += DebugSuiside;
         //DontDestroyOnLoad(gameObject);
         //DontDestroyOnLoad(transform.GetChild(0).gameObject);
     }
@@ -78,7 +79,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
+    private void DebugSuiside(InputAction.CallbackContext context) => player.DebugSuiside();
     private void Jump(InputAction.CallbackContext context) => player.Jump();
     private void Attack(InputAction.CallbackContext context) => player.Attack();
     private void OnInteract(InputAction.CallbackContext context) => player.Interact();
@@ -90,6 +91,7 @@ public class PlayerController : MonoBehaviour
     //private void OnUseItem(InputAction.CallbackContext context) => player.UseItem();
     private void OnMove(InputAction.CallbackContext context)
     {
+        Debug.Log("Move Input: " + context.ReadValue<Vector2>());
         Vector2 input = context.ReadValue<Vector2>();
         moveInput = new Vector2(input.x, 0); 
         climbInput = input.y; 

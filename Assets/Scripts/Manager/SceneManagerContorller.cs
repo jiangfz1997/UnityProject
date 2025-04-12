@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using System;
@@ -10,6 +10,7 @@ using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 public class SceneManagerController : MonoBehaviour
 {
+    public static SceneManagerController Instance { get; private set; }
     public Transform playerTrans;
     public Vector3 firstPos;
     [Header("Event listener")]
@@ -25,19 +26,25 @@ public class SceneManagerController : MonoBehaviour
 
     public delegate void CameraEventHandler(Vector3 position, float size, float duration);
     public static event CameraEventHandler OnCameraEvent;
-
-
+    public string CurrentLevelName => currentLoadScene.sceneName;
+    private bool isRestarting = false;
+    private Action onRestartComplete; 
 
     private bool isLoading;
     private GameSceneSO sceneToLoad;
     private Vector3 posToGo;
     private bool fadeScreen;
+    private bool makePlayerTeleport=true;
 
-    void Awake()
+    private void Awake()
     {
-        //Addressables.LoadSceneAsync(firstLoadScene.sceneReference, LoadSceneMode.Additive);
-        //currentLoadScene = firstLoadScene;
-        //currentLoadScene.sceneReference.LoadSceneAsync(LoadSceneMode.Additive);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
     }
     //TODO: Main menu
     private void Start()
@@ -48,6 +55,7 @@ public class SceneManagerController : MonoBehaviour
         {
             playerTrans = player.transform;
             playerTrans.gameObject.SetActive(true);
+            
         }
         else
         {
@@ -78,7 +86,7 @@ public class SceneManagerController : MonoBehaviour
     }
 
 
-    private void OnLoadRequestEvent(GameSceneSO sceneToLoad, Vector3 posToLoad, bool fadeScreen)
+    private void OnLoadRequestEvent(GameSceneSO sceneToLoad, Vector3 posToLoad, bool fadeScreen, bool makePlayerTeleport=true)
     {
         if (isLoading)
         {
@@ -86,7 +94,44 @@ public class SceneManagerController : MonoBehaviour
         }
         isLoading = true;
         this.sceneToLoad = sceneToLoad;
-        this.posToGo = posToLoad;
+        this.makePlayerTeleport = makePlayerTeleport;
+
+        if (makePlayerTeleport) 
+        { 
+            this.posToGo = posToLoad;
+        }
+        this.fadeScreen = fadeScreen;
+
+        Debug.Log("Position to load: " + posToLoad);
+
+
+        Debug.Log("Scene to load: " + sceneToLoad.sceneReference.SubObjectName);
+        if (currentLoadScene != null)
+        {
+            StartCoroutine(UnLoadScene());
+        }
+        else
+        {
+            LoadNewScene();
+        }
+
+    }
+
+    private void OnLoadRequestEventString(string sceneToLoadName, Vector3 posToLoad, bool fadeScreen, bool makePlayerTeleport = true)
+    {
+        if (isLoading)
+        {
+            return;
+        }
+        isLoading = true;
+        GameSceneSO sceneToLoad = GameSceneLookup.Instance.GetSceneSOByName(sceneToLoadName);
+        this.sceneToLoad = sceneToLoad;
+        this.makePlayerTeleport = makePlayerTeleport;
+
+        if (makePlayerTeleport)
+        {
+            this.posToGo = posToLoad;
+        }
         this.fadeScreen = fadeScreen;
 
         Debug.Log("Position to load: " + posToLoad);
@@ -118,7 +163,7 @@ public class SceneManagerController : MonoBehaviour
         // {
         //     playerTrans.gameObject.SetActive(false);
         // } else {
-        //     yield return new WaitForEndOfFrame(); // µÈ´ıÒ»Ö¡
+        //     yield return new WaitForEndOfFrame(); // ç­‰å¾…ä¸€å¸§
         //     playerTrans = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         //     Debug.LogError("Player transform is null.");
         // }
@@ -135,45 +180,56 @@ public class SceneManagerController : MonoBehaviour
     private void OnSceneLoaded(AsyncOperationHandle<SceneInstance> handle)
     {
         currentLoadScene = sceneToLoad;
-        playerTrans.position = posToGo;
+        if (this.makePlayerTeleport) 
+        {
+            playerTrans.position = posToGo;
+        }
         playerTrans.gameObject.SetActive(true);
         if (fadeScreen)
         {
             fadeScreenEvent.FadeIn(fadeSecond);
         }
-        //// ½ûÓÃ CinemachineBrain£¨Èç¹ûÉĞÎ´½ûÓÃ£©
-        //var brain = Camera.main.GetComponent<CinemachineBrain>();
-        //if (brain != null)
-        //{
-        //    brain.enabled = false;
-        //    Debug.Log("[Temp Fix] CinemachineBrain ÒÑ½ûÓÃ");
-        //}
+     
 
         SceneManager.SetActiveScene(handle.Result.Scene);
        
-        // ´¥·¢³¡¾°¼ÓÔØÍê³ÉÊÂ¼ş
+        // è§¦å‘åœºæ™¯åŠ è½½å®Œæˆäº‹ä»¶
         afterSceneLoadedEvent.RaiseEvent();
         StartCoroutine(RefreshEventSystem());
 
-        // ÑÓ³ÙÆôÓÃ CinemachineBrain
+        // å»¶è¿Ÿå¯ç”¨ CinemachineBrain
         //StartCoroutine(EnableCinemachineBrainDelayed(brain));
         isLoading = false;
-    
-    }
+        if (isRestarting && onRestartComplete != null)
+        {
+            StartCoroutine(DelayedRestartCallback());
+        }
 
+
+    }
+    private IEnumerator DelayedRestartCallback()
+    {
+        yield return new WaitForSeconds(0.2f); // ç­‰å¾…ä¸€å¸§æˆ–ä¸¤å¸§ç¡®ä¿åŠ è½½å®Œæˆ
+
+        onRestartComplete?.Invoke();
+
+        // âœ… æ¸…é™¤çŠ¶æ€
+        isRestarting = false;
+        onRestartComplete = null;
+    }
     private IEnumerator EnableCinemachineBrainDelayed(CinemachineBrain brain)
     {
-        yield return new WaitForSeconds(0.1f); // µÈ´ı 0.1 Ãë£¬È·±£ËùÓĞ³õÊ¼»¯Íê³É
+        yield return new WaitForSeconds(0.1f); // ç­‰å¾… 0.1 ç§’ï¼Œç¡®ä¿æ‰€æœ‰åˆå§‹åŒ–å®Œæˆ
         if (brain != null)
         {
             brain.enabled = true;
-            Debug.Log("[Temp Fix] CinemachineBrain ÒÑÆôÓÃ£¬Main Camera Î»ÖÃ: " + Camera.main.transform.position);
+            Debug.Log("[Temp Fix] CinemachineBrain å·²å¯ç”¨ï¼ŒMain Camera ä½ç½®: " + Camera.main.transform.position);
         }
     }
 
     private IEnumerator RefreshEventSystem()
     {
-        yield return new WaitForSeconds(0.1f); // È·±£ËùÓĞ³õÊ¼»¯Íê³É
+        yield return new WaitForSeconds(0.1f); // ç¡®ä¿æ‰€æœ‰åˆå§‹åŒ–å®Œæˆ
         EventSystem eventSystem = FindFirstObjectByType<EventSystem>();
         if (eventSystem != null)
         {
@@ -182,25 +238,39 @@ public class SceneManagerController : MonoBehaviour
             Debug.Log("EventSystem refreshed after scene load.");
         }
     }
+    public void RestartCurrentLevel()
+    {
+        if (currentLoadScene == null)
+        {
+            Debug.LogWarning("No current scene to restart!");
+            return;
+        }
 
-    //public void LoadScene(string sceneName)
-    //{
-    //    SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-    //}
+        Vector3 restartPos = firstPos;
+        string targetLoadSceneName = "";
+        var savedData = SaveSystem.LoadSpecificObject<PlayerStatsSaveData>("savegame.json", "PlayerStats");
+        if (savedData != null)
+        {
+            restartPos = savedData.position;
+            targetLoadSceneName = savedData.currentScene;
+        }
 
 
-    //public void LoadSceneAdditive(string sceneName)
-    //{
-    //    SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-    //}
+        isRestarting = true;
+
+        // âœ… è®¾ç½®å›è°ƒï¼Œç­‰åœºæ™¯åŠ è½½å®Œä¹‹åè‡ªåŠ¨è°ƒç”¨ Respawn å’Œ Reset
+        onRestartComplete = () =>
+        {
+            Player.Instance.Respawn();
+            FindObjectOfType<DeathScreenController>()?.ResetDeathScreen();
+        };
+
+        OnLoadRequestEventString(targetLoadSceneName, restartPos, true, false);
+        //OnLoadRequestEventString(targetLoadSceneName, restartPos, true, false);
+        //SaveSystem.LoadGame();
+    }
+   
 
 
-    //public void UnloadScene(string sceneName)
-    //{
-    //    if (SceneManager.GetSceneByName(sceneName).isLoaded)
-    //    {
-    //        SceneManager.UnloadSceneAsync(sceneName);
-    //    }
-    //}
 
 }

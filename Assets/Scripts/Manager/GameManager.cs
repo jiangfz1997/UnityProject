@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     private GameObject blackOverlay;
     // public bool skipContextForDebug = true; // **调试模式时跳过 Context Scene**
-
     private void Awake()
     {
         if (Instance == null)
@@ -74,7 +73,7 @@ public class GameManager : MonoBehaviour
         {
             if (sceneConfig.sceneType == SceneType.Context)
             {
-                FreezePlayer();  // **Context 期间禁用 Player 物理**
+                FreezePlayer();  
                 if (blackOverlay)
                 {
                     StartCoroutine(FadeOutBlackOverlay());
@@ -82,7 +81,7 @@ public class GameManager : MonoBehaviour
             }
             else if (sceneConfig.sceneType == SceneType.Level)
             {
-                UnfreezePlayer();  // **进入 Level 关卡，恢复 Player 物理**
+                UnfreezePlayer();
             }
         }
 
@@ -150,6 +149,9 @@ public class GameManager : MonoBehaviour
         Destroy(GameObject.Find("[Debug Updater]"));
 
     }
+
+
+
 
 
 }

@@ -16,7 +16,6 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(Item newItem)
     {
-        //inventory.Add(newItem);
         UpdateUI();
     }
 
@@ -24,13 +23,12 @@ public class InventoryManager : MonoBehaviour
     {
         inventory = player.GetInventory();
 
-        // 清除旧的 UI
+
         foreach (Transform child in slotParent)
         {
             Destroy(child.gameObject);
         }
 
-        // 遍历每个 ItemData，异步生成真实 Item 后显示
         foreach (var itemData in inventory)
         {
             ItemFactory.Instance.CreateItemLogicOnlyById(itemData.id, (item) =>
@@ -48,16 +46,5 @@ public class InventoryManager : MonoBehaviour
             });
         }
     }
-    //public void UpdateUI()
-    //{
-    //    for (int i = 0; i < slotParent.childCount; i++)
-    //    {
-    //        UIItemSlot slot = slotParent.GetChild(i).GetComponent<UIItemSlot>();
-
-    //        if (i < player.inventory.Length)
-    //        {
-    //            slot.SetItem(player.inventory[i]); // ✅ 直接更新固定槽位
-    //        }
-    //    }
-    //}
+    
 }
