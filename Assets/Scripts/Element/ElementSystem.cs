@@ -11,9 +11,20 @@ public enum ElementType
     Electric,
     None
 }
-
-
-public class ElementSystem : MonoBehaviour
+[System.Serializable]
+public class ElementSystemSaveData
+{
+    public List<ElementPoint> points = new();
+    public ElementType currentElement;
+    public float currentCooldownTime;
+}
+[System.Serializable]
+public class ElementPoint
+{
+    public ElementType type;
+    public int value;
+}
+public class ElementSystem : MonoBehaviour, ISaveable
 {
     private Dictionary<ElementType, int> elementPoints = new();
 
@@ -127,5 +138,48 @@ public class ElementSystem : MonoBehaviour
         };
     }
 
+    public string SaveKey() => "ElementSystem";
+
+    public object CaptureState()
+    {
+        ElementSystemSaveData data = new ElementSystemSaveData
+        {
+            currentElement = currentElement,
+            currentCooldownTime = currentCooldownTime
+        };
+
+        foreach (var kvp in elementPoints)
+        {
+            data.points.Add(new ElementPoint
+            {
+                type = kvp.Key,
+                value = kvp.Value
+            });
+        }
+
+        return data;
+    }
+
+
+    public void RestoreState(object state)
+    {
+        var data = state as ElementSystemSaveData;
+        if (data == null)
+        {
+            Debug.LogWarning("ElementSystem RestoreState: failed to load data.");
+            return;
+        }
+
+        elementPoints.Clear();
+        foreach (var point in data.points)
+        {
+            elementPoints[point.type] = point.value;
+        }
+
+        currentElement = data.currentElement;
+        currentCooldownTime = data.currentCooldownTime;
+
+        UpdateAvailableElements(); // Refresh UI and state
+    }
 }
 

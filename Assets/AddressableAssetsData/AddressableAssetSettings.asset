@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: e175411cb9d83f8468dbcf096ecd5210
   m_currentHash:
     serializedVersion: 2
-    Hash: 8b632702e993f192986b046ed689273e
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -60,6 +60,7 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 496225b879103e04bbc486ec72c94afc, type: 2}
+  - {fileID: 11400000, guid: 34f0858e972a4b642932345e7b682e47, type: 2}
   - {fileID: 11400000, guid: 44514e05744160641a0b81b942627c49, type: 2}
   - {fileID: 11400000, guid: 57cf0cf1ba8c4a341a1e3078d62e464b, type: 2}
   - {fileID: 11400000, guid: d747fe8b61b428740a775ca278b90a66, type: 2}
@@ -110,6 +111,7 @@ MonoBehaviour:
     - Potion
     - necklace
     - element
+    - SceneData
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 590e545c9ce520241a45016b8d08dcef, type: 2}

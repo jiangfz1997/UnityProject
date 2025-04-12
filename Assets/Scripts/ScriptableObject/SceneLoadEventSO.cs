@@ -4,17 +4,11 @@ using UnityEngine.Events;
 
 public class SceneLoadEventSO : ScriptableObject
 {
-    public UnityAction<GameSceneSO, Vector3, bool> LoadRequestEvent;
+    public UnityAction<GameSceneSO, Vector3, bool, bool> LoadRequestEvent;
 
 
-    ///<summary> 
-    /// scene load request event.
-    /// </summary>
-    /// <param name="locationToLoad">The location to load.</param>
-    /// <param name="posToGo">The position to go.</param>
-    /// <param name="fadeScreen">if set to <c>true</c> [fade screen].</param>
-    public void RaiseLoadRequestEvent(GameSceneSO locationToLoad, Vector3 posToGo, bool fadeScreen) 
+    public void RaiseLoadRequestEvent(GameSceneSO locationToLoad, Vector3 posToGo, bool fadeScreen, bool makePlayerTeleport=true) 
     {
-        LoadRequestEvent?.Invoke(locationToLoad, posToGo, fadeScreen);
+        LoadRequestEvent?.Invoke(locationToLoad, posToGo, fadeScreen, makePlayerTeleport);
     }
 }

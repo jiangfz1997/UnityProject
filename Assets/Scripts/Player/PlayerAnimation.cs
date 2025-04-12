@@ -270,4 +270,18 @@ public class PlayerAnimation : MonoBehaviour
     {
         anim.SetFloat("AttackSpeed", speed);
     }
+
+    public void ResetTrigger()
+    {
+        anim.Play("Idle", 0, 0f);
+        //anim.ResetTrigger("hurt");
+    }
+    public void Reset()
+    {
+        anim.enabled = false;
+        anim.Rebind();      // 重新绑定所有 Animator 参数和状态
+        anim.Update(0f);    // 强制更新一帧
+
+        anim.enabled = true;
+    }
 }

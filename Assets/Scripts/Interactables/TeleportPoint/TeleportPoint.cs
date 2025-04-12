@@ -23,7 +23,7 @@ public class TeleportPoint : MonoBehaviour, IInteractable, IActivatable
     public virtual void Interact()
     {
         Debug.Log("Teleporting");
-        loadEventSO.RaiseLoadRequestEvent(sceneToLoad, teleportPosition, true);
+        loadEventSO.RaiseLoadRequestEvent(sceneToLoad, teleportPosition, true,true);
 
     }
 

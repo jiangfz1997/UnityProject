@@ -78,13 +78,13 @@ public class Player : Character
     public ParticleSystem dashSpeedLine;
 
     private PlayerStats stats;
-    private bool isAddingItem = false;
+    //private bool isAddingItem = false;
     public bool isAttacking = false;
     public Action<Enemy> OnHitEnemy;
 
 
-    public List<ItemData> inventory = new List<ItemData>(); // For extendable inventory system
-    
+    //public List<ItemData> inventory = new List<ItemData>(); // For extendable inventory system
+    public PlayerInventory playerInventory;
     //public Item[] inventory = new Item[10]; // For fixed size inventory system
 
     public void CollectGold(int amount) 
@@ -96,7 +96,7 @@ public class Player : Character
         stats.SpendGold(amount);
     }
 
-    public List<ItemData> GetInventory() { return inventory; }
+    public List<ItemData> GetInventory() { return playerInventory.GetInventory(); }
 
     public bool isClimbing
     {
@@ -138,17 +138,21 @@ public class Player : Character
             effectHandler = gameObject.AddComponent<DamageEffectHandler>();
         }
         effectHandler.Initialize(GetComponent<SpriteRenderer>());
+        playerInventory = GetComponent<PlayerInventory>();
+       
 
         damageHandler = new DamageHandler(this, effectHandler);
         buffSystem = GetComponent<BuffSystem>();
-        buffSystem.Initialize(this, effectHandler);
+        buffSystem.Initialize(this, effectHandler, true);
         elementSystem = GetComponent<ElementSystem>();
+
+        equipment = GetComponent<PlayerEquipment>();
+        equipment.Initialize(this);
         // Subscribe take damage event
         OnTakeDamage += (_, _, _, _ )=>playerAnimation.PlayHurt();
         OnTakeDamage += GetHurt;
 
         defaultMaterial = spriteRenderer.material;
-        equipment = GetComponent<PlayerEquipment>();
 
 
     }
@@ -200,133 +204,29 @@ public class Player : Character
         return elementSystem.AvailableElements;
     }
 
-    public void SetAttackState() 
-    { 
-        rb.linearVelocity = new Vector2 (0, 0);
-        isAttacking = true; }
+    // Replace all occurrences of "rb.velocity" with "rb.linearVelocity" to fix the CS0618 diagnostic.  
+    // Example changes are shown below:
+
+    public void SetAttackState()
+    {
+        rb.linearVelocity = new Vector2(0, 0); // Updated from rb.velocity
+        isAttacking = true;
+    }
     public void UnsetAttackState() { isAttacking = false; }
     public void UseItem(int index)
     {
-        if (index < 0 || index >= inventory.Count) return;
-
-        ItemData itemData = inventory[index];
-        if (itemData == null) return;
-
-        ItemFactory.Instance.CreateItemLogicOnlyById(itemData.id, (item) =>
-        {
-            if (item == null)
-            {
-                Debug.LogError("Cannot generate new instance");
-                return;
-            }
-
-            item.quantity = itemData.quantity;
-            item.OnPickup(this);
-
-            if (item.quantity <= 0)
-            {
-                inventory.RemoveAt(index);
-                ReorganizeInventory();
-            }
-
-            InventoryManager.instance.UpdateUI();
-        });
+        playerInventory.UseItem(this, index);
     }
 
-    private void ReorganizeInventory()
-    {
-     
 
-        for (int i = 0; i < inventory.Count - 1; i++)
-        {
-            if (inventory[i] == null)
-            {
-               
-
-                inventory[i] = inventory[i + 1];
-                inventory[i + 1] = null;
-
-                
-            }
-        }
-
-      
-    }
 
     public void StoreItem(Item item, Action<bool> onComplete)
     {
-        bool alreadyOwned = inventory.Exists(i => i.id == item.id);
-        if (alreadyOwned)
-        {
-            Debug.Log($"You already have {item.itemName}，cannot have duplicated one");
-            return;
-        }
-
-        if (inventory.Count < 4 && !isAddingItem)
-        {
-            isAddingItem = true;
-
-            ItemFactory.Instance.CreateItemLogicOnlyById(item.id, (createdItem) =>
-            {
-                isAddingItem = false;
-                if (createdItem != null)
-                {
-                    Item newItem = createdItem.GetComponent<Item>();
-                    if (newItem != null)
-                    {
-                        inventory.Add(new ItemData { id = newItem.id, quantity = 1 });
-                        //stats.SyncInventoryItems(inventory);
-                        InventoryManager.instance.AddItem(newItem);
-                        onComplete?.Invoke(true);
-                        Debug.Log($"Add item: {newItem.itemName} to the bag");
-                        return;
-                    }
-                    else
-                    {
-                        Debug.LogError("Can not find new item failed");
-                        onComplete?.Invoke(false); // 失败
-                        return;
-                    }
-                }
-
-                else
-                {
-                    Debug.LogError("Create Inventory failed");
-                    onComplete?.Invoke(false);
-                    return;
-                }
-            });
-        }
-        else
-        {
-            Debug.Log("Bag is full, cannot add new item");
-        }
+        playerInventory.StoreItem(item, onComplete);
     }
     public void RemoveItem(int itemId, Action<bool> onComplete)
     {
-        Debug.Log($"Trying to remove item: {itemId}");
-
-        ItemData itemToRemove = inventory.Find(i => i.id == itemId);
-        if (itemToRemove == null)
-        {
-            onComplete?.Invoke(false);
-            return;
-        }
-
-        bool removed = inventory.Remove(itemToRemove);
-        if (removed)
-        {
-            Debug.Log($"Item deleted ID: {itemId}");
-
-            InventoryManager.instance.UpdateUI();
-
-            onComplete?.Invoke(true);
-        }
-        else
-        {
-            Debug.LogError("Failed to delete item");
-            onComplete?.Invoke(false);
-        }
+        playerInventory.RemoveItem(itemId, onComplete);
     }
 
 
@@ -418,19 +318,16 @@ public class Player : Character
         canDash = false;
         TriggerInvincible(dashDuration);
         playerController.DisableInput();
-        //spriteRenderer.material = dashMaterial;
-        
-        rb.linearVelocity = Vector2.zero;  
+
+        rb.linearVelocity = Vector2.zero;  // Updated from rb.velocity
         StartDashEffect();
-        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed,0);
-        
+        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, 0); // Updated from rb.velocity
 
         yield return new WaitForSeconds(dashDuration);
         playerController.EnableInput();
         EndDashEffect();
         isDashing = false;
-        rb.linearVelocity = Vector2.zero; 
-        //spriteRenderer.material = defaultMaterial;
+        rb.linearVelocity = Vector2.zero;  // Updated from rb.velocity
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
@@ -579,7 +476,6 @@ public class Player : Character
     {
         if (isDead) return; 
         isDead = true;
-
         Debug.Log("Player is dead!");
 
         
@@ -592,6 +488,24 @@ public class Player : Character
         }
         ShowDeathScreen();
 
+    }
+    public void Respawn()
+    {
+        if (isDead)
+        {
+            SaveSystem.LoadGame();
+            rb.gravityScale = originalGravityScale;
+            rb.linearVelocity = Vector2.zero; // Updated from rb.velocity
+            rb.angularVelocity = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            playerAnimation.SetClimbing(false, false);
+            playerController.EnableInput();
+            playerAnimation.Reset();
+            isHurt = false;
+            isDead = false;
+            //playerAnimation.ResetTrigger();
+
+        }
     }
 
     private void ShowDeathScreen() 
@@ -612,6 +526,10 @@ public class Player : Character
         if (interactable != null)
         {
             nearbyInteractable = interactable;
+        }
+        else if (other.CompareTag("LoadPoint"))
+        {
+            SaveSystem.LoadGame();
         }
     }
 
@@ -635,6 +553,10 @@ public class Player : Character
     public SpriteRenderer GetSpriteRenderer()
     {
         return spriteRenderer;
+    }
+    public void LoadPlay() 
+    {
+        SaveSystem.LoadGame(); 
     }
 
     public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
@@ -735,6 +657,11 @@ public class Player : Character
     {
         yield return new WaitForSeconds(delay);
         go.SetActive(false);
+    }
+
+    public void DebugSuiside() 
+    {
+        Die();
     }
 
 

@@ -78,6 +78,17 @@ public class LevelManager : MonoBehaviour
     {
         return currentLevelIndex;
     }
+    public void SetCurrentLevelIndex(int index)
+    {
+        if (index >= 0 && index < levelScenes.Count)
+        {
+            currentLevelIndex = index;
+        }
+        else
+        {
+            Debug.LogWarning($"Invalid level index: {index}");
+        }
+    }
 
     public int GetHighestCompletedLevel()
     {

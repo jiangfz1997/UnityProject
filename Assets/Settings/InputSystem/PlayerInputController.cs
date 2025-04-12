@@ -134,6 +134,15 @@ public partial class @PlayerInputController: IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugSuiside"",
+                    ""type"": ""Button"",
+                    ""id"": ""892cf583-b16e-4318-b88b-06aa447e44e1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -585,6 +594,17 @@ public partial class @PlayerInputController: IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SwitchElement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eed45d7b-c7f3-44b6-add3-ac5a36fc7850"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugSuiside"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1184,6 +1204,7 @@ public partial class @PlayerInputController: IInputActionCollection2, IDisposabl
         m_Player_RangeAttack = m_Player.FindAction("RangeAttack", throwIfNotFound: true);
         m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
         m_Player_SwitchElement = m_Player.FindAction("SwitchElement", throwIfNotFound: true);
+        m_Player_DebugSuiside = m_Player.FindAction("DebugSuiside", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1275,6 +1296,7 @@ public partial class @PlayerInputController: IInputActionCollection2, IDisposabl
     private readonly InputAction m_Player_RangeAttack;
     private readonly InputAction m_Player_UseItem;
     private readonly InputAction m_Player_SwitchElement;
+    private readonly InputAction m_Player_DebugSuiside;
     public struct PlayerActions
     {
         private @PlayerInputController m_Wrapper;
@@ -1291,6 +1313,7 @@ public partial class @PlayerInputController: IInputActionCollection2, IDisposabl
         public InputAction @RangeAttack => m_Wrapper.m_Player_RangeAttack;
         public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
         public InputAction @SwitchElement => m_Wrapper.m_Player_SwitchElement;
+        public InputAction @DebugSuiside => m_Wrapper.m_Player_DebugSuiside;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1336,6 +1359,9 @@ public partial class @PlayerInputController: IInputActionCollection2, IDisposabl
             @SwitchElement.started += instance.OnSwitchElement;
             @SwitchElement.performed += instance.OnSwitchElement;
             @SwitchElement.canceled += instance.OnSwitchElement;
+            @DebugSuiside.started += instance.OnDebugSuiside;
+            @DebugSuiside.performed += instance.OnDebugSuiside;
+            @DebugSuiside.canceled += instance.OnDebugSuiside;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1376,6 +1402,9 @@ public partial class @PlayerInputController: IInputActionCollection2, IDisposabl
             @SwitchElement.started -= instance.OnSwitchElement;
             @SwitchElement.performed -= instance.OnSwitchElement;
             @SwitchElement.canceled -= instance.OnSwitchElement;
+            @DebugSuiside.started -= instance.OnDebugSuiside;
+            @DebugSuiside.performed -= instance.OnDebugSuiside;
+            @DebugSuiside.canceled -= instance.OnDebugSuiside;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1570,6 +1599,7 @@ public partial class @PlayerInputController: IInputActionCollection2, IDisposabl
         void OnRangeAttack(InputAction.CallbackContext context);
         void OnUseItem(InputAction.CallbackContext context);
         void OnSwitchElement(InputAction.CallbackContext context);
+        void OnDebugSuiside(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
