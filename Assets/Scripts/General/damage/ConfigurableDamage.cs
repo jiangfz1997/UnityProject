@@ -66,7 +66,7 @@ public class DamageHandler : IDamageHandler
         {
             float finalDamage = CalculateFinalDamage(target, damage, damageType);
             target.ModifyHP(-finalDamage);
-            HitStop.Instance.StopTime(0.1f, 0.05f);
+            //HitStop.Instance.StopTime(0.1f, 0.05f);
             BloodManager.Instance.SpawnBlood(transform.position);
             effect.Invoke(attacker, finalDamage, knockbackForce);
         }

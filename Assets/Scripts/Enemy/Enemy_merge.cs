@@ -108,7 +108,7 @@ public class Enemy : Character
             leftLimit = FindClosestLimit("LeftLimit");
             rightLimit = FindClosestLimit("RightLimit");
         }
-        SelectPatrolTarget();
+        //SelectPatrolTarget();
 
         if (monsterLoopSFX != null) monsterLoopSFX.StartAllLoopSounds();
     }
@@ -131,7 +131,7 @@ public class Enemy : Character
         DebugRay();
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (!isHurt && !isDead)
             Move();
@@ -242,11 +242,22 @@ public class Enemy : Character
     {
         rb.linearVelocity = Vector2.zero;
         Vector2 repelDir = new Vector2(0,0);
-        StartCoroutine(OnHurt(repelDir, knockbackForce));
-        isHurt = true;
+        //StartCoroutine(OnHurt(repelDir, knockbackForce));
+        //isHurt = true;
         anim.SetTrigger("hurt");
-        monsterSFX.PlayHurtSound();
+        //monsterSFX.PlayHurtSound();
 
+        FlipToTarget(attacker); // 👈 翻转朝向
+        
+
+    }
+    public void Flip()
+    {
+        // 翻转 localScale.x
+        Debug.Log("Doing Flip");
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
     public void OnDestroy()
@@ -265,8 +276,9 @@ public class Enemy : Character
     }
 
     public virtual void SwitchState(EnemyState state) { }
+    public virtual void SwitchState(BaseState state) { }
 
-    // -------------------- 附加方法：射线检测与限位巡逻 --------------------
+
     public bool IsPlayerInSight()
     {
         hit = Physics2D.Raycast(rayCast.position, faceDir, rayCastLength, raycastMask);
@@ -275,9 +287,11 @@ public class Enemy : Character
 
     public void DebugRay()
     {
-        Color color = IsPlayerInSight() ? Color.green : Color.red;
-        Debug.DrawRay(rayCast.position, faceDir * rayCastLength, color);
+       
+        //Debug.DrawRay(rayCast.position, faceDir * rayCastLength, color);
     }
+
+
 
     public bool InsideOfLimits()
     {
@@ -294,7 +308,7 @@ public class Enemy : Character
 
     public Vector2 GetFacingDirection()
     {
-        return new Vector2(-transform.localScale.x, 0);
+        return new Vector2(transform.localScale.x*isFacingRight, 0);
     }
     public void SelectPatrolTarget()
     {
@@ -304,7 +318,6 @@ public class Enemy : Character
         float distToLeft = Vector2.Distance(transform.position, leftLimit.position);
         float distToRight = Vector2.Distance(transform.position, rightLimit.position);
 
-        // 优先选择安全方向中距离远的
         if (leftSafe && rightSafe)
         {
             patrolTarget = (distToLeft > distToRight) ? leftLimit : rightLimit;
@@ -319,31 +332,72 @@ public class Enemy : Character
         }
         else
         {
-            // ❗ 两边都不安全（撞墙或悬崖）——原地停下
             patrolTarget = transform;
-            Debug.LogWarning("两边都不安全，敌人停止巡逻！");
+            //Debug.LogWarning($"两边都不安全，敌人停止巡逻！left:{physicsCheck.touchLeftWall}right:{physicsCheck.touchRightWall}, cliff:{physicsCheck.isCliffAhead}");
+            
             return;
         }
-
+        //Debug.Log($"选择巡逻目标: {patrolTarget.name}");
         FlipToTarget(patrolTarget);
     }
 
+
+    public void FreezeMovement()
+    {
+        currentSpeed = 0f;
+
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+        Debug.Log($"FreezeMovement {currentSpeed} {rb.linearVelocity}");
+    }
+    //public void FlipToTarget(Transform target)
+    //{
+    //    float targetDirection = target.position.x - transform.position.x;
+
+    //    // 判断目标在左还是右
+    //    int newFacing = targetDirection < 0 ? -1 : 1;
+
+    //    if (newFacing != isFacingRight)
+    //    {
+    //        isFacingRight = newFacing;
+
+    //        Vector3 scale = transform.localScale;
+    //        scale.x = Mathf.Abs(scale.x) * isFacingRight;
+    //        transform.localScale = scale;
+    //    }
+    //}
+
     public void FlipToTarget(Transform target)
     {
-        Vector3 scale = transform.localScale;
-        scale.x = (transform.position.x > target.position.x) ? -1 : 1;
-        transform.localScale = scale;
+        float deltaX = target.position.x - transform.position.x;
+
+        if (deltaX * faceDir.x < 0)
+        {
+            Flip();
+        }
     }
+
 
     protected void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.blue;
-        Vector3 start = transform.position + (Vector3)centerDetectOffset;
-        Vector3 end = start + (Vector3)faceDir * checkDistance;
+        //Gizmos.color = Color.blue;
+        //Vector3 start = transform.position + (Vector3)centerDetectOffset;
+        //Vector3 end = start + (Vector3)faceDir * checkDistance;
 
-        Gizmos.DrawWireCube(start, checkSize);
-        Gizmos.DrawWireCube(end, checkSize);
-        Gizmos.DrawLine(start, end);
+        //Gizmos.DrawWireCube(start, checkSize);
+        //Gizmos.DrawWireCube(end, checkSize);
+        //Gizmos.DrawLine(start, end);
+
+        if (rayCast == null)
+        { 
+            Debug.LogWarning("rayCast is null");
+            return;
+
+        }
+        Color color = IsPlayerInSight() ? Color.green : Color.red;
+        Gizmos.color = color;
+        Gizmos.DrawLine(rayCast.position, rayCast.position + (Vector3)faceDir * rayCastLength);
+
     }
 
     public override void ModifyHP(float amount)
@@ -376,7 +430,6 @@ public class Enemy : Character
         Vector2 direction = (targetPosition - currentPosition).normalized;
         rb.linearVelocity = new Vector2(direction.x * currentSpeed, rb.linearVelocityY);
 
-        // 自动翻转朝向
         if (direction.x != 0)
         {
             transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);

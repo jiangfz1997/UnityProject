@@ -21,7 +21,6 @@ public class CollectionManager : MonoBehaviour
         LoadCollectionState();
     }
 
-    // ÊÕ¼¯ËéÆ¬Ê±¼¤»î¶ÔÓ¦Ð§¹û
     public void CollectScript(int scriptId)
     {
         if (scriptId >= 0 && scriptId < scriptItems.Count)
@@ -60,7 +59,6 @@ public class CollectionManager : MonoBehaviour
         return false;
     }
 
-    // ±£´æÊÕ¼¯×´Ì¬
     private void SaveCollectionState()
     {
         for (int i = 0; i < scriptItems.Count; i++)
@@ -76,7 +74,6 @@ public class CollectionManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // ¼ÓÔØÊÕ¼¯×´Ì¬
     private void LoadCollectionState()
     {
         for (int i = 0; i < scriptItems.Count; i++)
@@ -90,7 +87,7 @@ public class CollectionManager : MonoBehaviour
             }
         }
 
-        // µ¥¶À¼ÓÔØÐ§¹û×´Ì¬
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½×´Ì¬
         // for (int i = 0; i < effectItems.Count; i++)
         // {
         //     bool isCollected = PlayerPrefs.GetInt("effect_" + i, 0) == 1;
@@ -98,7 +95,6 @@ public class CollectionManager : MonoBehaviour
         // }
     }
 
-    // ÖØÖÃ
     public void ResetCollection()
     {
         foreach (var item in scriptItems)

@@ -103,12 +103,12 @@ TextureImporter:
       name: Bringer-of-Death_Spell_1_0
       rect:
         serializedVersion: 2
-        x: 51
-        y: 38
-        width: 34
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 52
+        y: 39
+        width: 32
+        height: 19
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d01ed5a93e93a084b952d3ea9c41beb8
     internalID: 0
     vertices: []
     indices: 

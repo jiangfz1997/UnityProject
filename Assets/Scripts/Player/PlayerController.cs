@@ -91,7 +91,6 @@ public class PlayerController : MonoBehaviour
     //private void OnUseItem(InputAction.CallbackContext context) => player.UseItem();
     private void OnMove(InputAction.CallbackContext context)
     {
-        Debug.Log("Move Input: " + context.ReadValue<Vector2>());
         Vector2 input = context.ReadValue<Vector2>();
         moveInput = new Vector2(input.x, 0); 
         climbInput = input.y; 

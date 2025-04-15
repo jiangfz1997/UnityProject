@@ -103,12 +103,12 @@ TextureImporter:
       name: Bringer-of-Death_Attack_2_0
       rect:
         serializedVersion: 2
-        x: 78
+        x: 2
         y: 1
         width: 60
         height: 54
-      alignment: 9
-      pivot: {x: 0.4759688, y: 0.4895205}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

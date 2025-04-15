@@ -4,12 +4,14 @@ using UnityEngine.UI;
 public class ButtonManager : MonoBehaviour
 {
     public GameObject Panel;             
+    public GameObject detailPanel;
     
     private bool isPanelActive = false;
     
     void Start()
     {
         Panel.SetActive(false);
+        detailPanel.SetActive(false);
     }
     
     public void TogglePanel()
@@ -34,5 +36,6 @@ public class ButtonManager : MonoBehaviour
     {
         isPanelActive = false;
         Panel.SetActive(false);
+        detailPanel.SetActive(false); 
     }
 }

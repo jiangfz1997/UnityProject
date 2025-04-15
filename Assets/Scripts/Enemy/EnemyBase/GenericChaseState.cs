@@ -3,12 +3,13 @@ using UnityEngine;
 public class GenericChaseState : BaseState
 {
     public Enemy enemy;
+    private bool hasTurned = false;
     public override void OnEnter(Enemy enemy)
     {
         this.enemy = enemy;
         //this.enemy.anim.SetBool("walk", true);
         this.enemy.isChasing = true;
-        //this.enemy.currentSpeed = this.enemy.chaseSpeed;
+        this.enemy.currentSpeed = this.enemy.chaseSpeed;
         Debug.Log($"[STATE ENTER] chase | {enemy.name} | currentSpeed = {enemy.currentSpeed}");
 
     }
@@ -18,30 +19,36 @@ public class GenericChaseState : BaseState
 
         if (!enemy.IsPlayerInSight())
         {
-            // 丢失目标计时
             enemy.lostTargetTimer += Time.deltaTime;
             if (enemy.lostTargetTimer >= enemy.patrolCooldown)
             {
-                Debug.Log("[Trashbag] 玩家丢失，回到巡逻");
+                Debug.Log("玩家丢失，回到巡逻");
                 enemy.lostTargetTimer = 0f;
                 enemy.SwitchState(EnemyState.Patrol);
+                return;
             }
             if (enemy.physicsCheck.isCliffAhead || (enemy.physicsCheck.touchLeftWall && enemy.faceDir.x < 0) || (enemy.physicsCheck.touchRightWall && enemy.faceDir.x > 0))
             {
-                enemy.transform.localScale = new Vector3(enemy.faceDir.x, 1, 1);
+                //Debug.Log("悬崖或墙壁，回到巡逻");
+                //enemy.transform.localScale = new Vector3(enemy.faceDir.x, 1, 1);
+                return;
             }
-            return;
+            if (!hasTurned)
+            {
+                enemy.Flip();
+                hasTurned = true;
+            }
+          
         }
         else
         {
-            enemy.lostTargetTimer = 0f; // 重置计时器
+            enemy.lostTargetTimer = 0f; 
         }
 
-        // 获取玩家位置并追踪
         Transform player = enemy.hit.collider?.transform;
         if (player == null)
         {
-            enemy.SwitchState(EnemyState.Patrol);
+            //enemy.SwitchState(EnemyState.Chase);
             return;
         }
 
@@ -67,5 +74,7 @@ public class GenericChaseState : BaseState
     public override void OnExit()
     {
         //enemy.anim.SetBool("walk", false);
+        this.enemy.currentSpeed = this.enemy.normalSpeed;
+
     }
 }

@@ -103,12 +103,12 @@ TextureImporter:
       name: slime-attack-2_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 30
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 54
+        height: 23
+      alignment: 9
+      pivot: {x: 0.2352679, y: -0.0036777926}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 47f7d8528846cda4d96a8543a3ff8515
     internalID: 0
     vertices: []
     indices: 

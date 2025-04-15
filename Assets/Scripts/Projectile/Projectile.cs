@@ -1,52 +1,9 @@
 using UnityEngine;
 
-public abstract class Projectile : MonoBehaviour
+public abstract class Projectile : BaseProjectile
 {
-    [Header("Basic")]
-    public float speed = 1f;
-    public float damage = 1f;
-    public float lifeTime = 2f;
-    public float knockbackForce = 10f;
-    public SpriteRenderer spriteRenderer;
-    public Rigidbody2D rb;
-    public DamageType damageType;
-    public Vector2 direction;
-    public Animator animator;
-    public bool isExploded = false;
-    public AudioClip flyingSFX;
-    public AudioClip explodeSFX;
-    private AudioSource audioSource;
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Initialize(Vector2 shootDirection, ProjectileData data)
-    {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-        direction = shootDirection;
-        speed = data.speed;
-        damage = data.damage;
-        knockbackForce = data.knockbackForce;
-        damageType = data.damageType;
-        spriteRenderer.flipX = (direction.x < 0);
-        rb.linearVelocity = direction * data.speed;
-        audioSource = GetComponent<AudioSource>();
-        if (flyingSFX != null)
-        {
-            audioSource.clip = flyingSFX;
-            audioSource.loop = true;
-            audioSource.Play();
-        }
-        Destroy(gameObject, 2f); 
-    }
-
-    protected virtual void Update()
-    {
-        if (isExploded) return;
-        transform.position += (Vector3)direction * speed * Time.deltaTime;
-    }
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+   
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (isExploded) return;
 
@@ -55,7 +12,7 @@ public abstract class Projectile : MonoBehaviour
         {
             //rb.bodyType = RigidbodyType2D.Kinematic;
             isExploded = true;
-            playeExplodeSound();
+            playExplodeSound();
             rb.linearVelocity = Vector2.zero;
             OnHit(character);
 
@@ -65,7 +22,7 @@ public abstract class Projectile : MonoBehaviour
         {
             //rb.bodyType = RigidbodyType2D.Kinematic;
             isExploded = true;
-            playeExplodeSound();
+            playExplodeSound();
             rb.linearVelocity = Vector2.zero;
             animator.SetTrigger("explode");
             //Destroy(gameObject);
@@ -74,7 +31,7 @@ public abstract class Projectile : MonoBehaviour
         {
             //rb.bodyType = RigidbodyType2D.Kinematic;
             isExploded = true;
-            playeExplodeSound();
+            playExplodeSound();
             rb.linearVelocity = Vector2.zero;
             animator.SetTrigger("explode");
 
@@ -90,7 +47,7 @@ public abstract class Projectile : MonoBehaviour
         }
         
     }
-    private void playeExplodeSound()
+    protected void playExplodeSound()
     {
         if (audioSource != null && explodeSFX != null)
         {
@@ -100,9 +57,10 @@ public abstract class Projectile : MonoBehaviour
         }
     }
 
-    public virtual void DestroySelf()
+
+    protected override void OnHit(Character target)
     {
-        Destroy(gameObject);
+        animator.SetTrigger("explode");
+        target.TakeDamage(transform, damage, knockbackForce, damageType);
     }
-    protected abstract void OnHit(Character target);
 }

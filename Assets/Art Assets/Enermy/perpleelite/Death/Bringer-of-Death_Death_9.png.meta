@@ -112,12 +112,12 @@ TextureImporter:
       name: Bringer-of-Death_Death_9_0
       rect:
         serializedVersion: 2
-        x: 87
-        y: 18
-        width: 32
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 12
+        y: 19
+        width: 40
+        height: 49
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -131,59 +131,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bringer-of-Death_Death_9_1
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 62
-        width: 8
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 85332b4b02459eec0800000000000000
-      internalID: -3537203532875549864
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bringer-of-Death_Death_9_2
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 40
-        width: 9
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 641561116ee63b450800000000000000
-      internalID: 6103343854425362758
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Bringer-of-Death_Death_9_3
       rect:
         serializedVersion: 2
-        x: 98
-        y: 25
-        width: 9
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 34
+        y: 26
+        width: 7
+        height: 9
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,7 +156,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5802c2e217550db42acfc539b1ffa6f1
     internalID: 0
     vertices: []
     indices: 

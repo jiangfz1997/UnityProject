@@ -106,12 +106,12 @@ TextureImporter:
       name: Bringer-of-Death_Death_6_0
       rect:
         serializedVersion: 2
-        x: 84
-        y: 0
-        width: 46
-        height: 62
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 5
+        y: 1
+        width: 50
+        height: 60
+      alignment: 9
+      pivot: {x: 0.5, y: 0.0014620443}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -128,12 +128,12 @@ TextureImporter:
       name: Bringer-of-Death_Death_6_1
       rect:
         serializedVersion: 2
-        x: 129
-        y: 28
-        width: 7
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 5
+        y: 1
+        width: 50
+        height: 60
+      alignment: 9
+      pivot: {x: 0.5576821, y: 0.5000001}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -150,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 54f0b0099cd35004889221ce6fadb2c1
     internalID: 0
     vertices: []
     indices: 

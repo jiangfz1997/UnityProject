@@ -103,12 +103,12 @@ TextureImporter:
       name: Bringer-of-Death_Walk_4_0
       rect:
         serializedVersion: 2
-        x: 74
-        y: 0
-        width: 56
-        height: 57
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 11
+        y: 1
+        width: 54
+        height: 55
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d46a10b1e9223cf49835a2fcb27fbdd1
     internalID: 0
     vertices: []
     indices: 

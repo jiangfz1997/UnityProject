@@ -103,12 +103,12 @@ TextureImporter:
       name: slime-move-1_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 0
-        width: 28
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 4
+        y: 1
+        width: 26
+        height: 12
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 048498806512aff4f90abb00a8157aad
     internalID: 0
     vertices: []
     indices: 

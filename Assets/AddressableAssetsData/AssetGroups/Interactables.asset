@@ -15,13 +15,58 @@ MonoBehaviour:
   m_GroupName: Interactables
   m_GUID: e175411cb9d83f8468dbcf096ecd5210
   m_SerializeEntries:
+  - m_GUID: 0199309e64e582d469dda251c67bab4f
+    m_Address: Assets/Art Assets/SoundEffect/PurpleElite/purpleelite-melee-attack.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03e1526d12cb149499a6f2c5c310408b
+    m_Address: Assets/Art Assets/SoundEffect/PurpleElite/purpleelite-hurt-death-08.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b6e45f2ece43de428990205de18ba19
+    m_Address: Assets/Art Assets/SoundEffect/GreenGhost/ghost-death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d93e1a751b0b9942b3f9ee6798dd828
+    m_Address: Assets/Art Assets/SoundEffect/GreenGhost/ghost-hurt.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 41edca8eb28e4c3438168eda9651c606
     m_Address: Switch
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5862a1bcc75476e4687a25842ea0e224
+    m_Address: Assets/Art Assets/SoundEffect/Slime/slime-death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 61fbbf7c40dac2e41ae8486c4834c7d9
     m_Address: TreasureChest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71933b5078329b1478716e8472de4d18
+    m_Address: Assets/Art Assets/SoundEffect/GreenGhost/ghost-attackbullet.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8adf62d854516af408139527c933dcc7
+    m_Address: Assets/Art Assets/SoundEffect/PurpleElite/purpleelite-death-07.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a056df62057c4674ea95b38efcc17284
+    m_Address: Assets/Art Assets/SoundEffect/PurpleElite/purpleelite-hurt-01.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0284c39bcafc3c4f87eb75341964148
+    m_Address: Assets/Art Assets/SoundEffect/Slime/slime-attack-4-219777.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -32,6 +77,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc4ad8bfe0d9be64b8e4f34ada8e7bc5
     m_Address: swish-whip-85481
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e22b9654bea72f64cb9eb70571ccd99f
+    m_Address: Assets/Art Assets/SoundEffect/Slime/slime-hurt.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

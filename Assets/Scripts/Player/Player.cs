@@ -351,26 +351,49 @@ public class Player : Character
             }
         }
     }
+    //public void Attack()
+    //{
+
+    //    if (EventSystem.current.IsPointerOverGameObject())
+    //    {
+    //        // 点击在UI上，不攻击
+    //        return;
+    //    }
+
+    //    playerAnimation.PlayAttack();
+    //    if (physicsCheck.isGround)
+    //    {
+    //        isGroundAttack = true;
+    //    }
+    //    if (isClimbing) 
+    //    {
+    //        ExitClimb();
+    //    }
+    //}
+
     public void Attack()
     {
-
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            // 点击在UI上，不攻击
-            return;
-        }
-        
-        playerAnimation.PlayAttack();
-        if (physicsCheck.isGround)
-        {
-            isGroundAttack = true;
-        }
-        if (isClimbing) 
-        {
-            ExitClimb();
-        }
+        StartCoroutine(DelayedAttack());
     }
-  
+
+    private IEnumerator DelayedAttack()
+    {
+        yield return null; 
+
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            yield break; 
+        }
+
+        playerAnimation.PlayAttack();
+
+        if (physicsCheck.isGround)
+            isGroundAttack = true;
+
+        if (isClimbing)
+            ExitClimb();
+    }
+
 
 
     public void Climb(float verticalInput)
