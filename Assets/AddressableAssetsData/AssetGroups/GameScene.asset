@@ -16,43 +16,43 @@ MonoBehaviour:
   m_GUID: 3bcadf4027df73940ac3ca66ab86f7be
   m_SerializeEntries:
   - m_GUID: 1ed6d8caa0277fa4e8fa438973178860
-    m_Address: Assets/DataSO/GameScenes/Level_1.asset
+    m_Address: Level_1
     m_ReadOnly: 0
     m_SerializedLabels:
     - SceneData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 226018f792644ca4c851ea002f006aef
-    m_Address: Assets/DataSO/GameScenes/Boss_2.asset
+    m_Address: Boss_2
     m_ReadOnly: 0
     m_SerializedLabels:
     - SceneData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 249cdfea2353da047b69014efd2cc430
-    m_Address: Assets/DataSO/GameScenes/Level_3.asset
+    m_Address: Level_3
     m_ReadOnly: 0
     m_SerializedLabels:
     - SceneData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 65ae27fe478dd884ca13f6baf06ae5cc
-    m_Address: Assets/DataSO/GameScenes/Level_2.asset
+    m_Address: Level_2
     m_ReadOnly: 0
     m_SerializedLabels:
     - SceneData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7a12e026cad5e7f4785421c7aed56a35
-    m_Address: Assets/DataSO/GameScenes/Boss_1.asset
+    m_Address: Boss_1
     m_ReadOnly: 0
     m_SerializedLabels:
     - SceneData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 92a7aed3ebc274c4cb72d24a9971a2e5
-    m_Address: Assets/DataSO/GameScenes/Rest.asset
+    m_Address: Rest
     m_ReadOnly: 0
     m_SerializedLabels:
     - SceneData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cea7ad9a0f800c74d924e7ffdb7f09a6
-    m_Address: Assets/DataSO/GameScenes/Clear.asset
+    m_Address: Clear
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

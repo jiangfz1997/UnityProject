@@ -69,25 +69,25 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -900126974, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: 4204609365329573830, guid: b5f6c7c9ff237234c887ebdf82570f85, type: 3}
     - time: 0.125
-      value: {fileID: -619510997, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: -5348402317783229189, guid: 0263e7bc86b7e3646a4b9c9782678d2a, type: 3}
     - time: 0.25
-      value: {fileID: 795580965, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: 2910984905329603414, guid: 24fc674110028a4409667f2dbadcc9c0, type: 3}
     - time: 0.375
-      value: {fileID: -2059595003, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: -4469344607157116029, guid: 60ea3185e0ed6b1459229a97473a8186, type: 3}
     - time: 0.5
-      value: {fileID: -163133625, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: 3626629826592221038, guid: 0c41c3ab1a73fb34badaf0fc766124ba, type: 3}
     - time: 0.625
-      value: {fileID: 1430051726, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: -5751337539502890345, guid: c7e5e4071146c9e4d971d8fc0bd6c649, type: 3}
     - time: 0.75
-      value: {fileID: 1000744688, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: -3772868458599140213, guid: c9c1a266f2b6411469e4ded7104c60ad, type: 3}
     - time: 0.875
-      value: {fileID: -1753266362, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: -8859071070502595128, guid: df7462808df64e24398e956d40229616, type: 3}
     - time: 1
-      value: {fileID: -1610826713, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: 2990122378051729481, guid: 84adc0354adc4a2449e57db4c854979f, type: 3}
     - time: 1.125
-      value: {fileID: -254661999, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+      value: {fileID: 3974363349240814516, guid: e5768d0b7f0e68444bb7462aab8ead70, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -119,16 +119,16 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -900126974, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: -619510997, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: 795580965, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: -2059595003, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: -163133625, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: 1430051726, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: 1000744688, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: -1753266362, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: -1610826713, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
-    - {fileID: -254661999, guid: cc9e281d97550a5469b2673604925bd3, type: 3}
+    - {fileID: 4204609365329573830, guid: b5f6c7c9ff237234c887ebdf82570f85, type: 3}
+    - {fileID: -5348402317783229189, guid: 0263e7bc86b7e3646a4b9c9782678d2a, type: 3}
+    - {fileID: 2910984905329603414, guid: 24fc674110028a4409667f2dbadcc9c0, type: 3}
+    - {fileID: -4469344607157116029, guid: 60ea3185e0ed6b1459229a97473a8186, type: 3}
+    - {fileID: 3626629826592221038, guid: 0c41c3ab1a73fb34badaf0fc766124ba, type: 3}
+    - {fileID: -5751337539502890345, guid: c7e5e4071146c9e4d971d8fc0bd6c649, type: 3}
+    - {fileID: -3772868458599140213, guid: c9c1a266f2b6411469e4ded7104c60ad, type: 3}
+    - {fileID: -8859071070502595128, guid: df7462808df64e24398e956d40229616, type: 3}
+    - {fileID: 2990122378051729481, guid: 84adc0354adc4a2449e57db4c854979f, type: 3}
+    - {fileID: 3974363349240814516, guid: e5768d0b7f0e68444bb7462aab8ead70, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -201,4 +201,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.5
+    functionName: PlayAttackSound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

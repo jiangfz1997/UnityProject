@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerAttack : Attack
@@ -6,6 +7,9 @@ public class PlayerAttack : Attack
     public float knockbackForce;
     private BuffSystem buffSystem;
     private Player player;
+    private static bool canHit = true;
+    //private static bool isHitPauseActive = false;
+
     protected override void Start()
     {
         player = transform.root.GetComponent<Player>();
@@ -71,11 +75,22 @@ public class PlayerAttack : Attack
 
             float finalDamage = damage * attackMultiplier;
             character.TakeDamage(transform, finalDamage, knockbackForce, attackDamageType);
-            Enemy enemy = collision.GetComponent<Enemy>(); // 你要有 Enemy 脚本
+            Enemy enemy = collision.GetComponent<Enemy>();
 
             if (enemy != null)
             {
-                player.OnHitEnemy?.Invoke(enemy); // 派发事件，给饰品或系统监听
+                player.OnHitEnemy?.Invoke(enemy);
+                CameraAttackVibration cav = GetComponent<CameraAttackVibration>();
+                if (cav != null) { cav.TriggerImpulse(); }
+
+                if (canHit)
+                {
+                    canHit = false;
+                    StartCoroutine(HitPause(0.1f, 0.0f));
+                    ResetHitCooldown();
+
+                }
+
             }
         }
         else
@@ -90,6 +105,29 @@ public class PlayerAttack : Attack
             }
 
         }
+    }
+    private IEnumerator ResetHitCooldown()
+    {
+        // 可以控制冷却时间，比如 0.2 秒内不能重复触发
+        yield return new WaitForSeconds(0.1f);
+        canHit = true;
+    }
+    IEnumerator HitPause(float duration, float slowdownFactor = 0f)
+    {
+        // 保存原始时间速度
+        float originalTimeScale = Time.timeScale;
+
+        // 暂停或减慢
+        Time.timeScale = slowdownFactor;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+        // 等待实际时间（不是游戏内时间）
+        yield return new WaitForSecondsRealtime(duration);
+
+        // 恢复正常
+        Time.timeScale = originalTimeScale;
+        Time.fixedDeltaTime = 0.02f;
+
     }
 }
     

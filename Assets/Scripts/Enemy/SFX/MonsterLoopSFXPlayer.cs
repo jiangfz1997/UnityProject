@@ -19,6 +19,7 @@ public class MonsterLoopSFXPlayer : MonoBehaviour
 
     public void StartAllLoopSounds()
     {
+        if (config == null) return;
         if (config.walkClips.Length > 0)
             walkLoop = StartCoroutine(LoopSound(config.walkClips, config.walkMinInterval, config.walkMaxInterval));
 

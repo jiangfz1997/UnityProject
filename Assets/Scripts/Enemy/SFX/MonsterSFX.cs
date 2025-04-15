@@ -43,7 +43,7 @@ public class MonsterSFX : MonoBehaviour
                 deathClip = op.Result;
         }
 
-        if (soundData.attackSound != null)
+        if (soundData.attackSound != null && soundData.attackSound.RuntimeKeyIsValid())
         {
             var op = soundData.attackSound.LoadAssetAsync<AudioClip>();
             await op.Task;

@@ -13,13 +13,18 @@ public class CollectibleItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private ItemType type;
     [SerializeField] private int itemIndex; 
     [SerializeField] private bool isCollected = false;
+    [SerializeField] private GameObject DetailPanel;
+    [SerializeField] private TMPro.TextMeshProUGUI DetailTitle;
+    [SerializeField] private TMPro.TextMeshProUGUI DetailContent;
+    [TextArea(10, 30)]
+    [SerializeField] private string ContentText = "";
 
     [SerializeField] private string collectedDescription = "collected";
     [SerializeField] private string lockedDescription = "locked";
     
     [SerializeField] private GameObject tooltipPrefab; 
     [SerializeField] private Canvas canvas; 
-    [SerializeField] private int tooltipSortingOrder = 100; // 提示框排序顺序，一直不显示所以一怒之下怒了一下
+    [SerializeField] private int tooltipSortingOrder = 100; 
 
     private GameObject currentTooltip;
 
@@ -73,7 +78,6 @@ public class CollectibleItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
         else 
         {
-            // 添加一个canvas
             tooltipCanvas = currentTooltip.AddComponent<Canvas>();
             tooltipCanvas.overrideSorting = true;
             tooltipCanvas.sortingOrder = tooltipSortingOrder;
@@ -105,8 +109,7 @@ public class CollectibleItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         {
             if(isCollected)
             {
-                // return "Click to see more detail about this script.";
-                 return "You may click to see more detail in the near future.";
+                return "Click to see more detail about this script.";
             }
             else
             {
@@ -126,5 +129,21 @@ public class CollectibleItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
 
         return "";
+    }
+
+    public void ShowDetailPanel()
+    {
+        if(!isCollected)
+            return;
+        if (DetailPanel != null)
+        {
+            DetailTitle.text = "Scene " + (itemIndex+1);
+            DetailContent.text = ContentText;
+            DetailPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Failed to show. Detail panel is not assigned!");
+        }
     }
 }

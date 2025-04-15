@@ -103,12 +103,12 @@ TextureImporter:
       name: Bringer-of-Death_Idle_2_0
       rect:
         serializedVersion: 2
-        x: 85
-        y: 0
-        width: 42
-        height: 57
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 14
+        y: 1
+        width: 40
+        height: 55
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6132e57e26f16ed4aad6f151fa041197
     internalID: 0
     vertices: []
     indices: 

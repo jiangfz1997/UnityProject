@@ -20,7 +20,6 @@ public class GenericPatrolState : BaseState
         if (enemy.IsPlayerInSight())
         {
             enemy.SwitchState(EnemyState.Chase);
-            //enemy.SelectPatrolTarget();
             return;
         }
 

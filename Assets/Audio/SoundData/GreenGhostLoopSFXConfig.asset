@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24b9333f91d428447ac29c7dca6ff99f, type: 3}
+  m_Name: GreenGhostLoopSFXConfig
+  m_EditorClassIdentifier: 
+  walkClips: []
+  walkMinInterval: 0.5
+  walkMaxInterval: 1.2
+  groanClips:
+  - {fileID: 8300000, guid: e5556db69ad5caa4eba429025e8862bf, type: 3}
+  - {fileID: 8300000, guid: 10f6debd482ac83468425d97ca75f6e5, type: 3}
+  - {fileID: 8300000, guid: 34254db973ee90b46ab3151f87282492, type: 3}
+  - {fileID: 8300000, guid: e394c2d7f492c5c40b47648e79eb7bae, type: 3}
+  - {fileID: 8300000, guid: bdd9f5d92dd9f3a4d89d11340d2ac592, type: 3}
+  groanMinInterval: 2
+  groanMaxInterval: 5

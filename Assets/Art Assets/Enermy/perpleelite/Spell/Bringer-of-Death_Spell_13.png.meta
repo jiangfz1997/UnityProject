@@ -106,12 +106,12 @@ TextureImporter:
       name: Bringer-of-Death_Spell_13_0
       rect:
         serializedVersion: 2
-        x: 53
-        y: 23
-        width: 31
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 49
+        y: 1
+        width: 34
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5799794, y: 0.99855447}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -128,12 +128,12 @@ TextureImporter:
       name: Bringer-of-Death_Spell_13_1
       rect:
         serializedVersion: 2
-        x: 48
-        y: 0
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 49
+        y: 1
+        width: 20
+        height: 18
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -150,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ca0aa20a0bee69848afe0dc85ef39a7c
     internalID: 0
     vertices: []
     indices: 
