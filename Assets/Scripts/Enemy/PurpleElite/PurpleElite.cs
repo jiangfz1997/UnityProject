@@ -50,7 +50,12 @@ public class PurpleElite : Enemy
 
         currentState = patrolState;
     }
+    //protected override void HandleOnTakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
+    //{
+    //    if (isAttacking) return;
+       
 
+    //}
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -59,7 +64,7 @@ public class PurpleElite : Enemy
     protected override void Start()
     {
         base.Start();
-        SwitchState(EnemyState.Patrol);
+        SwitchState(patrolState);
     }
     protected override void Update()
     {
@@ -160,12 +165,12 @@ public class PurpleElite : Enemy
 
     public bool CanSeePlayer()
     {
-        Vector2 boxSize = sightBoxSize; // 感知区域大小（左右1.5，高2）
+        Vector2 boxSize = sightBoxSize; 
         Vector2 origin = (Vector2)rayCast.position + (Vector2)faceDir.normalized * (boxSize.x / 2f);
         RaycastHit2D hit = Physics2D.BoxCast(origin, boxSize, 0f, Vector2.zero, 0f, raycastMask);
 
-        Debug.DrawLine(origin - new Vector2(boxSize.x / 2f, 0), origin + new Vector2(boxSize.x / 2f, 0), Color.cyan); // 水平
-        Debug.DrawLine(origin - new Vector2(0, boxSize.y / 2f), origin + new Vector2(0, boxSize.y / 2f), Color.cyan); // 垂直
+        Debug.DrawLine(origin - new Vector2(boxSize.x / 2f, 0), origin + new Vector2(boxSize.x / 2f, 0), Color.cyan); 
+        Debug.DrawLine(origin - new Vector2(0, boxSize.y / 2f), origin + new Vector2(0, boxSize.y / 2f), Color.cyan); 
 
         return hit.collider != null && hit.collider.CompareTag("Player");
     }

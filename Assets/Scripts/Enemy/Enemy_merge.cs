@@ -238,8 +238,9 @@ public class Enemy : Character
         isHurt = false;
     }
 
-    private void HandleOnTakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
+    protected virtual void HandleOnTakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
+        if (isAttacking) return;
         rb.linearVelocity = Vector2.zero;
         Vector2 repelDir = new Vector2(0,0);
         //StartCoroutine(OnHurt(repelDir, knockbackForce));
@@ -247,7 +248,7 @@ public class Enemy : Character
         anim.SetTrigger("hurt");
         //monsterSFX.PlayHurtSound();
 
-        FlipToTarget(attacker); // 👈 翻转朝向
+        MoveTo(attacker.position); // 👈 翻转朝向
         
 
     }
@@ -378,7 +379,7 @@ public class Enemy : Character
     }
 
 
-    protected void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         //Gizmos.color = Color.blue;
         //Vector3 start = transform.position + (Vector3)centerDetectOffset;
@@ -388,12 +389,7 @@ public class Enemy : Character
         //Gizmos.DrawWireCube(end, checkSize);
         //Gizmos.DrawLine(start, end);
 
-        if (rayCast == null)
-        { 
-            Debug.LogWarning("rayCast is null");
-            return;
 
-        }
         Color color = IsPlayerInSight() ? Color.green : Color.red;
         Gizmos.color = color;
         Gizmos.DrawLine(rayCast.position, rayCast.position + (Vector3)faceDir * rayCastLength);

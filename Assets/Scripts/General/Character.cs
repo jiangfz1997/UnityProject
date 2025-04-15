@@ -110,6 +110,7 @@ public abstract class Character : MonoBehaviour
         }
     }
     
+
     public virtual void Die()
     {
         Debug.Log(gameObject.name + " Die");

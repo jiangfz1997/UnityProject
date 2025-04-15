@@ -29,18 +29,14 @@ public class PurpleEliteMeleeState : BaseState
         // Play attack animation
         enemy.anim.SetTrigger("melee");
 
-        // Wait for the attack animation to hit (可根据动画时长调整)
         yield return new WaitForSeconds(0.4f); // 前摇
 
         
 
-        // 设置近战冷却
         enemy.meleeTimer = enemy.meleeCooldown;
 
-        // 后摇时间
         yield return new WaitForSeconds(0.7f);
 
-        // 回到追击状态
         enemy.SwitchState(enemy.chaseState);
         isAttacking = false;
     }
