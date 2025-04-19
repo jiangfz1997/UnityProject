@@ -12,6 +12,8 @@ public class PlayerSFX : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
     }
+    public void PlayHeal() => PlayClip(config.healClip);
+    public void PlayDrink() => PlayClip(config.dreakPotionClip);
 
     public void PlayFootstep()
     {

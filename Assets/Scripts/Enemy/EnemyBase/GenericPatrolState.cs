@@ -38,8 +38,10 @@ public class GenericPatrolState : BaseState
         enemy.MoveTo(enemy.patrolTarget.position);
 
         // 如果靠近目标，切换巡逻方向
-        float distanceToTarget = Vector2.Distance(enemy.transform.position, enemy.patrolTarget.position);
-        if (distanceToTarget < 0.2f)
+        //float distanceToTarget = Vector2.Distance(enemy.transform.position, enemy.patrolTarget.position);
+        float distanceX = Mathf.Abs(enemy.transform.position.x - enemy.patrolTarget.position.x);
+
+        if (distanceX < 0.2f)
         {
             enemy.SelectPatrolTarget();
         }

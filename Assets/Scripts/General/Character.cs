@@ -15,12 +15,18 @@ public abstract class Character : MonoBehaviour
     [Header("Basic Attribute")]
     public float maxHP;
     public float currentHP;
+    public float defence = 0f;
+    public float damageBoost = 1f;
 
 
     [Header("Invincible")]
     public bool isInvincible;
     public float invincibleTime;
     private float invincibleCounter;
+
+    public Animator anim;
+    public bool isParalyzed;
+    public float paralyzeTimer = 0f;
 
     //public UnityEvent<Transform> OnTakeDamage;
     public event Action<Transform, float, float, DamageType> OnTakeDamage;
@@ -49,6 +55,7 @@ public abstract class Character : MonoBehaviour
         }
 
     }
+    public float GetDefence() { return defence; }
 
     public virtual void ChangeAttackSpeed(float speedMulti) { }
     public virtual void SetCurrentSpeed(float speed) { }
@@ -65,6 +72,8 @@ public abstract class Character : MonoBehaviour
                 isInvincible = false;
             }
         }
+
+        
     }
 
     //public virtual void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
@@ -114,5 +123,25 @@ public abstract class Character : MonoBehaviour
     public virtual void Die()
     {
         Debug.Log(gameObject.name + " Die");
+    }
+
+    public void SetParalyzed(bool value)
+    {
+        isParalyzed = value;
+        if (anim != null)
+            anim.speed = value ? 0f : 1f;
+
+        if (value)
+            paralyzeTimer = 0.5f;
+    }
+
+    public void AddDamageTakenMultiplier(float damageBoostPercent)
+    {
+        damageBoost += damageBoostPercent;
+    }
+
+    public void RemoveDamageTakenMultiplier(float damageBoostPercent)
+    {
+        damageBoost -= damageBoostPercent;
     }
 }

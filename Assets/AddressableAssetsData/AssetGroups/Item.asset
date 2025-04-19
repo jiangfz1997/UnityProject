@@ -20,14 +20,32 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37da399106035f74f9a954754d42df6b
+    m_Address: DefenseUpPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4133fbd94cc8462428b76e17b921a4df
     m_Address: HealthPotion
     m_ReadOnly: 0
     m_SerializedLabels:
     - Potion
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a56fd83c7ee12d4d9d3fc8a0654407a
+    m_Address: AttackUpPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b649831d1c83d5f45b3aa270005624c0
     m_Address: IceElementPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc2e87e1b6cbb0a4e9012da1bb47acc5
+    m_Address: LightningElementPotion
     m_ReadOnly: 0
     m_SerializedLabels:
     - Potion

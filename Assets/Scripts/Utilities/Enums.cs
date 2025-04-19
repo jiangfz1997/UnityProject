@@ -17,16 +17,18 @@ public enum DamageType
     Poison,
     Fire,
     Ice,
-    Electric
+    Lightning,
+    Superconduct,
 }
 
 public enum BuffType
 {
     AttackUp,
     DefenseUp,
-    AttackSpeedUp
-
-    
+    AttackSpeedUp,
+    SpeedUp,
+    DoubleJump,
+    SlowEnemy,
 }
 
 public enum StatusEffect
@@ -34,5 +36,7 @@ public enum StatusEffect
     // Debuff && injury type
     Burning,
     Frozen,
-    Poisoned,
+    Lightning,
+    Paralyze,
+    Superconduct,
 }

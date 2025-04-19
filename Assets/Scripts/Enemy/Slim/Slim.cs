@@ -61,6 +61,8 @@ public class Slim : Enemy
     public override void Die()
     {
         if (isDead) return;
+        if (anim != null)
+            anim.speed = 1f;
         anim.SetTrigger("dead");
         currentSpeed = 0;
         isDead = true;

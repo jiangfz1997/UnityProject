@@ -5,10 +5,10 @@ public class HealthPotion : Item
     public int healAmount = 50;
     // TODO: Different healAmount among different health potion?
 
-    public override void OnPickup(Character character)
+    public override void OnUse(Character character)
     {
 
-        //base.OnPickup(character);
+        //base.OnUse(character);
         if (character is Player player)
         {
             player.Heal(healAmount);

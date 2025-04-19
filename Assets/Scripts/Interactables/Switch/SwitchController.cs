@@ -7,28 +7,48 @@ public class SwitchController : MonoBehaviour, IInteractable
     //private bool isPlayerNearby = false;
     //private bool isGateOpen = false;
     [SerializeField] private bool isActivated = false;
+
     private SpriteRenderer spriteRenderer;
     public GameObject[] objectsToActivate;
+
+    public bool moveCamera = false;
+    public Transform[] moveCameraTarget;
+    public float focusTime=3f;
+    public float transformCamTime = 1f;
+    public float cameraSize = 10f;
     [SerializeField] private Sprite avatarImage;
+    public AudioClip switchSFX;
+    protected AudioSource audioSource;
 
     public void Interact()
     {
+        if (moveCamera && moveCameraTarget.Length > 0)
+        {
+            for (int i = 0; i < moveCameraTarget.Length; i++)
+            {
+                Transform focusPoint = moveCameraTarget[i];
+                Vector3 target = focusPoint.position;
+                CameraController.Instance.FocusOn(focusPoint, focusTime, transformCamTime, cameraSize);
+            }
+           
+        }
+        
         if (isActivated)
         {
             return;
         }
-        isActivated = !isActivated; // **切换状态**
+        isActivated = !isActivated;
 
+        if (audioSource != null && switchSFX != null)
+        {
+            audioSource.PlayOneShot(switchSFX);
+        }
         spriteRenderer.flipX = isActivated;
         //eKeyPrompt.SetActive(false);
 
         DialogueTrigger();
 
-        // **触发 Gate 事件**
-        //if (gate != null)
-        //{
-        //    gate.GetComponent<GateController>().OpenDoor();
-        //}
+
         foreach (GameObject obj in objectsToActivate)
         {
             if (obj != null)
@@ -36,7 +56,7 @@ public class SwitchController : MonoBehaviour, IInteractable
                 IActivatable activatable = obj.GetComponent<IActivatable>();
                 if (activatable != null)
                 {
-                    activatable.Activate(); // 触发不同物体的行为
+                    activatable.Activate(); 
                 }
             }
         }
@@ -46,6 +66,8 @@ public class SwitchController : MonoBehaviour, IInteractable
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+
         //if (eKeyPrompt)
         //{
         //    eKeyPrompt.SetActive(false);

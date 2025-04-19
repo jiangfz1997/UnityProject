@@ -39,7 +39,7 @@ public class ItemFactory : MonoBehaviour
         string path = Path.Combine(Application.streamingAssetsPath, jsonFileName);
         if (!File.Exists(path))
         {
-            Debug.LogError("❌ 找不到 ItemTable.json 文件: " + path);
+            Debug.LogError("Cnanot find ItemTable.json : " + path);
             return;
         }
 
@@ -51,31 +51,10 @@ public class ItemFactory : MonoBehaviour
             idToAddress[entry.id] = entry.address;
         }
 
-        Debug.Log($"✅ ItemFactory 初始化完成，共加载 {idToAddress.Count} 项");
+        Debug.Log($"ItemFactory init compelte: {idToAddress.Count} item");
     }
 
-    //public void CreateItemById(int id, System.Action<GameObject> callback)
-    //{
-    //    if (!idToAddress.TryGetValue(id, out var address))
-    //    {
-    //        Debug.LogError("❌ 无法根据ID找到对应的Item地址: " + id);
-    //        callback?.Invoke(null);
-    //        return;
-    //    }
 
-    //    Addressables.InstantiateAsync(address).Completed += (handle) =>
-    //    {
-    //        if (handle.Status == AsyncOperationStatus.Succeeded)
-    //        {
-    //            callback?.Invoke(handle.Result);
-    //        }
-    //        else
-    //        {
-    //            Debug.LogError($"❌ 加载 {address} 失败！");
-    //            callback?.Invoke(null);
-    //        }
-    //    };
-    //}
     public void CreateItemLogicOnlyById(int id, Action<Item> onComplete)
     {
         if (!idToAddress.TryGetValue(id, out var address))
@@ -104,7 +83,7 @@ public class ItemFactory : MonoBehaviour
     {
         if (!idToAddress.TryGetValue(id, out var address))
         {
-            Debug.LogError($"❌ 未找到对应 ID {id} 的 Address");
+            Debug.LogError($"Cannot find {id}'s Address");
             onComplete?.Invoke(null);
             return;
         }
@@ -128,7 +107,7 @@ public class ItemFactory : MonoBehaviour
             }
             else
             {
-                Debug.LogError("❌ Addressables 加载失败");
+                Debug.LogError(" Addressables loading failed");
                 onComplete?.Invoke(null);
             }
         };

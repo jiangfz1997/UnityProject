@@ -31,8 +31,12 @@ public class Player : Character
 
     [Header("Movement")]
     public float speed;
+    public float speedMultiplier = 1f; // Speed multiplier for buffs
     public float climbSpeed;
     public float jumpForce;
+    public bool canDoubleJump = true;
+    public bool hasJumpedOnce = false;
+    public bool hasDoubleJumped = false;
     public Vector2 debugVelocity;
 
     [Header("Dash")]
@@ -77,10 +81,13 @@ public class Player : Character
 
     public ParticleSystem dashSpeedLine;
 
+    private float DifficultyMultiplier = 1.0f;
+
     private PlayerStats stats;
     //private bool isAddingItem = false;
     public bool isAttacking = false;
     public Action<Enemy> OnHitEnemy;
+    public PlayerSFX playerSFX;
 
 
     //public List<ItemData> inventory = new List<ItemData>(); // For extendable inventory system
@@ -89,13 +96,17 @@ public class Player : Character
 
     public void CollectGold(int amount) 
     {
+        amount = Mathf.RoundToInt(amount * DifficultyMultiplier);
         stats.AddGold(amount);
     }
     public void SpendGold(int amount)
     {
         stats.SpendGold(amount);
     }
-
+    public void PlayDrinkSound() 
+    {
+        if (playerSFX != null) { playerSFX.PlayDrink(); }
+    }
     public List<ItemData> GetInventory() { return playerInventory.GetInventory(); }
 
     public bool isClimbing
@@ -122,6 +133,7 @@ public class Player : Character
     protected override void Start()
     {
         base.Start();
+        DifficultyMultiplier = PlayerPrefs.GetFloat("Difficulty", 1.0f);
         stats = GetComponent<PlayerStats>();
         
         rb = GetComponent<Rigidbody2D>();
@@ -154,6 +166,7 @@ public class Player : Character
 
         defaultMaterial = spriteRenderer.material;
 
+        playerSFX = GetComponent<PlayerSFX>();
 
     }
     IEnumerator InitConfinerNextFrame()
@@ -163,7 +176,7 @@ public class Player : Character
         var playerCamera = GameObject.Find("PlayerCamera");
         CinemachineCamera vcam = playerCamera.GetComponent<CinemachineCamera>();
         vcam.enabled = false;
-        yield return null; // 🚨 延迟一帧等场景完全加载完毕
+        yield return null; 
 
         vcam.enabled = true;
         if (!vcam)
@@ -202,6 +215,11 @@ public class Player : Character
     public List<ElementType> GetAvailableElements()
     {
         return elementSystem.AvailableElements;
+    }
+
+    public int GetElementPoint(ElementType element)
+    {
+        return elementSystem.GetElementPoint(element);
     }
 
     // Replace all occurrences of "rb.velocity" with "rb.linearVelocity" to fix the CS0618 diagnostic.  
@@ -267,7 +285,7 @@ public class Player : Character
         else
         {
             
-            rb.linearVelocity = new Vector2(inputDirection.x * speed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(inputDirection.x * speed * speedMultiplier, rb.linearVelocity.y);
         }
 
         
@@ -294,13 +312,41 @@ public class Player : Character
         projectileInstance.GetComponent<Projectile>().Initialize(shootDirection, projectileData);
     }
 
+    //public void Jump()
+    //{
+    //    if (physicsCheck.isGround)
+    //    {
+    //        rb.AddForce(transform.up* jumpForce, ForceMode2D.Impulse);
+    //    }
+
+    //}
     public void Jump()
     {
         if (physicsCheck.isGround)
         {
-            rb.AddForce(transform.up* jumpForce, ForceMode2D.Impulse);
+            // 第一次跳  
+            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            hasJumpedOnce = true;
+            hasDoubleJumped = false; // 重置二段跳  
         }
+        else if (canDoubleJump && hasJumpedOnce && !hasDoubleJumped)
+        {
+            // 二段跳  
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); // 重置竖直速度，让二段跳手感更好  
+            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            hasDoubleJumped = true;
+        }
+    }
 
+    public void EnableDoubleJump()
+    {
+        canDoubleJump = true;
+    }
+    public void DisableDoubleJump()
+    {
+        canDoubleJump = false;
+        hasJumpedOnce = false;
+        hasDoubleJumped = false;
     }
 
     public int GetGold()
@@ -490,6 +536,8 @@ public class Player : Character
     {
         Debug.Log("Player Get Hurt");
         isHurt = true;
+        //float defenceMultiplier = buffSystem.GetDefenseMultiplier();
+        //damage *= (1-defenceMultiplier);
         damageHandler.HandleDamage(attacker, damage, knockbackForce, damageType);
 
     }
@@ -541,7 +589,16 @@ public class Player : Character
             ui.ShowDeathScreen();
         }
     }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (nearbyInteractable != null) return;
 
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactable != null)
+        {
+            nearbyInteractable = interactable;
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -585,7 +642,7 @@ public class Player : Character
     public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
         if (isInvincible || isDead) return;
-        InvokeTakeDamageEvent(attacker, damage, knockbackForce, damageType);
+        InvokeTakeDamageEvent(attacker, damage*DifficultyMultiplier, knockbackForce, damageType);
         //stats.ReduceHealth((int)damage);
         if (stats.GetCurrentHealth() <= 0)
         {
@@ -646,17 +703,23 @@ public class Player : Character
         this.speed = speed;
     }
 
-    public void ApplyBuff(BuffType type, float duration, float value = 1.0f)
+    public void ApplyBuff(BuffType type, float duration, float value = 1.0f, string sourceId="")
     {
-        buffSystem.AddBuff(type, duration, value);
+        buffSystem.AddBuff(type, duration, value, sourceId);
     }
     public void AddElementPoint(ElementType type, int amount)
     {
         elementSystem.AddElementPoint(type, amount);
     }
-    public void RemoveBuff(BuffType type)
+    
+    //public void RemoveBuff(BuffType type)
+    //{
+    //    buffSystem.RemoveBuff(type);
+    //}
+    
+    public void RemoveBuffBySource(String id)
     {
-        buffSystem.RemoveBuff(type);
+        buffSystem.RemoveBuffBySource(id);
     }
 
     public void RemoveAllBuff()
@@ -668,12 +731,18 @@ public class Player : Character
     {
         var effect = transform.Find("Effect/RestoreHealth")?.gameObject;
 
+        if (playerSFX != null) 
+        {
+            playerSFX.PlayHeal();
+        }
         if (effect != null)
         {
             effect.SetActive(false);
             effect.SetActive(true);
             StartCoroutine(HideEffectAfterDelay(effect, 1f));
+
         }
+
     }
 
     private IEnumerator HideEffectAfterDelay(GameObject go, float delay)
@@ -685,6 +754,16 @@ public class Player : Character
     public void DebugSuiside() 
     {
         Die();
+    }
+
+    public void PlayerSpeedUp(float percent) 
+    {
+        speedMultiplier += percent;
+    }
+
+    public void PlayerSpeedDown(float percent)
+    {
+        speedMultiplier -= percent;
     }
 
 

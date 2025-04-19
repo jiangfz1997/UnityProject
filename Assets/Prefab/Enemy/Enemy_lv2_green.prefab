@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 4790911744464644101}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.1, y: 0, z: 0}
+  m_LocalPosition: {x: -13.06, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -562,8 +562,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 150
   currentHP: 0
+  defence: 0
+  damageBoost: 1
   isInvincible: 0
   invincibleTime: 0.2
+  anim: {fileID: 0}
+  isParalyzed: 0
+  paralyzeTimer: 0
   OnDie:
     m_PersistentCalls:
       m_Calls:
@@ -597,7 +602,6 @@ MonoBehaviour:
   buffSystem: {fileID: 0}
   statusEffectSystem: {fileID: 0}
   rb: {fileID: 0}
-  anim: {fileID: 0}
   physicsCheck: {fileID: 0}
   attacker: {fileID: 0}
   coll: {fileID: 0}
@@ -638,6 +642,7 @@ MonoBehaviour:
   lostTargetTimer: 0
   monsterSFX: {fileID: 0}
   monsterLoopSFX: {fileID: 0}
+  sightBoxSize: {x: 20.53, y: 4.49}
   dropChance: 0.5
   debugCurrentState: 
 --- !u!114 &1736638887136414808
@@ -653,6 +658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shouldSave: 0
+  activeBuffs: []
 --- !u!114 &1371087722739429893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,19 +709,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ae6f8f15047e924cb51855c3abdd17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomOffset: {x: -0.03, y: 0.11}
+  bottomOffset: {x: 0.16, y: 0.11}
   isGround: 0
   checkRaduis: 0.39
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
-  leftOffset: {x: -1.47, y: 0.94}
+  leftOffset: {x: -1.51, y: 0.94}
   rightOffset: {x: 1.56, y: 0.96}
   touchLeftWall: 0
   touchRightWall: 0
   manual: 0
   isCliffAhead: 0
-  cliffCheckOffset: {x: 1.45, y: 0.47}
+  cliffCheckOffset: {x: 1.61, y: 0.47}
 --- !u!82 &2484760453845451983
 AudioSource:
   m_ObjectHideFlags: 0

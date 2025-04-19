@@ -21,8 +21,21 @@ public static class StatusEffectFactory
                 if (baseParam is FrozenParams freeze)
                     return new FrozenStatus(target, freeze.duration, freeze.slowMultiplier);
                 break;
+            
+            case StatusEffect.Lightning:
+                if (baseParam is LightningParams lightning)
+                    return new LightningStatus(target);
+                break;
+            case StatusEffect.Paralyze:
+                if (baseParam is ParalyzeParams paralyze)
+                    return new ParalyzeStatusEffect(target, paralyze.stunDuration);
+                break;
+            case StatusEffect.Superconduct:
+                if (baseParam is SuperconductParams superconduct)
+                    return new SuperconductStatusEffect(target, superconduct.duration, superconduct.damageBoostParams);
+                break;
 
-               
+
         }
 
         return null;

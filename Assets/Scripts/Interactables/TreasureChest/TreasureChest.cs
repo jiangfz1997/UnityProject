@@ -8,20 +8,24 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class TreasureChest : MonoBehaviour, IInteractable
 {
     //public GameObject eKeyPrompt;
-    public TreasureChestType chestType; // 这个宝箱的类型
+    public TreasureChestType chestType; 
     private LootTableLoader lootTableLoader;
 
     public TreasureChestAnimator animatorController;
     public Transform spawnPoint;
     private bool isOpened = false;
 
+    public AudioClip openSFX;
+    protected AudioSource audioSource;
+
     void Start()
     {
         animatorController = GetComponent<TreasureChestAnimator>();
-        // 使用 FindFirstObjectByType 代替已过时的 FindObjectOfType
-        lootTableLoader = LootTableLoader.Instance; // 🚀 直接从单例获取
+        lootTableLoader = LootTableLoader.Instance; 
 
-        lootTableLoader.LoadLootTable(); // 🚀 运行时加载 JSON 配置
+        lootTableLoader.LoadLootTable();
+
+        audioSource = GetComponent<AudioSource>();
         //if (eKeyPrompt)
         //{
         //    eKeyPrompt.SetActive(false);
@@ -58,6 +62,15 @@ public class TreasureChest : MonoBehaviour, IInteractable
         //eKeyPrompt.SetActive(false);
 
         SpawnLoot();
+        if (audioSource != null && openSFX != null)
+        {
+            audioSource.PlayOneShot(openSFX);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or Open SFX is not assigned.");
+        }
+
     }
     private void SpawnLoot()
     {

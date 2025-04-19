@@ -12,6 +12,11 @@ public class GreenGhostPatrolState : GenericPatrolState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (enemy.IsPlayerInSight())
+        {
+            enemy.SwitchState(EnemyState.Chase);
+            return;
+        }
     }
 
     public override void PhysicsUpdate() { }

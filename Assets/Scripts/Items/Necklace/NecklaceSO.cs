@@ -5,9 +5,12 @@ using System.Collections.Generic;
 public enum AbilityType
 {
     None,
-    DoubleJump,
+    SpeedUp,
     AttackBoost,
-    SlowEnemy
+    SlowEnemy,
+    AttackUp,
+    DoubleJump,
+    DefenseUp,
 }
 
 [CreateAssetMenu(menuName = "Item/Necklace")]
@@ -22,15 +25,14 @@ public class NecklaceSO : ScriptableObject
     public List<AbilityType> abilityTypeList;
 
 
-    public Necklace CreateRuntimeInstance()
+    public Necklace CreateRuntimeInstance(string UID)
     {
-        var necklace = new Necklace(id);
+        var necklace = new Necklace(id, UID);
 
-        // 这里根据 ScriptableObject 中的 abilityType 创建对应能力
         foreach (AbilityType abilityType in abilityTypeList) 
         
         {
-            var ability = NecklaceAbilityFactory.CreateAbility(abilityType);
+            var ability = NecklaceAbilityFactory.CreateAbility(abilityType, UID);
             if (ability != null)
             {
                 necklace.AddAbility(ability);

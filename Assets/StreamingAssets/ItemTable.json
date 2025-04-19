@@ -1,10 +1,11 @@
 {
   "items": [
     { "id": 1, "address": "HealthPotion", "type": "Potion", "price": 50 },
-    { "id": 2, "address": "FireElementPotion", "type": "Potion", "price": 40 },
+    { "id": 2, "address": "AttackUpPotion", "type": "Potion", "price": 40 },
     { "id": 3, "address": "IceElementPotion", "type": "Potion", "price": 40 },
 
     { "id": 4, "address": "FireRing", "type": "Accessory", "price": 100 },
-    { "id": 5, "address": "IceAmulet", "type": "Accessory", "price": 120 }
+    { "id": 5, "address": "DefenseUpPotion", "type": "Potion", "price": 40 },
+    { "id": 6, "address": "LightningElementPotion", "type": "Potion", "price":40}
   ]
 }

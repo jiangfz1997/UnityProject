@@ -25,6 +25,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14cf302cd46d1b442b4d0769816ae5f6
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/cloud-poof.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37210555dce98224ea07cf7b6104c7de
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/male_hurt3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3b6e45f2ece43de428990205de18ba19
     m_Address: Assets/Art Assets/SoundEffect/GreenGhost/ghost-death.wav
     m_ReadOnly: 0
@@ -35,8 +45,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3fbb1d2925386a1438ae532427a49b12
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/death_slith_11.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 41edca8eb28e4c3438168eda9651c606
     m_Address: Switch
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51f67a92efe39bf48ae9d26f00ac8839
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/energyshield.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5222b6eac5278c04ebd33522c097e6e3
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/shield_short.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -60,6 +85,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9043b8aa85742674f8faa8b82a2b1085
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/hit-1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98808ac45ce456d4db448af34acc6042
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/shield-short.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a056df62057c4674ea95b38efcc17284
     m_Address: Assets/Art Assets/SoundEffect/PurpleElite/purpleelite-hurt-01.wav
     m_ReadOnly: 0
@@ -70,6 +105,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d41304d7f88d0ac4caf471cb1353e74b
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/bEliteSlash-01.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d8ede4d31de1bb54e8db4424f406925a
     m_Address: PlayerData
     m_ReadOnly: 0
@@ -77,6 +117,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc4ad8bfe0d9be64b8e4f34ada8e7bc5
     m_Address: swish-whip-85481
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de951a085d25ffa4f8852c6f585b22b8
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/bEliteSlash-02.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -92,6 +137,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f8f6757cdc847ed4eb0671db5d40692c
     m_Address: FOOTSTEP_Leather_Wood_Hollow_Jump_Up_RR6_mono
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa0d6ea3758fe0548a1424a463b8f2fb
+    m_Address: Assets/Art Assets/SoundEffect/BlackElite/death_slith_12.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

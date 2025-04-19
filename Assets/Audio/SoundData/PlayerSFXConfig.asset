@@ -31,3 +31,5 @@ MonoBehaviour:
   deathClip: {fileID: 8300000, guid: ad9a04b2551ac6b46baca72aab30a0e7, type: 3}
   chargeClip: {fileID: 8300000, guid: e6aa674f86d288b46accba0b6387fc4f, type: 3}
   dashClip: {fileID: 8300000, guid: 2170e081b342b174eaa67a5d03220276, type: 3}
+  healClip: {fileID: 8300000, guid: dd87e9d9379e1e840b070c97d3f4b36d, type: 3}
+  dreakPotionClip: {fileID: 8300000, guid: 363659e496476834e88cc7003097883f, type: 3}

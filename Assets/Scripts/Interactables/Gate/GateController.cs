@@ -15,10 +15,14 @@ public class GateController : MonoBehaviour,IActivatable
     private bool isOpening = false;
     private GameObject LevelExitPoint;
 
+    public AudioClip openSFX;
+    protected AudioSource audioSource;
+
     void Start()
     {
         closedPosition = gateBar.position;
         openPosition = closedPosition + new Vector3(0, openHeight, 0);
+        audioSource = GetComponent<AudioSource>();
     }
     private void Awake()
     {
@@ -47,6 +51,7 @@ public class GateController : MonoBehaviour,IActivatable
         if (!isOpening)
         {
             isOpening = true;
+
             StartCoroutine(ShakeAndOpen());
         }
     }
@@ -60,7 +65,19 @@ public class GateController : MonoBehaviour,IActivatable
     }
     IEnumerator ShakeAndOpen()
     {
-        
+        if (audioSource != null && openSFX != null)
+        {
+            audioSource.PlayOneShot(openSFX);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or Open SFX is not assigned.");
+        }
+        if (LevelExitPoint != null)
+        {
+            LevelExitPoint.SetActive(true);
+            Debug.Log("Teleport Point Activated!");
+        }
         for (int i = 0; i < shakeCount; i++)
         {
             gateBar.position += new Vector3(shakeIntensity, 0, 0);
@@ -74,11 +91,7 @@ public class GateController : MonoBehaviour,IActivatable
             gateBar.position = Vector3.Lerp(gateBar.position, openPosition, Time.deltaTime * speed);
             yield return null;
         }
-        if (LevelExitPoint != null)
-        {
-            LevelExitPoint.SetActive(true);
-            Debug.Log("Teleport Point Activated!");
-        }
+        
     }
 
     public void Activate()

@@ -46,9 +46,8 @@ public class LevelManager : MonoBehaviour
 
         if (currentLevelIndex >= levelScenes.Count - 1)
         {
-            // all clear
             Debug.Log("All levels completed!");
-            // clear something
+            CleanDontDestroyOnLoad();
             SceneManager.LoadScene("ClearMenu");
         } else {
             loadEventSO.RaiseLoadRequestEvent(breakRoomScene, breakRoomSpawnPoint, true);
@@ -57,21 +56,39 @@ public class LevelManager : MonoBehaviour
         
     }
 
-    // 从休息室进入下一关卡
+    private void CleanDontDestroyOnLoad()
+    {
+        Destroy(GameObject.Find("MusicManager"));
+        Destroy(GameObject.Find("GameManager"));
+        Destroy(GameObject.Find("PlayerCamera"));
+        Destroy(GameObject.Find("EventSystem"));
+        Destroy(GameObject.Find("ScenesManager"));
+        Destroy(GameObject.Find("DelayedActionManager"));
+        Destroy(GameObject.Find("[DOTween]"));
+        Destroy(GameObject.Find("[Debug Updater]"));
+
+    }
+
     public void LoadNextLevel(int transType)
     {
         int nextLevelIndex = currentLevelIndex + 1;
 
         if (nextLevelIndex >= levelScenes.Count)
         {
-            nextLevelIndex = 0;
-            Debug.Log("All levels completed but this should not happen");
+            AllScenesFinished();
         }
 
         currentLevelIndex = nextLevelIndex;
 
         Debug.Log($"Loading level: {currentLevelIndex}");
         loadEventSO.RaiseLoadRequestEvent(levelScenes[currentLevelIndex], levelSpawnPoint[currentLevelIndex], true);
+    }
+
+    private void AllScenesFinished()
+    {
+        Debug.Log("All levels completed!");
+        // clear something
+        SceneManager.LoadScene("ClearMenu");
     }
 
     public int GetCurrentLevelIndex()

@@ -11,6 +11,11 @@ public class MenuController : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Start Game: " + gameSceneName);
+        // check difficulty
+        if (PlayerPrefs.GetFloat("Difficulty") == 0 || PlayerPrefs.GetFloat("Difficulty") < 1)
+        {
+            PlayerPrefs.SetFloat("Difficulty", 1);
+        }
         SceneManager.LoadScene(gameSceneName);
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerEquipmentSaveData
 {
     public int equippedNecklaceId;
+    public string equippedNecklaceAbilityUid;
 }
 public class PlayerEquipment : MonoBehaviour, ISaveable
 {
@@ -46,7 +47,7 @@ public class PlayerEquipment : MonoBehaviour, ISaveable
         return equippedNecklace;
     }
 
-    public void EquipNecklace(NecklaceSO necklaceData)
+    public void EquipNecklace(NecklaceSO necklaceData, string UID=null)
     {
         if (equippedNecklace != null)
         {
@@ -54,12 +55,16 @@ public class PlayerEquipment : MonoBehaviour, ISaveable
             return;
         }
         equippedNecklaceSO = necklaceData;
+        
+        equippedNecklace = necklaceData.CreateRuntimeInstance(UID);
 
-        equippedNecklace = necklaceData.CreateRuntimeInstance();
+
         equippedNecklace.Activate(player);
         necklaceUI?.UpdateUI(necklaceData);
         Debug.Log($"Equipped Necklace: {necklaceData.displayName}");
     }
+
+    
 
     public void UnequipNecklace()
     {
@@ -83,9 +88,19 @@ public class PlayerEquipment : MonoBehaviour, ISaveable
 
     public object CaptureState()
     {
+        if (equippedNecklace == null || equippedNecklaceSO == null)
+        {
+            return new PlayerEquipmentSaveData
+            {
+                equippedNecklaceId = -1,
+                equippedNecklaceAbilityUid = null
+            };
+        }
+
         return new PlayerEquipmentSaveData
         {
-            equippedNecklaceId = equippedNecklaceSO != null ? equippedNecklaceSO.id : -1
+            equippedNecklaceId = equippedNecklaceSO.id,
+            equippedNecklaceAbilityUid = equippedNecklace.GetUID()
         };
     }
 
@@ -103,7 +118,9 @@ public class PlayerEquipment : MonoBehaviour, ISaveable
             if (found != null)
             {
                 UnequipNecklace();
-                EquipNecklace(found);
+                string restoredUid = data.equippedNecklaceAbilityUid;
+
+                EquipNecklace(found, restoredUid);
             }
             else
             {

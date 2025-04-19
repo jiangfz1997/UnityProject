@@ -4,21 +4,25 @@ using UnityEngine;
 
 public static class ElementalReactionManager
 {
-    private static readonly Dictionary<Tuple<StatusEffect, StatusEffect>, Action<Character>> elementalReactions =
-        new Dictionary<Tuple<StatusEffect, StatusEffect>, Action<Character>>
+    private static readonly Dictionary<Tuple<StatusEffect, StatusEffect>, Action<Character,float>> elementalReactions =
+        new Dictionary<Tuple<StatusEffect, StatusEffect>, Action<Character,float>>
         {
             { new Tuple<StatusEffect, StatusEffect>(StatusEffect.Burning, StatusEffect.Frozen), ApplyMeltEffect },
             { new Tuple<StatusEffect, StatusEffect>(StatusEffect.Frozen, StatusEffect.Burning), ApplyMeltEffect },
-            //{ new Tuple<StatusEffect, StatusEffect>(StatusEffect.Electrified, StatusEffect.Frozen), ApplySuperconductEffect }
-            
+            { new Tuple<StatusEffect, StatusEffect>(StatusEffect.Lightning, StatusEffect.Burning), ApplyOverHeatEffect },
+            { new Tuple<StatusEffect, StatusEffect>(StatusEffect.Burning, StatusEffect.Lightning), ApplyOverHeatEffect },
+            { new Tuple<StatusEffect, StatusEffect>(StatusEffect.Frozen, StatusEffect.Lightning), ApplySuperconductEffect },
+            { new Tuple<StatusEffect, StatusEffect>(StatusEffect.Lightning, StatusEffect.Frozen), ApplySuperconductEffect },
+
         };
 
   
 
     public static bool TryTriggerReaction(
         Character target,
+        float damage,
         StatusEffect newEffect,
-        out Action<Character> reaction,
+        out Action<Character, float> reaction,
         out List<StatusEffect> elementsToRemove)
     {
         elementsToRemove = new List<StatusEffect>();
@@ -47,10 +51,10 @@ public static class ElementalReactionManager
     }
 
 
-    private static void ApplyMeltEffect(Character target)
+    private static void ApplyMeltEffect(Character target, float damage)
     {
-       
-        target.ModifyHP(-15); 
+        float meltDamage = -1f * damage * 0.5f;
+        target.ModifyHP(meltDamage); 
         Transform effectTransform = target.transform.Find("meltEffect");
         if (effectTransform != null)
         {
@@ -59,10 +63,22 @@ public static class ElementalReactionManager
         }
     }
 
-    
-    //private static void ApplySuperconductEffect(Character target)
-    //{
-    //   
-    //    target.GetComponent<BuffSystem>().AddBuff(BuffType.DefenseDown, 5f, 0.8f);
-    //}
+
+    private static void ApplySuperconductEffect(Character target, float damage)
+    {
+        var effect = StatusEffectFactory.CreateEffect(StatusEffect.Superconduct, target);
+        if (effect != null)
+        {
+            target.statusEffectSystem.AddEffect(effect, damage);
+        }
+    }
+
+    private static void ApplyOverHeatEffect(Character target, float damage)
+    {
+        Transform effectTransform = target.transform.Find("OverheatEffect");
+        if (effectTransform != null)
+        {
+            effectTransform.gameObject.SetActive(true);
+        }
+    }
 }

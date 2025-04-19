@@ -41,7 +41,7 @@ public class FrozenStatus : BaseStatusEffect
                 handler.ApplyFreezeEffect(duration);
             }
 
-            Debug.Log($"🧊 FrozenStatus applied. Speed reduced to {slowMultiplier * 100}% for {duration} seconds.");
+            Debug.Log($"FrozenStatus applied. Speed reduced to {slowMultiplier * 100}% for {duration} seconds.");
         }
     }
 
@@ -62,7 +62,7 @@ public class FrozenStatus : BaseStatusEffect
         if (target != null)
         {
             target.SetCurrentSpeed(originalSpeed);
-            Debug.Log($"🧊 FrozenStatus ended. Speed restored.");
+            Debug.Log($"FrozenStatus ended. Speed restored.");
         }
         if (frozenEffect != null)
         {
@@ -84,7 +84,6 @@ public class FrozenStatus : BaseStatusEffect
                 float alpha = Mathf.PingPong(Time.time * 3f, 0.4f) + 0.6f;
                 sr.color = new Color(0.5f, 0.7f, 1f, alpha);
 
-                // ✅ 如果角色翻转，冰冻遮罩也翻转
                 if (bodyRenderer != null)
                 {
                     sr.flipX = bodyRenderer.flipX;

@@ -11,4 +11,6 @@ public class PlayerSFXConfig : ScriptableObject
     public AudioClip deathClip;
     public AudioClip chargeClip;
     public AudioClip dashClip;
+    public AudioClip healClip;
+    public AudioClip dreakPotionClip;
 }

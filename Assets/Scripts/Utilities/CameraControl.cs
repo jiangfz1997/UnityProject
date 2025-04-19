@@ -50,7 +50,7 @@ public class CameraControl : MonoBehaviour
     //}
     IEnumerator InitConfinerNextFrame()
     {
-        yield return null; // 🚨 延迟一帧等场景完全加载完毕
+        yield return null; 
 
 
         var playerCamera = GameObject.Find("PlayerCamera");

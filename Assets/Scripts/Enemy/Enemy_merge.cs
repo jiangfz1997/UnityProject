@@ -4,7 +4,7 @@ using UnityEngine;
 public class Enemy : Character
 {
     public Rigidbody2D rb;
-    [HideInInspector] public Animator anim;
+    //[HideInInspector] public Animator anim;
     [HideInInspector] public EnemyPhysicsCheck physicsCheck;
     public Transform attacker;
     public CapsuleCollider2D coll;
@@ -34,6 +34,7 @@ public class Enemy : Character
     public float lostTime;
     public float lostTimeCounter;
 
+
     protected BaseState patrolState;
     protected BaseState currentState;
     protected BaseState chaseState;
@@ -62,6 +63,16 @@ public class Enemy : Character
     public float lostTargetTimer;
     public MonsterSFX monsterSFX;
     public MonsterLoopSFXPlayer monsterLoopSFX;
+
+    [SerializeField] protected Vector2 sightBoxSize = new Vector2(2f, 2f);
+
+    [SerializeField] private BaseState debugCurrentState;
+
+    private FlashEffect flashEffect;
+    private bool hasPlayedDeathAnim = false;
+
+
+
 
 
     protected virtual void Awake()
@@ -111,19 +122,37 @@ public class Enemy : Character
         //SelectPatrolTarget();
 
         if (monsterLoopSFX != null) monsterLoopSFX.StartAllLoopSounds();
+
+        flashEffect = GetComponent<FlashEffect>();
     }
     protected virtual void OnEnable() { }
     protected override void Update()
     {
-        if (isDead) return;
-        
+        if (isDead)
+        {
+            if (!hasPlayedDeathAnim)
+            {
+                if (anim != null)
+                {
+                    anim.speed = 1f;               // ✅ 保证能动
+                    anim.SetTrigger("dead");       // ✅ 播一次就行
+                }
+
+                hasPlayedDeathAnim = true;
+            }
+
+        }
+
         base.Update();
+
+        
+
         faceDir = new Vector3(transform.localScale.x*isFacingRight, 0, 0);
         float modelWidth = coll.bounds.extents.x * 2;
         centerDetectOffset = new Vector2(faceDir.x * (modelWidth / 2 + checkDistance / 2), centerDetectOffset.y);
         if (currentState != null) 
-        { 
-        
+        {
+            debugCurrentState = currentState;
             currentState.LogicUpdate();
         }
         UpdateAttackCooldown();
@@ -196,7 +225,6 @@ public class Enemy : Character
             lostTimeCounter = lostTime;
         }
     }
-
     public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
         if (attacker == null || !attacker.gameObject.CompareTag("PlayerAttack"))
@@ -247,15 +275,34 @@ public class Enemy : Character
         //isHurt = true;
         anim.SetTrigger("hurt");
         //monsterSFX.PlayHurtSound();
+        StartCoroutine(HurtPauseCoroutine(attacker));
 
-        MoveTo(attacker.position); // 👈 翻转朝向
-        
+
+    }
+
+    protected virtual IEnumerator HurtPauseCoroutine(Transform attacker)
+    {
+        isHurt = true; 
+
+        float freezeDuration = 1f;
+
+       
+        if (attacker != null)
+        {
+            Vector3 dir = attacker.position - transform.position;
+            if (dir.x != 0)
+                transform.localScale = new Vector3(Mathf.Sign(dir.x), 1, 1);
+        }
+
+        yield return new WaitForSeconds(freezeDuration);
+
+        isHurt = false;
+        MoveTo(attacker.position); 
 
     }
     public void Flip()
     {
-        // 翻转 localScale.x
-        Debug.Log("Doing Flip");
+        //Debug.Log("Doing Flip");
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
@@ -282,9 +329,32 @@ public class Enemy : Character
 
     public bool IsPlayerInSight()
     {
-        hit = Physics2D.Raycast(rayCast.position, faceDir, rayCastLength, raycastMask);
+        Vector2 boxSize = sightBoxSize;
+        Vector2 offset = faceDir.normalized * (boxSize.x / 2f);
+        Vector2 boxCenter = (Vector2)rayCast.position + offset;
+
+       
+        hit = Physics2D.BoxCast(boxCenter, boxSize, 0f, Vector2.zero, 0f, raycastMask);
+
         return hit.collider != null && hit.collider.CompareTag("Player");
     }
+
+    //private void DebugDrawBox(Vector2 center, Vector2 size, Color color)
+    //{
+    //    Vector2 halfSize = size / 2f;
+
+    //    // 计算盒子的四个角
+    //    Vector2 topLeft = center + new Vector2(-halfSize.x, halfSize.y);
+    //    Vector2 topRight = center + new Vector2(halfSize.x, halfSize.y);
+    //    Vector2 bottomLeft = center + new Vector2(-halfSize.x, -halfSize.y);
+    //    Vector2 bottomRight = center + new Vector2(halfSize.x, -halfSize.y);
+
+    //    // 绘制盒子边框
+    //    Debug.DrawLine(topLeft, topRight, color, 0.1f);
+    //    Debug.DrawLine(topRight, bottomRight, color, 0.1f);
+    //    Debug.DrawLine(bottomRight, bottomLeft, color, 0.1f);
+    //    Debug.DrawLine(bottomLeft, topLeft, color, 0.1f);
+    //}
 
     public void DebugRay()
     {
@@ -351,22 +421,7 @@ public class Enemy : Character
             rb.linearVelocity = Vector2.zero;
         Debug.Log($"FreezeMovement {currentSpeed} {rb.linearVelocity}");
     }
-    //public void FlipToTarget(Transform target)
-    //{
-    //    float targetDirection = target.position.x - transform.position.x;
 
-    //    // 判断目标在左还是右
-    //    int newFacing = targetDirection < 0 ? -1 : 1;
-
-    //    if (newFacing != isFacingRight)
-    //    {
-    //        isFacingRight = newFacing;
-
-    //        Vector3 scale = transform.localScale;
-    //        scale.x = Mathf.Abs(scale.x) * isFacingRight;
-    //        transform.localScale = scale;
-    //    }
-    //}
 
     public void FlipToTarget(Transform target)
     {
@@ -381,19 +436,21 @@ public class Enemy : Character
 
     protected virtual void OnDrawGizmosSelected()
     {
-        //Gizmos.color = Color.blue;
-        //Vector3 start = transform.position + (Vector3)centerDetectOffset;
-        //Vector3 end = start + (Vector3)faceDir * checkDistance;
+        
+        Vector2 boxSize = sightBoxSize;
 
-        //Gizmos.DrawWireCube(start, checkSize);
-        //Gizmos.DrawWireCube(end, checkSize);
-        //Gizmos.DrawLine(start, end);
-
-
+        Vector2 offset = faceDir.normalized * (boxSize.x / 2f);
+        Vector2 boxCenter = (Vector2)rayCast.position + offset;
         Color color = IsPlayerInSight() ? Color.green : Color.red;
         Gizmos.color = color;
-        Gizmos.DrawLine(rayCast.position, rayCast.position + (Vector3)faceDir * rayCastLength);
+        //Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(boxCenter, boxSize);
 
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(rayCast.position, 0.1f); 
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(boxCenter, 0.1f); 
     }
 
     public override void ModifyHP(float amount)
@@ -446,4 +503,7 @@ public class Enemy : Character
         yield return new WaitForSeconds(duration);
         currentSpeed = originalSpeed;
     }
+
+    public void SetDefence(float defence) { this.defence = defence; }
+    
 }

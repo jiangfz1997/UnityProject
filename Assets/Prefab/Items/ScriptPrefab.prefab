@@ -99,7 +99,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 779766744271108781}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -152,7 +152,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.013037801, y: 0.61139363}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -182,6 +182,7 @@ MonoBehaviour:
   itemName: script_1
   price: 0
   id: 0
+  collectSFX: {fileID: 8300000, guid: 20cb0b63a1226f94291781f6dd3cab55, type: 3}
   scriptId: 1
   avatarImage: {fileID: -2311659948842064771, guid: da2d46214e4e79c4cb005bdea677cd8d, type: 3}
 --- !u!114 &8367501078683576675
@@ -197,6 +198,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 3182627927291368518}
-  glowColor: {r: 1, g: 1, b: 1, a: 1}
+  glowColor: {r: 0.97310287, g: 1, b: 0.42452818, a: 1}
   blinkSpeed: 1
-  blinkIntensity: 0.5
+  blinkIntensity: 1

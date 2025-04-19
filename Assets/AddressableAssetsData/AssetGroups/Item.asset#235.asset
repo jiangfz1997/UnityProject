@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Item
+  m_EditorClassIdentifier: 
+  m_GroupName: Item
+  m_GUID: e8936e7328ad4a843ac43ed3065d4cff
+  m_SerializeEntries:
+  - m_GUID: 1c198ecee712cf04ba63967c37248902
+    m_Address: GoldPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4133fbd94cc8462428b76e17b921a4df
+    m_Address: HealthPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b649831d1c83d5f45b3aa270005624c0
+    m_Address: IceElementPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc2e87e1b6cbb0a4e9012da1bb47acc5
+    m_Address: LightningElementPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6607e675b068444e85368b1db5f60a1
+    m_Address: FireElementPotion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Potion
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d3155a91ed1ad424a9f83d09decef0c2, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d740f43a7a7b1d448b9651f90188a4b1, type: 2}
+    - {fileID: 11400000, guid: 68e4ce8e8d443ce42a26b695c512f320, type: 2}

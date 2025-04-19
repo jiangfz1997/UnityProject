@@ -22,14 +22,13 @@ public class GenericChaseState : BaseState
             enemy.lostTargetTimer += Time.deltaTime;
             if (enemy.lostTargetTimer >= enemy.patrolCooldown)
             {
-                Debug.Log("Íæ¼Ò¶ªÊ§£¬»Øµ½Ñ²Âß");
+                Debug.Log("Lost player, back to patrol");
                 enemy.lostTargetTimer = 0f;
                 enemy.SwitchState(EnemyState.Patrol);
                 return;
             }
             if (enemy.physicsCheck.isCliffAhead || (enemy.physicsCheck.touchLeftWall && enemy.faceDir.x < 0) || (enemy.physicsCheck.touchRightWall && enemy.faceDir.x > 0))
             {
-                //Debug.Log("ÐüÑÂ»òÇ½±Ú£¬»Øµ½Ñ²Âß");
                 //enemy.transform.localScale = new Vector3(enemy.faceDir.x, 1, 1);
                 return;
             }
@@ -59,7 +58,7 @@ public class GenericChaseState : BaseState
             if (enemy.physicsCheck.isCliffAhead)
             {
                 return;
-                enemy.transform.localScale = new Vector3(enemy.faceDir.x, 1, 1);
+                //enemy.transform.localScale = new Vector3(enemy.faceDir.x, 1, 1);
             }
             enemy.MoveTo(player.position);
         }

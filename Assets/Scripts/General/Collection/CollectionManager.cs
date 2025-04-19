@@ -14,10 +14,7 @@ public class CollectionManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
-    }
 
-    private void Start()
-    {
         LoadCollectionState();
     }
 
@@ -47,8 +44,11 @@ public class CollectionManager : MonoBehaviour
 
     public bool IsScriptCollected(int scriptId)
     {
-        if (scriptId >= 0 && scriptId < scriptItems.Count)
+        if (scriptId >= 0 && scriptId < scriptItems.Count) {
+            // Debug.Log($"Script ID: {scriptId}, Collected: {scriptItems[scriptId].IsCollected}");
             return scriptItems[scriptId].IsCollected;
+        }
+            
         return false;
     }
 
@@ -80,7 +80,7 @@ public class CollectionManager : MonoBehaviour
         {
             bool isCollected = PlayerPrefs.GetInt("script_" + i, 0) == 1;
             scriptItems[i].SetCollected(isCollected);
-
+            // Debug.Log($"Load: Script ID: {i}, Collected: {isCollected}");
             if (isCollected && i < effectItems.Count)
             {
                 effectItems[i].SetCollected(true);

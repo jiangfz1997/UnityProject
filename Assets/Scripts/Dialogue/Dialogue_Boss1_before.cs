@@ -16,9 +16,15 @@ public class Dialogue_Boss1_before : MonoBehaviour
         if (collision.CompareTag("Player") && !hasTriggeredDialogue)
         {
             hasTriggeredDialogue = true;
+            CameraTrigger();
             StartDialogue();
 
         }
+    }
+
+    private void CameraTrigger()
+    {
+        StartCoroutine(CameraController.Instance.Zoom(10f, 1f));
     }
 
     private void StartDialogue()
@@ -30,24 +36,24 @@ public class Dialogue_Boss1_before : MonoBehaviour
                     dialogueContent = "I've been expecting you, visitor from beyond the castle walls.",
                     avatarSprite = avatarImage
                 },
-                new DialogueManager.DialogueLine
-                {
-                    speakerName = "Conductor",
-                    dialogueContent = "Did you know? At some point, I gained the ability to hear the melodies of every soul.",
-                    avatarSprite = avatarImage
-                },
-                new DialogueManager.DialogueLine
-                {
-                    speakerName = "Conductor",
-                    dialogueContent = "From the moment you stepped into this castle, I took notice of yours. The sound of your soul¡­",
-                    avatarSprite = avatarImage
-                },
-                new DialogueManager.DialogueLine
-                {
-                    speakerName = "Conductor",
-                    dialogueContent = "It sounds... absolutely delicious.",
-                    avatarSprite = avatarImage
-                }
+                // new DialogueManager.DialogueLine
+                // {
+                //     speakerName = "Conductor",
+                //     dialogueContent = "Did you know? At some point, I gained the ability to hear the melodies of every soul.",
+                //     avatarSprite = avatarImage
+                // },
+                // new DialogueManager.DialogueLine
+                // {
+                //     speakerName = "Conductor",
+                //     dialogueContent = "From the moment you stepped into this castle, I took notice of yours. The sound of your soulï¿½ï¿½",
+                //     avatarSprite = avatarImage
+                // },
+                // new DialogueManager.DialogueLine
+                // {
+                //     speakerName = "Conductor",
+                //     dialogueContent = "It sounds... absolutely delicious.",
+                //     avatarSprite = avatarImage
+                // }
             });
 
     }

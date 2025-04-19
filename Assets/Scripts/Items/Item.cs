@@ -11,9 +11,13 @@ public class Item : MonoBehaviour
     public string itemName;
     public int price;
     public int id = -1;
+    public AudioClip collectSFX;
+    protected AudioSource audioSource;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -36,10 +40,11 @@ public class Item : MonoBehaviour
         return clone;
     }
 
-    public virtual void OnPickup(Character character) 
+    public virtual void OnUse(Character character) 
     {
         Debug.Log("Use item!!");
     }
+
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
@@ -60,7 +65,13 @@ public class Item : MonoBehaviour
                     {
                         if (success)
                         {
-                         
+                            if (audioSource != null && collectSFX != null)
+                            {
+                                Debug.Log("Playing collect sound");
+                                audioSource.PlayOneShot(collectSFX);
+                            }
+                            //WaitForSeconds wait = new WaitForSeconds(collectSFX.length);
+
                             Destroy(gameObject); 
                         }
                         else
@@ -69,10 +80,11 @@ public class Item : MonoBehaviour
                             // TODO: NOTIFICATION ON UI, BAG IS FULL
                         }
                     });
+                    
                 }
                 else
                 {
-                    OnPickup(player);
+                    OnUse(player);
                 }
             }
         }

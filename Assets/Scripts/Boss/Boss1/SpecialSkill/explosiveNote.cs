@@ -30,7 +30,7 @@ public class explosiveNote : MonoBehaviour
     {
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
 
-        // ¸üÐÂ´æ»îÊ±¼ä
+        // ï¿½ï¿½ï¿½Â´ï¿½ï¿½Ê±ï¿½ï¿½
         lifetime += Time.deltaTime;
         if (lifetime >= lifetimeMax)
         {
@@ -42,7 +42,7 @@ public class explosiveNote : MonoBehaviour
     {
         if (target.CompareTag("Player"))
         {
-            Debug.Log("Player hit by explosive note");
+            // Debug.Log("Player hit by explosive note");
 
             Explode();
             
@@ -75,10 +75,10 @@ public class explosiveNote : MonoBehaviour
 
             while (time < duration)
             {
-                // Ëõ·Å
+                // ï¿½ï¿½ï¿½ï¿½
                 transform.localScale = Vector3.Lerp(startScale, targetScale, time / duration);
 
-                // ÑÕÉ«½¥±ä
+                // ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
                 if (spriteRenderer != null)
                 {
                     if (time < duration / 2)

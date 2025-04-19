@@ -8,7 +8,7 @@ public enum ElementType
     Water,
     Wind,
     Ice,
-    Electric,
+    Lightning,
     None
 }
 [System.Serializable]
@@ -40,11 +40,18 @@ public class ElementSystem : MonoBehaviour, ISaveable
 
     public List<ElementType> AvailableElements => availableElements;
 
+    public int GetElementPoint(ElementType element)
+    { 
+        return elementPoints.ContainsKey(element) ? elementPoints[element] : 0;
+    }
+
     private float switchCooldown = 2f;
     private float currentCooldownTime = 0f;
     public bool IsOnCooldown => currentCooldownTime > 0f;
     public float CooldownDuration => switchCooldown;
     public float CooldownRemaining => Mathf.Clamp(currentCooldownTime, 0, switchCooldown);
+
+
 
     private void Update()
     {
@@ -76,6 +83,7 @@ public class ElementSystem : MonoBehaviour, ISaveable
 
         elementPoints[type] += amount;
         UpdateAvailableElements();
+
     }
 
     public void SetElementPoint(ElementType type, int value)
@@ -84,6 +92,8 @@ public class ElementSystem : MonoBehaviour, ISaveable
 
         elementPoints[type] = value;
         UpdateAvailableElements();
+
+
     }
 
     private void UpdateAvailableElements()
@@ -91,7 +101,7 @@ public class ElementSystem : MonoBehaviour, ISaveable
         availableElements = elementPoints
             .Where(pair => pair.Value > 0)
             .OrderByDescending(pair => pair.Value)
-            .ThenBy(pair => (int)pair.Key) // 保证一致性
+            .ThenBy(pair => (int)pair.Key) 
             .Take(2)
             .Select(pair => pair.Key)
             .ToList();
@@ -105,7 +115,6 @@ public class ElementSystem : MonoBehaviour, ISaveable
             currentElement = availableElements[0];
         }
         OnElementChanged?.Invoke(); 
-
     }
 
     public void SwitchElement()
@@ -132,10 +141,11 @@ public class ElementSystem : MonoBehaviour, ISaveable
             ElementType.Fire => DamageType.Fire,
             ElementType.Ice => DamageType.Ice,
             //ElementType.Wind => DamageType.Wind,
-            ElementType.Electric => DamageType.Electric,
+            ElementType.Lightning => DamageType.Lightning,
             //ElementType.Water => DamageType.Water, 
             _ => DamageType.Physical
         };
+        //return DamageType.Lightning;
     }
 
     public string SaveKey() => "ElementSystem";

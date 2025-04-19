@@ -53,7 +53,7 @@ public class BlackElite : Enemy
     [Header("Other Settings")]
     //public Transform firePoint;                  
     public float dropChance = 1f;
-    [SerializeField] private Vector2 sightBoxSize = new Vector2(2f, 2f);
+    //[SerializeField] private Vector2 sightBoxSize = new Vector2(2f, 2f);
     public Vector2 sightBoxOffset = new Vector2(0f, 0f);
 
     private Coroutine dashRoutine;
@@ -312,11 +312,7 @@ public class BlackElite : Enemy
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, shootRange);
 
-        Vector2 boxSize = sightBoxSize;
-        Vector2 origin = (Vector2)rayCast.position + (Vector2)faceDir.normalized * (boxSize.x / 2f);
 
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(origin, boxSize);
 
     }
 

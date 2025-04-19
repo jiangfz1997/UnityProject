@@ -69,7 +69,7 @@ public class Backpack : MonoBehaviour
                                 {
                                     backpackItems[i] = product;
                                     UpdateBackpack(player.GetInventory());
-                                    onComplete?.Invoke(true); // ✅ 添加成功
+                                    onComplete?.Invoke(true); 
                                 }
                                 else
                                 {
@@ -84,7 +84,7 @@ public class Backpack : MonoBehaviour
                             onComplete?.Invoke(false);
                         }
                     });
-                    return; // ⚠️ 提前返回，避免重复执行
+                    return; 
                 }
             }
 
@@ -136,20 +136,17 @@ public class Backpack : MonoBehaviour
 
     public void UpdateBackpack(List<ItemData> getInventory)
     {
-        // 🧹 清空旧的背包格子
         if (backpackItems == null) return;
         foreach (Transform child in backpackContainer)
         {
             Destroy(child.gameObject);
         }
 
-        // 🧹 重置数据结构（可选，看你是不是维护这个）
         for (int i = 0; i < backpackItems.Length; i++)
         {
             backpackItems[i] = null;
         }
 
-        // 🧱 重新根据玩家的背包数据生成 UI 格子
         for (int i = 0; i < getInventory.Count; i++)
         {
             ItemData itemData = getInventory[i];
@@ -166,6 +163,7 @@ public class Backpack : MonoBehaviour
                 Debug.LogWarning($"⚠️ 无法为物品 {itemData.id} 匹配商品");
             }
         }
+
     }
 
 

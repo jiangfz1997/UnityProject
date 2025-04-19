@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.UI;
+using UnityEngine.Audio;
 public class ElementPotion : Item
 {
     public ElementType elementType;
     public float buffDuration;
     public float buffValue;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public override void OnPickup(Character character)
+    public override void OnUse(Character character)
     {
 
         if (character == null)
@@ -15,17 +16,25 @@ public class ElementPotion : Item
         }
         if (character is Player player)
         {
-            base.OnPickup(character);
-            player.AddElementPoint(elementType, 1);
-            quantity--;
+            base.OnUse(character);
+            Player.Instance.PlayDrinkSound();
+            ElementSelectController.Instance.OpenElementSelect();
+            //player.AddElementPoint(elementType, 1);
+            //quantity--;
+            if (!storable)
+            {
+                Destroy(gameObject);
+            }
+            //InventoryManager.instance.UpdateUI();
+
         }
+
     }
     public override Item Clone()
     {
         GameObject cloneObj = new GameObject("ClonedElementPotion_" + itemName);
         ElementPotion clone = cloneObj.AddComponent<ElementPotion>();
 
-        // 拷贝基类字段
         clone.itemName = this.itemName;
         clone.icon = this.icon;
         clone.quantity = this.quantity;

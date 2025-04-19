@@ -32,9 +32,9 @@ public class ElementUIManager : MonoBehaviour
 
     public void RefreshElementIcons()
     {
+        Debug.Log("RefreshElementIcons called");
         List<ElementType> elements = Player.Instance.GetAvailableElements();
-
-        // ÉèÖÃ Element_0
+        Debug.Log($"Available elements: {string.Join(", ", elements)}");
         if (elements.Count > 0)
         {
             element0.gameObject.SetActive(true);
@@ -45,7 +45,6 @@ public class ElementUIManager : MonoBehaviour
             element0.gameObject.SetActive(false);
         }
 
-        // ÉèÖÃ Element_1
         if (elements.Count > 1)
         {
             element1.gameObject.SetActive(true);

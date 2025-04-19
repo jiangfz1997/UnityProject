@@ -21,6 +21,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - necklace
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7eb371fb2f5d5fe4193b741acf560171
+    m_Address: DancerNeclace
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - necklace
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acbffcc8d06253141b113e7ec4c06065
+    m_Address: LegendaryNecklace
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - necklace
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d3155a91ed1ad424a9f83d09decef0c2, type: 2}
   m_SchemaSet:

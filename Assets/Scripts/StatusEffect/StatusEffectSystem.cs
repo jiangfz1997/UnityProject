@@ -10,11 +10,11 @@ public class StatusEffectSystem : MonoBehaviour
     private List<BaseStatusEffect> activeEffects = new List<BaseStatusEffect>();
 
     
-    public void AddEffect(BaseStatusEffect effect)
+    public void AddEffect(BaseStatusEffect effect, float damage=0)
     {
-        if (ElementalReactionManager.TryTriggerReaction(target, effect.EffectType, out var reaction, out var toRemove))
+        if (ElementalReactionManager.TryTriggerReaction(target, damage,effect.EffectType, out var reaction, out var toRemove))
         {
-            reaction?.Invoke(target);
+            reaction?.Invoke(target, damage);
             foreach (var e in toRemove)
             {
                 target.statusEffectSystem.RemoveEffect(e);

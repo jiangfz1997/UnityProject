@@ -15,7 +15,7 @@ public class DisappearAfterDialogue2 : MonoBehaviour
         get { return BattleStart; }
     }
 
-    private float fadeTime = 2.0f;
+    private float fadeTime = 1.0f;
     private SpriteRenderer oldspriteRenderer;
     private SpriteRenderer newSpriteRenderer;
 
@@ -25,12 +25,15 @@ public class DisappearAfterDialogue2 : MonoBehaviour
         oldspriteRenderer = oldNPC.GetComponent<SpriteRenderer>();
         newSpriteRenderer = newNPC.GetComponent<SpriteRenderer>();
 
+        if (oldspriteRenderer != null)
+        {
+            oldNPC.SetActive(true);
+        }
+
         if (newNPC != null)
         {
-            Debug.Log("Existing sprite found");
             if (newSpriteRenderer != null)
             {
-                // ³õÊ¼ÉèÖÃÎª²»¿É¼û
                 Color color = newSpriteRenderer.color;
                 newSpriteRenderer.color = new Color(color.r, color.g, color.b, 0f);
             }
@@ -72,14 +75,14 @@ public class DisappearAfterDialogue2 : MonoBehaviour
     {
         yield return StartCoroutine(FadeOut());
 
-        if (CameraController.Instance != null)
-        {
-            Vector3 targetPos = new Vector3(0, 0, 0);
-            float targetSize = 5f;
-            float duration = 2f;
+        // if (CameraController.Instance != null)
+        // {
+        //     Vector3 targetPos = new Vector3(0, 0, 0);
+        //     float targetSize = 5f;
+        //     float duration = 2f;
 
-            yield return StartCoroutine(CameraController.Instance.MoveAndZoom(targetPos, targetSize, duration));
-        }
+        //     yield return StartCoroutine(CameraController.Instance.MoveAndZoom(targetPos, targetSize, duration));
+        // }
 
 
 
@@ -104,7 +107,7 @@ public class DisappearAfterDialogue2 : MonoBehaviour
             yield return null;
         }
 
-        // Òþ²Ø
+        // ï¿½ï¿½ï¿½ï¿½
         oldspriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0);
         oldNPC.SetActive(false);
     }
@@ -122,7 +125,7 @@ public class DisappearAfterDialogue2 : MonoBehaviour
             yield return null;
         }
 
-        // È·±£²»Í¸Ã÷
+        // È·ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½
         newSpriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1);
         newNPC.SetActive(true);
     }

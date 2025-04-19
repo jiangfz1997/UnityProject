@@ -17,6 +17,7 @@ TagManager:
   - MovingPlatform
   - SavePoint
   - LoadPoint
+  - Boss2
   layers:
   - Default
   - TransparentFX

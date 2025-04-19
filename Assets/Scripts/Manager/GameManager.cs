@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameObject player;
     private GameObject blackOverlay;
-    // public bool skipContextForDebug = true; // **µ÷ÊÔÄ£Ê½Ê±Ìø¹ý Context Scene**
+    // public bool skipContextForDebug = true; 
     private void Awake()
     {
         if (Instance == null)
@@ -34,17 +34,17 @@ public class GameManager : MonoBehaviour
 //             return;
 //         }
 // #endif
-        // **¼ÓÔØ Context Scene£¬µ« Persistent ÈÔÈ»ÊÇ Active Scene**
+        // **ï¿½ï¿½ï¿½ï¿½ Context Sceneï¿½ï¿½ï¿½ï¿½ Persistent ï¿½ï¿½È»ï¿½ï¿½ Active Scene**
         // SceneManager.LoadScene("Context", LoadSceneMode.Additive);
 
-        // **¼àÌý Scene ¼ÓÔØÍê³ÉÊÂ¼þ**
+        // **ï¿½ï¿½ï¿½ï¿½ Scene ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½**
         SceneManager.LoadScene("Level_1", LoadSceneMode.Additive);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDestroy()
     {
-        // **È¡Ïû¼àÌý£¬±ÜÃâÄÚ´æÐ¹Â©**
+        // **È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ð¹Â©**
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -54,10 +54,10 @@ public class GameManager : MonoBehaviour
 
         SceneConfig sceneConfig = null;
 
-        // **Ö»²éÕÒµ±Ç° Scene ÀïµÄ SceneConfig**
+        // **Ö»ï¿½ï¿½ï¿½Òµï¿½Ç° Scene ï¿½ï¿½ï¿½ SceneConfig**
         foreach (var config in sceneConfigs)
         {
-            if (config.gameObject.scene == scene)  // **È·±£ÊÇµ±Ç° Scene**
+            if (config.gameObject.scene == scene)  // **È·ï¿½ï¿½ï¿½Çµï¿½Ç° Scene**
             {
                 sceneConfig = config;
                 break;
@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour
 
     private void CleanDontDestroyOnLoad()
     {
+        Destroy(GameObject.Find("MusicManager"));
         Destroy(GameObject.Find("GameManager"));
         Destroy(GameObject.Find("PlayerCamera"));
         Destroy(GameObject.Find("EventSystem"));

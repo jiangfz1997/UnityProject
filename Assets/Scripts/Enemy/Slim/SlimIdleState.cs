@@ -17,7 +17,6 @@ public class SlimIdleState : GenericPatrolState
             return;
         }
 
-        // 如果超出巡逻限制，重新选择目标
         if (!enemy.InsideOfLimits())
         {
             enemy.SelectPatrolTarget();
@@ -30,10 +29,8 @@ public class SlimIdleState : GenericPatrolState
             //Debug.Log("[Slim] Cliff or wall detected, selecting new patrol target.");
             return;
         }
-        // 向当前目标移动
         enemy.MoveTo(enemy.patrolTarget.position);
 
-        // 如果靠近目标，切换巡逻方向
 
         float distanceToTarget = Vector2.Distance(enemy.transform.position, enemy.patrolTarget.position);
         //Debug.Log($"[Slim][STATE LOGIC] Patrol | {enemy.name} | distanceToTarget = {distanceToTarget}");

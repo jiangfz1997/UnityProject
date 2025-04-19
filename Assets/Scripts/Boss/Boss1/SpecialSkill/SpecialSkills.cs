@@ -5,19 +5,17 @@ using UnityEngine;
 
 public class SpecialSkills : MonoBehaviour
 {
-    [Header("±¬Õ¨Òô·û")]
     [SerializeField] private GameObject explosiveNotePrefab;
     [SerializeField] private int noteCount1 = 5;
     [SerializeField] private int explosiveTime = 3;
     [SerializeField] private float spawnRadius = 2f;
 
-    [Header("Òô·ûÉäÏß")]
     [SerializeField] private GameObject laserNotePrefab;
     [SerializeField] private int noteCount2 = 5;
     [SerializeField] private int laserTime = 2;
     [SerializeField] private float ceilingHeight = 10f;
-    [SerializeField] private float minX = -8f; // Éú³É·¶Î§×îÐ¡X×ø±ê
-    [SerializeField] private float maxX = 8f; // Éú³É·¶Î§×î´óX×ø±ê
+    [SerializeField] private float minX = -8f; // ï¿½ï¿½ï¿½É·ï¿½Î§ï¿½ï¿½Ð¡Xï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private float maxX = 8f; // ï¿½ï¿½ï¿½É·ï¿½Î§ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½
 
 
     public void ExplosiveNotes()
@@ -34,7 +32,7 @@ public class SpecialSkills : MonoBehaviour
     {
         for (int i = 0; i < noteCount1; i++)
         {
-            // ¼ÆËãÉú³ÉÎ»ÖÃ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             float angle = i * (360f / noteCount1);
             Vector2 spawnPos = (Vector2)transform.position +
                             (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right * spawnRadius);
@@ -57,7 +55,7 @@ public class SpecialSkills : MonoBehaviour
     {
         List<Vector2> spawnPositions = new List<Vector2>();
         
-        // Éú³É²»ÖØµþµÄËæ»úÎ»ÖÃ
+        // ï¿½ï¿½ï¿½É²ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
         for (int i = 0; i < noteCount2; i++)
         {
             Vector2 newPos = GetRandomPosition();

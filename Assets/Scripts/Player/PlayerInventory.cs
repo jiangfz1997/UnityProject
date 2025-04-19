@@ -51,7 +51,8 @@ public class PlayerInventory : MonoBehaviour, ISaveable
             }
 
             item.quantity = itemData.quantity;
-            item.OnPickup(player);
+            item.OnUse(player);
+            player.PlayDrinkSound();
 
             if (item.quantity <= 0)
             {
@@ -71,12 +72,8 @@ public class PlayerInventory : MonoBehaviour, ISaveable
         {
             if (inventory[i] == null)
             {
-
-
                 inventory[i] = inventory[i + 1];
                 inventory[i + 1] = null;
-
-
             }
         }
 
@@ -85,12 +82,12 @@ public class PlayerInventory : MonoBehaviour, ISaveable
 
     public void StoreItem(Item item, Action<bool> onComplete)
     {
-        bool alreadyOwned = inventory.Exists(i => i.id == item.id);
-        if (alreadyOwned)
-        {
-            Debug.Log($"You already have {item.itemName}£¬cannot have duplicated one");
-            return;
-        }
+        //bool alreadyOwned = inventory.Exists(i => i.id == item.id);
+        //if (alreadyOwned)
+        //{
+        //    Debug.Log($"You already have {item.itemName}£¬cannot have duplicated one");
+        //    return;
+        //}
 
         if (inventory.Count < 4 && !isAddingItem)
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,6 @@ public enum BossState
     Summon
 }
 
-public enum SkillType
-{
-    ExplosiveNotes,
-    LaserNotes,
-    SharpShield
-}
-
 public class BossFSM : MonoBehaviour
 {
     public BossState currentState;
@@ -26,13 +20,11 @@ public class BossFSM : MonoBehaviour
     public float health = 500f;
     public float maxHealth = 500f;
 
-    // 技能冷却
     public static float specialSkillCooldown = 10f;
     [SerializeField] private float invincibleTimer = 0.2f;
     [SerializeField] private float specialSkillTimer = 12f;
 
-    // private bool summonEnabled = true;
-    private bool summonEnabled = false;
+    private bool summonEnabled = true;
 
     private bool skillSelected = false;
     [SerializeField] private SpecialSkills skill;
@@ -40,20 +32,26 @@ public class BossFSM : MonoBehaviour
     [SerializeField] private GameObject minionPrefab;
     [SerializeField] private Vector3[] minionPos;
 
-    [SerializeField] private Transform player;
+    public event Action OnBossDeath;
+
     private Animator animator;
-    private Rigidbody2D rb;
+
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
 
         ChangeState(BossState.Idle);
     }
 
     private void Update()
     {
+        if (currentState == BossState.Die)
+        {
+            OnBossDeath?.Invoke();
+            return;
+        }
+
         if (specialSkillTimer >= 0)
             specialSkillTimer -= Time.deltaTime;
 
@@ -72,17 +70,13 @@ public class BossFSM : MonoBehaviour
                 UpdateSpecialSkillState();
                 break;
             case BossState.Hurt:
-                // Hurt动画
                 break;
-            case BossState.Die:
-                break;
-
         }
     }
 
     private void UpdateIdleState()
     {
-        // BossMovement控制idle行为
+        // BossMovement锟斤拷锟斤拷idle锟斤拷为
         if (specialSkillTimer <= 0)
         {
             specialSkillTimer = specialSkillCooldown;
@@ -101,7 +95,7 @@ public class BossFSM : MonoBehaviour
     {
         if (!skillSelected)
         {
-            int randomSkill = Random.Range(0, 2);
+            int randomSkill = UnityEngine.Random.Range(0, 2);
             // int randomSkill = 1;
             animator.SetTrigger("SpecialSkill");
 
@@ -145,7 +139,7 @@ public class BossFSM : MonoBehaviour
 
     private void SummonMinions()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < minionPos.Length; i++)
         {
             Vector3 spawnPosition = minionPos[i];
 
@@ -163,7 +157,6 @@ public class BossFSM : MonoBehaviour
         Debug.Log("Boss state: " + newState);
     }
 
-    // 进入状态
     private void EnterState(BossState state)
     {
         switch (state)
@@ -190,11 +183,12 @@ public class BossFSM : MonoBehaviour
 
     public void TakeDamage(float damage, DamageType damageType)
     {
-
-        if(invincibleTimer > 0)
+        if(invincibleTimer > 0 || damage == 0)
         {
             return;
         }
+
+        Debug.Log("Boss Take Damage: " + damage + " Type: " + damageType);
         
         health -= damage;
 
@@ -211,7 +205,6 @@ public class BossFSM : MonoBehaviour
         }
     }
 
-    // 受伤动画结束回调
     public void HurtAnimationEnd()
     {
         ChangeState(BossState.Idle);

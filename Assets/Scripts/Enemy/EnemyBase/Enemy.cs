@@ -192,6 +192,7 @@ public class Enemy_old : Character
 
         try
         {
+
             damageHandler.HandleDamage(attacker, damage, knockbackForce, damageType);
         }
         catch (System.Exception e)

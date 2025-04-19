@@ -15,4 +15,4 @@ MonoBehaviour:
   id: 3
   displayName: Dancer's Neclace
   icon: {fileID: -2088102478745336746, guid: f73ba1e88c06a9d489641576e5abcd25, type: 3}
-  abilityTypeList: 0200000002000000
+  abilityTypeList: 0400000001000000

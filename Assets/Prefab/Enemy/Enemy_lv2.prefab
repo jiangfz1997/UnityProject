@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 201782047375618687}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36.05, y: -1.98, z: 0}
+  m_LocalPosition: {x: 4.73, y: -0.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52,6 +52,7 @@ GameObject:
   - component: {fileID: 4798675899323985690}
   - component: {fileID: 5844568344223013730}
   - component: {fileID: 6068824727008938487}
+  - component: {fileID: 6652780286047224834}
   m_Layer: 8
   m_Name: EnemyBody
   m_TagString: Enemy
@@ -68,7 +69,7 @@ Transform:
   m_GameObject: {fileID: 519454592240533408}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.18, y: -1.136, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -278,8 +279,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 100
   currentHP: 0
+  defence: 0
+  damageBoost: 1
   isInvincible: 0
   invincibleTime: 0.5
+  anim: {fileID: 0}
+  isParalyzed: 0
+  paralyzeTimer: 0
   OnDie:
     m_PersistentCalls:
       m_Calls:
@@ -337,7 +343,6 @@ MonoBehaviour:
   buffSystem: {fileID: 0}
   statusEffectSystem: {fileID: 0}
   rb: {fileID: 0}
-  anim: {fileID: 0}
   physicsCheck: {fileID: 0}
   attacker: {fileID: 0}
   coll: {fileID: 0}
@@ -373,11 +378,12 @@ MonoBehaviour:
   attackCooldown: 2
   attackCooldownCounter: 0
   isAttackCoolingDown: 0
-  attackDistance: 4
+  attackDistance: 5.12
   patrolTarget: {fileID: 0}
   lostTargetTimer: 0
   monsterSFX: {fileID: 4798675899323985690}
   monsterLoopSFX: {fileID: 6068824727008938487}
+  sightBoxSize: {x: 11.34, y: 3.77}
 --- !u!114 &1862076841329450072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,6 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shouldSave: 0
+  activeBuffs: []
 --- !u!114 &2438170295493036041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,19 +422,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ae6f8f15047e924cb51855c3abdd17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomOffset: {x: 0, y: 0}
+  bottomOffset: {x: 0.03, y: -0.84}
   isGround: 0
-  checkRaduis: 0
+  checkRaduis: 0.4
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
-  leftOffset: {x: 0, y: 0}
-  rightOffset: {x: 0, y: 0}
+  leftOffset: {x: -0.96, y: 0}
+  rightOffset: {x: 1.32, y: 0}
   touchLeftWall: 0
   touchRightWall: 0
   manual: 0
   isCliffAhead: 0
-  cliffCheckOffset: {x: 0.94, y: -0.84}
+  cliffCheckOffset: {x: 1.31, y: -0.41}
 --- !u!114 &4798675899323985690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,6 +603,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 37ec40b0050c06e498d84fd374057818, type: 2}
+--- !u!114 &6652780286047224834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519454592240533408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4957b9bfcd3657f45bd580bb3160d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1778165695752369088
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,7 +859,7 @@ Transform:
   m_GameObject: {fileID: 5406817693531122638}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.81, y: -1.84, z: 0}
+  m_LocalPosition: {x: -5.2, y: -0.93, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
