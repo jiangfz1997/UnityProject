@@ -38,8 +38,8 @@ public class GameManager : MonoBehaviour
         // SceneManager.LoadScene("Context", LoadSceneMode.Additive);
 
         // **���� Scene ��������¼�**
-        SceneManager.LoadScene("Level_1", LoadSceneMode.Additive);
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.LoadScene("Level_1", LoadSceneMode.Additive);
+        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDestroy()

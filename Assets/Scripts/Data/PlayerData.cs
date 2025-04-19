@@ -26,11 +26,27 @@ public class PlayerData : ScriptableObject
     }
     public void ResetData()
     {
-        gold = 10000;
-        maxHP = 500;
+        gold = 0;
+
+        maxHP = UpdateMaxHP();
+        
         currentHP = maxHP;
         //experience = 0;
         //level = 1;
+    }
+
+    public float UpdateMaxHP()
+    {
+        float HP = 500;
+
+        if (CollectionManager.Instance.IsEffectActivated(0))
+            HP += 50;
+        
+        if (CollectionManager.Instance.IsEffectActivated(2))
+            HP += 50;
+        
+        return HP;
+
     }
     private void OnEnable()
     {

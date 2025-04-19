@@ -8,6 +8,8 @@ public class CollectionManager : MonoBehaviour
 
     public static CollectionManager Instance { get; private set; }
 
+    private PlayerData playerData;
+
     private void Awake()
     {
         if (Instance == null)
@@ -27,6 +29,7 @@ public class CollectionManager : MonoBehaviour
             if (scriptId < effectItems.Count)
             {
                 effectItems[scriptId].SetCollected(true);
+                ActivateEffect(scriptId);
             }
             
             SaveCollectionState();

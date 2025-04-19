@@ -118,9 +118,9 @@ TextureImporter:
       name: inMirror_0
       rect:
         serializedVersion: 2
-        x: 2
+        x: 0
         y: 0
-        width: 25
+        width: 29
         height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -140,9 +140,9 @@ TextureImporter:
       name: inMirror_1
       rect:
         serializedVersion: 2
-        x: 31
+        x: 29
         y: 0
-        width: 25
+        width: 29
         height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -162,9 +162,9 @@ TextureImporter:
       name: inMirror_2
       rect:
         serializedVersion: 2
-        x: 60
+        x: 58
         y: 0
-        width: 26
+        width: 29
         height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -186,8 +186,8 @@ TextureImporter:
         serializedVersion: 2
         x: 87
         y: 0
-        width: 30
-        height: 23
+        width: 29
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,8 +208,8 @@ TextureImporter:
         serializedVersion: 2
         x: 116
         y: 0
-        width: 117
-        height: 23
+        width: 29
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,10 +228,10 @@ TextureImporter:
       name: inMirror_5
       rect:
         serializedVersion: 2
-        x: 232
+        x: 145
         y: 0
         width: 29
-        height: 23
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,11 +246,77 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: inMirror_6
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 0
+        width: 29
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06aab4f54b8aafe4a989570e994b6871
+      internalID: -454058785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: inMirror_7
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 0
+        width: 29
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd07dbaa024e52e47aaac7abf700b19d
+      internalID: -196109573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: inMirror_8
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 0
+        width: 29
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00938eac9bd006c4dbb2a8aef51a4d36
+      internalID: -2090119129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ffb8d4b04de67444b817e05f0cc2c00d
     internalID: 0
     vertices: []
     indices: 
@@ -266,6 +332,9 @@ TextureImporter:
       inMirror_3: 3000224310617741848
       inMirror_4: -5711170102763362687
       inMirror_5: -8556968656427122247
+      inMirror_6: -454058785
+      inMirror_7: -196109573
+      inMirror_8: -2090119129
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

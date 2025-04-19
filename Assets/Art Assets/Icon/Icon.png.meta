@@ -3673,7 +3673,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_111
+      name: death_drop
       rect:
         serializedVersion: 2
         x: 0
@@ -12906,7 +12906,6 @@ TextureImporter:
       Icon_109: -491860131243481461
       Icon_11: -667032311606412684
       Icon_110: 5491736605718442993
-      Icon_111: 3864461322095391111
       Icon_112: -4630909601598456849
       Icon_113: -8186497027783232681
       Icon_114: 6239325181965467887
@@ -13398,6 +13397,7 @@ TextureImporter:
       Icon_99: -6949030431883133372
       WaterElement: 3615882617350834135
       WindElement: 2671966879102773385
+      death_drop: 3864461322095391111
       effect_1: 2725967033985344226
       effect_2: 6705514822827883124
       effect_3: -5675041977155733181

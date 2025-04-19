@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class PlayerStatsSaveData
 {
-    public int gold;
+    //public int gold;
     public float currentHP;
     public float maxHP;
     public Vector3 position;
@@ -52,7 +52,7 @@ public class PlayerStats : MonoBehaviour, ISaveable
     public void AddGold(int amount)
     {
         playerData.SetGold(playerData.GetGold() + amount);
-        Debug.Log("Gain coin£º" + amount + "£¬current coin£º" + playerData.gold);
+        Debug.Log("Gain coinï¿½ï¿½" + amount + "ï¿½ï¿½current coinï¿½ï¿½" + playerData.gold);
         SaveData();
     }
 
@@ -65,7 +65,7 @@ public class PlayerStats : MonoBehaviour, ISaveable
         }
         playerData.SetGold(playerData.GetGold() - amount);
         
-        Debug.Log("Spend coin£º" + amount + "£¬current coin£º" + playerData.gold);
+        Debug.Log("Spend coinï¿½ï¿½" + amount + "ï¿½ï¿½current coinï¿½ï¿½" + playerData.gold);
         SaveData();
         return true;
     }
@@ -82,7 +82,8 @@ public class PlayerStats : MonoBehaviour, ISaveable
 
     public float GetMaxHealth()
     {
-        return playerData.maxHP;
+        float maxHP = playerData.UpdateMaxHP();
+        return maxHP;
     }
 
     public int GetGold()
@@ -116,7 +117,7 @@ public class PlayerStats : MonoBehaviour, ISaveable
         string test = GetCurrentLevelSceneName();
         return new PlayerStatsSaveData
         {
-            gold = playerData.gold,
+            //gold = playerData.gold,
             currentHP = playerData.currentHP,
             maxHP = playerData.maxHP,
             position = transform.position,
@@ -148,7 +149,7 @@ public class PlayerStats : MonoBehaviour, ISaveable
             return;
         }
 
-        playerData.gold = data.gold;
+        //playerData.gold = data.gold;
         playerData.currentHP = data.currentHP;
         playerData.maxHP = data.maxHP;
         playerData.NotifyUI();

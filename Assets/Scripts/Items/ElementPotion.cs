@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using UnityEditor.UI;
-using UnityEngine.Audio;
+
 public class ElementPotion : Item
 {
     public ElementType elementType;

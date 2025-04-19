@@ -11,7 +11,8 @@ public class SmogAttack : MonoBehaviour
     [SerializeField] private float[] smogHeights;
     [SerializeField] private Vector2 offset;
 
-    [SerializeField] private int damage = 20;
+    [SerializeField] private int damage = 75;
+    [SerializeField] private float coefficient = 1f;
 
     
     void Start()
@@ -20,6 +21,9 @@ public class SmogAttack : MonoBehaviour
         transform = GetComponent<Transform>();
         smogCollider = GetComponent<BoxCollider2D>();
         bossTransform = GameObject.FindGameObjectWithTag("Boss2").transform;
+
+        if (CollectionManager.Instance.IsEffectActivated(3))
+            coefficient *= 0.95f;
 
         smogCollider.enabled = false;
     }
@@ -62,14 +66,14 @@ public class SmogAttack : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player hit by smog attack");
-            other.GetComponent<Player>().TakeDamage(bossTransform, damage, 2f, DamageType.Physical);
+            // Debug.Log("Player hit by smog attack");
+            other.GetComponent<Player>().TakeDamage(bossTransform, damage*coefficient, 2f, DamageType.Physical);
         }
     }
     
     public void UpdateColliderShape(int keyframeIndex)
     {
-        Debug.Log("UpdateColliderShape called with keyframeIndex: " + keyframeIndex);
+        // Debug.Log("UpdateColliderShape called with keyframeIndex: " + keyframeIndex);
         if (keyframeIndex >= 0 && keyframeIndex < smogLengths.Length)
         {
             float currentLength = smogLengths[keyframeIndex];

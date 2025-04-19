@@ -99,6 +99,11 @@ public class Player : Character
         amount = Mathf.RoundToInt(amount * DifficultyMultiplier);
         stats.AddGold(amount);
     }
+    public void RetriveGold(int amount)
+    {
+        // for death drop only
+        stats.AddGold(amount);
+    }
     public void SpendGold(int amount)
     {
         stats.SpendGold(amount);
@@ -642,12 +647,24 @@ public class Player : Character
     public override void TakeDamage(Transform attacker, float damage, float knockbackForce, DamageType damageType)
     {
         if (isInvincible || isDead) return;
-        InvokeTakeDamageEvent(attacker, damage*DifficultyMultiplier, knockbackForce, damageType);
+
+        float coefficient = 1.0f * DifficultyMultiplier;
+
+        if (CollectionManager.Instance.IsEffectActivated(1))
+        {
+            coefficient *= 0.95f;
+        }
+
+        InvokeTakeDamageEvent(attacker, damage*coefficient, knockbackForce, damageType);
         //stats.ReduceHealth((int)damage);
         if (stats.GetCurrentHealth() <= 0)
         {
             GoldGenerator.Instance.GenerateGolds(transform.position, stats.GetGold(), true);
+            int lostGold = stats.GetGold();
+            Vector3 deathPos = transform.position;
+            DeathDropManager.Instance.SaveLatestDrop(deathPos, lostGold);
             stats.DieLoseGold();
+            
             OnDie?.Invoke(transform);
         }
         //else
@@ -753,7 +770,8 @@ public class Player : Character
 
     public void DebugSuiside() 
     {
-        Die();
+        //Die();
+        TakeDamage(null, 99999, 0, DamageType.Physical);
     }
 
     public void PlayerSpeedUp(float percent) 

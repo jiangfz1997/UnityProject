@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameSceneSO breakRoomScene;
     [SerializeField] private Vector3 breakRoomSpawnPoint = Vector3.zero;
 
-    private int currentLevelIndex = 0;
+    [SerializeField] private int currentLevelIndex = 0;
 
     private void Awake()
     {

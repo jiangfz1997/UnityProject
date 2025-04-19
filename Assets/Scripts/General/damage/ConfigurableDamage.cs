@@ -144,6 +144,7 @@ public class DamageHandler : IDamageHandler
 
     private void ApplyKnockback(Transform attackerTransform, float knockbackForce)
     {
+
         //Transform attackerTransform = attacker.transform;
         Vector2 forceDirection = ((Vector2)transform.position - (Vector2)attackerTransform.position).normalized;
         if (forceDirection == Vector2.zero)

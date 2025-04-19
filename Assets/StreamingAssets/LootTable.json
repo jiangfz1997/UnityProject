@@ -17,6 +17,18 @@
             "lootItems": [
                 { "prefabName": "IceElementPotion", "dropChance": 1.0 }
             ]
+        },
+        {
+            "chestType": "AttackUp",
+            "lootItems": [
+                { "prefabName": "AttackUpPotion", "dropChance": 1.0 }
+            ]
+        },
+        {
+            "chestType": "DefenseUp",
+            "lootItems": [
+                { "prefabName": "DefenseUpPotion", "dropChance": 1.0 }
+            ]
         }
     ]
 }

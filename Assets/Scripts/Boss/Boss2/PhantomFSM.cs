@@ -18,20 +18,21 @@ public class PhantomFSM : MonoBehaviour
 {
     public PhantomState currentState;
 
-    public float health = 10f;
-    public float maxHealth = 10f;
+    public float health = 500f;
+    public float maxHealth = 500f;
 
-    public static float specialSkillCooldown = 15f;
-    public static float attackCooldown = 8f;
-    public static float enrageCoolDown = 5f;
+    public static float specialSkillCooldown = 12f;
+    public static float attackCooldown = 7f;
+    public static float enrageCoolDown = 4f;
     public float moveSpeed = 2f;
     public float attackRange = 4f;
+    [SerializeField] private float coefficient = 1f;
     [SerializeField] private float invincibleTimer = 0.2f;
-    [SerializeField] private float specialSkillTimer = 15f;
-    [SerializeField] private float attackTimer = 0f;
+    [SerializeField] private float specialSkillTimer = 10f;
+    [SerializeField] private float attackTimer = 3f;
 
-    private bool skillSelected = false;
     [SerializeField] private PhantomMirrors specialSkill;
+    private bool skillEnabled = true;
     [SerializeField] private GameObject SmogPrefab;
     [SerializeField] private Vector3 offset = new Vector3(3f, 1f, 0f);
 
@@ -48,6 +49,9 @@ public class PhantomFSM : MonoBehaviour
         transform = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+        if (CollectionManager.Instance.IsEffectActivated(4))
+            coefficient *= 1.1f;
 
         ChangeState(PhantomState.Idle);
     }
@@ -77,15 +81,6 @@ public class PhantomFSM : MonoBehaviour
             case PhantomState.Walk:
                 ChaseAndAttack();
                 break;
-            case PhantomState.Enrage:
-                UpdateEnrageState();
-                break;
-            case PhantomState.SpecialSkill:
-                UpdateSpecialSkillState();
-                break;
-            case PhantomState.Hurt:
-                // Hurt Animation
-                break;
         }
     }
 
@@ -99,18 +94,20 @@ public class PhantomFSM : MonoBehaviour
             return;
         }
 
-        if (health <= 0.2 * maxHealth)
+        if (health <= 0.2 * maxHealth && skillEnabled == true)
         {
             ChangeState(PhantomState.Enrage);
+            return;
         }
 
         if (attackTimer <= 0)
         {
             ChangeState(PhantomState.Walk);
+            return;
         }
-        else if (specialSkillTimer <= 0)
+        else if ( skillEnabled == true && specialSkillTimer <= 0)
         {
-            // ChangeState(PhantomState.SpecialSkill);
+            ChangeState(PhantomState.SpecialSkill);
         }
 
     }
@@ -126,7 +123,7 @@ public class PhantomFSM : MonoBehaviour
             if (attackTimer <= 0)
             {
                 attackTimer = attackCooldown;
-                Invoke("Attack", 0.3f);
+                Invoke("Attack", 0.2f);
             }
         }
         else
@@ -138,7 +135,7 @@ public class PhantomFSM : MonoBehaviour
     private void Attack()
     {
         rb.linearVelocity = Vector2.zero;
-        Debug.Log("Invoke SmogAttack");
+        // Debug.Log("Invoke SmogAttack");
         attackTimer = attackCooldown;
         ChangeState(PhantomState.Attack);
     }
@@ -176,21 +173,23 @@ public class PhantomFSM : MonoBehaviour
         ChangeState(PhantomState.Idle);
     }
 
-    private void UpdateEnrageState()
+    private void EnterEnrageState()
     {
         attackCooldown = enrageCoolDown;
 
-        if (attackTimer <= 0)
-        {
-            ChangeState(PhantomState.Walk);
-        }
+        attackTimer = 0;
+
+        skillEnabled = false;
+
+        ChangeState(PhantomState.Walk);
 
     }
 
-    private void UpdateSpecialSkillState()
+    private void SpecialSkillStart()
     {
         specialSkillTimer = specialSkillCooldown;
-        specialSkill.Cast();
+        // Debug.Log("Invoke SpecialSkillStart");
+        StartCoroutine(specialSkill.SummonMirrors());
 
     }
 
@@ -211,7 +210,6 @@ public class PhantomFSM : MonoBehaviour
 
     public void SpecialSkillAnimationEnd()
     {
-        skillSelected = false;
         ChangeState(PhantomState.Idle);
     }
 
@@ -238,8 +236,17 @@ public class PhantomFSM : MonoBehaviour
             case PhantomState.Attack:
                 animator.SetTrigger("Attack");
                 break;
+            case PhantomState.Enrage:
+                EnterEnrageState();
+                break;
             case PhantomState.SpecialSkill:
-                animator.SetTrigger("SpecialSkill");
+                if (specialSkillTimer <= 0)
+                {
+                    SpecialSkillStart();
+                    animator.SetTrigger("SpecialSkill");
+                }
+                else
+                    ChangeState(PhantomState.Idle);
                 break;
             case PhantomState.Hurt:
                 animator.SetTrigger("Hurt");
@@ -257,11 +264,11 @@ public class PhantomFSM : MonoBehaviour
             return;
         }
 
-        Debug.Log("Boss Take Damage: " + damage + " Type: " + damageType);
-
-        health -= damage;
+        // Debug.Log("Boss Take Damage: " + damage + " Type: " + damageType);
 
         invincibleTimer = 0.2f;
+
+        health -= damage * coefficient;
 
         if (health <= 0)
         {

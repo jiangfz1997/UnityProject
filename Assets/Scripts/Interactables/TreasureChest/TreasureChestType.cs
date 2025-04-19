@@ -5,4 +5,6 @@ public enum TreasureChestType
     Epic,
     Fire,
     Ice,
+    AttackUp,
+    DefenseUp
 }

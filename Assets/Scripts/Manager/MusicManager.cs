@@ -16,6 +16,7 @@ public class MusicManager : MonoBehaviour
 
     private AudioSource audioSource;
     private int currentMusicIndex = -1;
+    private int changeMark = -1;
     private bool isFading = false;
     
     [System.Serializable]
@@ -82,8 +83,21 @@ public class MusicManager : MonoBehaviour
         // Debug.Log("Current Scene for BGM: " + currentSceneName);
         if(currentSceneName == null)
             return;
-        if(currentSceneName == "BreakRoom")
+            
+        if(currentSceneName == "Boss_1")
+        {
+            changeMark = 3;
+        }
+
+        if(currentSceneName == "BreakRoom") 
+        {
+            if (changeMark > 0) {
+                string newSceneName = "Level_" + changeMark.ToString();
+                PlayMusicForScene(newSceneName);
+                changeMark = -1;
+            }
             return;
+        }
         PlayMusicForScene(currentSceneName);
     }
 

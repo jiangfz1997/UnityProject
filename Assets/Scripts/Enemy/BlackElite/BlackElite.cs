@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class BlackElite : Enemy
 {
@@ -160,9 +162,24 @@ public class BlackElite : Enemy
         {
             GoldGenerator.Instance.GenerateGolds(transform.position, 2000);
         }
+        StartCoroutine(LoadAndSpawnItem("FireElementPotion"));
         // Generate other loot here
     }
+    private IEnumerator LoadAndSpawnItem(string prefabName)
+    {
+        AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(prefabName);
+        yield return handle;
 
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            Instantiate(handle.Result, transform.position + Vector3.up, Quaternion.identity);
+            Debug.Log($"[PurpleElite] Spawned prefab: {prefabName}");
+        }
+        else
+        {
+            Debug.LogError($"[PurpleElite] Failed to load prefab: {prefabName}");
+        }
+    }
     public bool IsPlayerInChaseZone()
     {
         if (chaseZoneCollider == null || Player.Instance == null) return false;

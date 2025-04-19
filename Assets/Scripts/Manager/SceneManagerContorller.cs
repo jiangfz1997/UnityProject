@@ -193,7 +193,6 @@ public class SceneManagerController : MonoBehaviour
 
         SceneManager.SetActiveScene(handle.Result.Scene);
        
-        // 触发场景加载完成事件
         afterSceneLoadedEvent.RaiseEvent();
         StartCoroutine(RefreshEventSystem());
 
@@ -204,9 +203,9 @@ public class SceneManagerController : MonoBehaviour
         {
             StartCoroutine(DelayedRestartCallback());
         }
-
-
+        DeathDropManager.Instance.TrySpawnDropInCurrentScene();
     }
+
     private IEnumerator DelayedRestartCallback()
     {
         yield return new WaitForSeconds(0.2f); // 等待一帧或两帧确保加载完成
@@ -216,6 +215,7 @@ public class SceneManagerController : MonoBehaviour
         // ✅ 清除状态
         isRestarting = false;
         onRestartComplete = null;
+
     }
     private IEnumerator EnableCinemachineBrainDelayed(CinemachineBrain brain)
     {
